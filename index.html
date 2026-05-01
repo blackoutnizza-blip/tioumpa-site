@@ -4,1262 +4,147 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>tioumpa.org</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-* { box-sizing: border-box; }
-
-:root {
-  color-scheme: dark light;
-  --bg: #0b1622;
-  --text: #e6edf3;
-  --muted: #7890a8;
-  --muted-2: #9fb3c8;
-  --border: #28445f;
-  --border-soft: #1f3a52;
-  --panel: rgba(15,31,47,.82);
-  --panel-strong: rgba(11,22,34,.96);
-  --surface: rgba(18,38,58,.88);
-  --surface-soft: rgba(18,38,58,.48);
-  --hover: rgba(255,255,255,.08);
-  --accent: #78a6ff;
-  --accent-soft: rgba(88,166,255,.22);
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    --bg: #f4f7fb;
-    --text: #102033;
-    --muted: #5f7389;
-    --muted-2: #49647c;
-    --border: #c7d6e6;
-    --border-soft: #d7e2ee;
-    --panel: rgba(255,255,255,.78);
-    --panel-strong: rgba(255,255,255,.94);
-    --surface: rgba(235,242,250,.92);
-    --surface-soft: rgba(255,255,255,.72);
-    --hover: rgba(20,60,100,.08);
-    --accent: #1b63d8;
-    --accent-soft: rgba(27,99,216,.13);
-  }
-}
-
-html[data-theme="dark"] {
-  color-scheme: dark;
-  --bg: #0b1622;
-  --text: #e6edf3;
-  --muted: #7890a8;
-  --muted-2: #9fb3c8;
-  --border: #28445f;
-  --border-soft: #1f3a52;
-  --panel: rgba(15,31,47,.82);
-  --panel-strong: rgba(11,22,34,.96);
-  --surface: rgba(18,38,58,.88);
-  --surface-soft: rgba(18,38,58,.48);
-  --hover: rgba(255,255,255,.08);
-  --accent: #78a6ff;
-  --accent-soft: rgba(88,166,255,.22);
-}
-
-html[data-theme="light"] {
-  color-scheme: light;
-  --bg: #f4f7fb;
-  --text: #102033;
-  --muted: #5f7389;
-  --muted-2: #49647c;
-  --border: #c7d6e6;
-  --border-soft: #d7e2ee;
-  --panel: rgba(255,255,255,.78);
-  --panel-strong: rgba(255,255,255,.94);
-  --surface: rgba(235,242,250,.92);
-  --surface-soft: rgba(255,255,255,.72);
-  --hover: rgba(20,60,100,.08);
-  --accent: #1b63d8;
-  --accent-soft: rgba(27,99,216,.13);
-}
-
 body {
-  margin: 0;
-  font-family: Inter, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  overflow: hidden;
+  margin:0;
+  font-family:Inter, sans-serif;
+  background:#071421;
+  color:#e6edf3;
 }
 
-::-webkit-scrollbar { width: 12px; height: 12px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, var(--border), #5b7fa3);
-  border-radius: 999px;
-  border: 3px solid var(--bg);
+/* HEADER */
+.header{
+  height:64px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 18px;
+  background:#071421;
+  border-bottom:1px solid #1f3a52;
+  cursor:pointer;
 }
-::-webkit-scrollbar-thumb:hover { background: var(--accent); }
-* { scrollbar-width: thin; scrollbar-color: #5b7fa3 var(--bg); }
 
-.header {
-  height: 64px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 18px;
-  border-bottom: 1px solid var(--border-soft);
-  background: var(--panel-strong);
-  cursor: pointer;
+.header img{
+  width:50px;
+  height:50px;
+  object-fit:contain;
 }
 
-.header img {
-  width: 46px;
-  height: 46px;
-  object-fit: contain;
+.header strong{
+  font-size:22px;
 }
 
-.header strong { font-size: 21px; }
-
-.theme-control {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.theme-control label {
-  font-size: 12px;
-  color: var(--muted-2);
-}
-
-.theme-control select {
-  height: 34px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--surface);
-  color: var(--text);
-  font-family: Inter, sans-serif;
-  padding: 0 10px;
-  cursor: pointer;
-}
-
-.app {
-  display: flex;
-  height: calc(100vh - 64px);
-}
-
-.sidebar {
-  width: 380px;
-  min-width: 280px;
-  max-width: 620px;
-  padding: 18px;
-  overflow-y: auto;
-  border-right: 1px solid var(--border-soft);
-  background: var(--panel);
-}
-
-.resizer {
-  width: 8px;
-  cursor: col-resize;
-  background: linear-gradient(180deg, transparent, var(--border), transparent);
-  position: relative;
-}
-
-.resizer::after {
-  content: "";
-  position: absolute;
-  left: 2px;
-  top: 50%;
-  width: 4px;
-  height: 70px;
-  transform: translateY(-50%);
-  border-radius: 999px;
-  background: #5b7fa3;
-  opacity: .7;
-}
-
-.resizer:hover::after {
-  background: var(--accent);
-  opacity: 1;
-}
-
-.content {
-  flex: 1;
-  padding: 36px;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.filter-box {
-  position: sticky;
-  top: 0;
-  z-index: 5;
-  padding: 0 0 14px;
-  margin-bottom: 12px;
-  background: var(--panel-strong);
-  backdrop-filter: blur(12px);
-}
-
-.filter-title {
-  font-size: 12px;
-  color: var(--muted-2);
-  margin-bottom: 9px;
-  letter-spacing: .08em;
-}
-
-.filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.filter-btn {
-  padding: 7px 10px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--surface);
-  color: var(--text);
-  cursor: pointer;
-  font-family: Inter, sans-serif;
-  font-size: 13px;
-}
-
-.filter-btn.active,
-.filter-btn:hover {
-  background: var(--accent-soft);
-  border-color: var(--accent);
-}
-
-.letter {
-  margin-top: 20px;
-  padding-bottom: 6px;
-  font-size: 18px;
-  font-weight: 600;
-  border-bottom: 1px solid #2a445c;
-}
-
-.word {
-  padding: 10px 12px;
-  border-radius: 10px;
-  cursor: pointer;
-  line-height: 1.35;
-}
-
-.word:hover { background: var(--hover); }
-
-.home {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  animation: fadeIn .45s ease;
-}
-
-.home-logo {
-  width: 180px;
-  height: 180px;
-  object-fit: contain;
-  animation: logoFloat 4s ease-in-out infinite;
-}
-
-@keyframes logoFloat {
-  0%,100% { transform: translateY(0) rotate(-2deg); }
-  50% { transform: translateY(-12px) rotate(2deg); }
-}
-
-.home h1 {
-  margin: 18px 0 4px;
-  font-size: 42px;
-}
-
-.subtitle {
-  font-size: 14px;
-  letter-spacing: .08em;
-  color: var(--muted-2);
-}
-
-.email {
-  margin-top: 8px;
-  max-width: 720px;
-  font-size: 12px;
-  color: var(--muted);
-}
-
-.search-copy {
-  margin-top: 18px;
-  font-size: 15px;
-  color: var(--text);
-}
-
-.search-wrapper {
-  position: relative;
-  margin-top: 22px;
-  width: min(760px, 94%);
-  display: grid;
-  grid-template-columns: 1fr 145px 120px;
-  gap: 8px;
-  align-items: center;
-}
-
-.search-main {
-  position: relative;
-}
-
-.search-main input {
-  width: 100%;
-  padding: 15px 48px;
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  background: var(--surface);
-  color: white;
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  outline: none;
-  transition: transform .25s ease, box-shadow .25s ease, border .25s ease;
-}
-
-.search-main input:focus {
-  transform: scale(1.025);
-  border-color: #6aa3ff;
-  box-shadow: 0 0 30px var(--accent-soft);
-}
-
-.search-icon {
-  position: absolute;
-  left: 17px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 17px;
-  height: 17px;
-  filter: invert(1);
-  opacity: .85;
-}
-
-.mic {
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  font-size: 18px;
-}
-
-.search-wrapper select,
-.search-wrapper button {
-  height: 49px;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  background: var(--surface);
-  color: white;
-  font-family: Inter, sans-serif;
-  padding: 0 12px;
-  cursor: pointer;
+/* HOME */
+.home{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  height:calc(100vh - 64px);
+  text-align:center;
 }
 
-.home-toggle-section { margin-top: 20px; }
-
-.home-toggle-section button {
-  padding: 10px 16px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--surface);
-  color: white;
-  cursor: pointer;
-  font-family: Inter, sans-serif;
-}
-
-.home-toggle-section button:hover { background: var(--accent-soft); }
-
-.hidden-box {
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-  margin-top: 0;
-  transition: max-height .35s ease, opacity .25s ease, margin-top .25s ease;
-}
-
-.hidden-box.open {
-  max-height: 260px;
-  opacity: 1;
-  margin-top: 12px;
-}
-
-.home-list-item {
-  cursor: pointer;
-  padding: 6px;
-}
-
-.home-list-item:hover { color: var(--accent); }
-
-.random-title {
-  margin-top: 34px;
-  font-size: 12px;
-  letter-spacing: .12em;
-  color: var(--muted-2);
-}
-
-.bubbles {
-  margin-top: 18px;
-  width: min(720px, 95%);
-  min-height: 120px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-  justify-content: center;
-  align-items: center;
-}
-
-.bubbles.fade-in { animation: bubbleFade .8s ease; }
-
-@keyframes bubbleFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.bubble {
-  padding: 10px 16px;
-  border-radius: 999px;
-  background: var(--surface-soft);
-  border: 1px solid var(--border);
-  backdrop-filter: blur(14px);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 10px 25px rgba(0,0,0,.22);
-  cursor: pointer;
-}
-
-.entry {
-  animation: entryIn .45s ease;
-  max-width: 980px;
-  min-height: 100%;
-  position: relative;
-}
-
-@keyframes entryIn {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.entry-title {
-  font-size: 34px;
-  font-style: italic;
-  font-weight: 400;
-  margin-bottom: 12px;
-}
-
-.entry-divider {
-  height: 1px;
-  background: #2a445c;
-  margin-bottom: 20px;
-}
-
-.entry-meta {
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 0 0 20px;
-}
-
-.meta-pill {
-  padding: 8px 12px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--surface-soft);
-  color: var(--text);
+.home-logo{
+  width:170px;
+  animation:float 4s ease-in-out infinite;
 }
 
-.entry-body {
-  white-space: pre-wrap;
-  line-height: 1.68;
-  font-size: 17px;
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-12px)}
 }
 
-.entry-ref {
-  color: var(--accent);
-  font-style: italic;
-  cursor: pointer;
+h1{
+  margin:15px 0 0;
+  font-size:40px;
 }
 
-.entry-ref:hover { text-decoration: underline; }
-
-.entry-body iframe {
-  display: block;
-  margin-top: 30px;
-  max-width: 760px;
-  width: 100%;
-  aspect-ratio: 16/9;
-  height: auto;
-  border-radius: 14px;
-}
-
-.entry-images {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 14px;
-  margin-top: 26px;
-  width: 100%;
-}
-
-.entry-images img {
-  max-width: min(320px, 45%);
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,.12);
-  box-shadow: 0 12px 30px rgba(0,0,0,.35);
-}
-
-.declension-box {
-  margin-top: 22px;
-  margin-left: auto;
-  width: fit-content;
-  max-width: 100%;
-  padding: 10px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--surface-soft);
-}
-
-.declension-title {
-  font-weight: 600;
-  margin-bottom: 10px;
-  color: var(--accent);
-}
-
-.declension-box table {
-  font-family: Helvetica, Arial, sans-serif;
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-}
-
-.declension-box th,
-.declension-box td {
-  border: 1px solid var(--border);
-  padding: 6px 9px;
-  text-align: center;
-  white-space: nowrap;
-}
-
-.declension-box th { color: var(--muted-2); }
-
-.star {
-  cursor: pointer;
-  font-size: 25px;
-  margin-left: 12px;
-  vertical-align: middle;
+.subtitle{
+  color:#9fb3c8;
+  font-size:14px;
+  letter-spacing:.1em;
 }
 
-.back-btn {
-  position: sticky;
-  top: 0;
-  float: right;
-  padding: 9px 14px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--surface);
-  color: white;
-  cursor: pointer;
-  z-index: 10;
+.email{
+  font-size:12px;
+  margin-top:8px;
+  color:#7890a8;
 }
-
-.back-btn:hover { background: var(--accent-soft); }
 
-.socials {
-  display: flex;
-  gap: 12px;
-  margin-top: 20px;
-  justify-content: center;
-  flex-wrap: wrap;
+/* SEARCH */
+.search{
+  margin-top:25px;
+  width:90%;
+  max-width:600px;
+  position:relative;
 }
 
-.social {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  color: white;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  font-weight: 600;
-  transition: .2s;
+.search input{
+  width:100%;
+  padding:14px 45px;
+  border-radius:14px;
+  border:1px solid #28445f;
+  background:#12263a;
+  color:white;
+  font-size:16px;
+  font-family:Helvetica;
 }
 
-.social:hover {
-  transform: translateY(-3px);
-  background: var(--accent-soft);
+.search input:focus{
+  outline:none;
+  border-color:#78a6ff;
 }
 
-.social.youtube { color: #ff6b6b; }
-.social.instagram { color: #ff9bd2; }
-.social.tiktok { color: #f4f4f4; }
-.social.twitch { color: #b990ff; }
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+.search img{
+  position:absolute;
+  left:15px;
+  top:50%;
+  transform:translateY(-50%);
+  width:18px;
+  filter:invert(1);
 }
-
-@media (max-width: 850px) {
-  body { overflow: auto; }
-
-  .app {
-    flex-direction: column;
-    height: auto;
-  }
-
-  .resizer { display: none; }
-
-  .sidebar {
-    width: 100% !important;
-    min-width: 0;
-    max-width: none;
-    max-height: 310px;
-    border-right: none;
-    border-bottom: 1px solid var(--border-soft);
-  }
-
-  .content { padding: 24px 18px; }
 
-  .home {
-    justify-content: flex-start;
-    padding-top: 28px;
-  }
-
-  .home-logo {
-    width: 130px;
-    height: 130px;
-  }
-
-  .home h1 { font-size: 32px; }
-
-  .search-wrapper {
-    grid-template-columns: 1fr;
-    width: 100%;
-    gap: 10px;
-  }
-
-  .search-main input:focus { transform: none; }
-
-  .entry-title { font-size: 27px; }
-
-  .entry-images img {
-    max-width: 100%;
-    width: 100%;
-  }
-
-  .declension-box {
-    width: 100%;
-    margin-left: 0;
-    overflow-x: auto;
-  }
-}
 </style>
 </head>
 
 <body>
 
 <div class="header" onclick="goHome()">
-  <img src="data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDM0OCAzMzAiIHdpZHRoPSIzNDgiIGhlaWdodD0iMzMwIj4KPHN0eWxlPgouczB7ZmlsbDojZWRkNmIyfS5zMXtmaWxsOiNlY2Q1YjF9LnM3e2ZpbGw6IzA5MDg0YX0uczEwe2ZpbGw6IzgzMDgwN30uczE0e2ZpbGw6I2JkYTM3NH0uczIze2ZpbGw6I2RmYzA4OH0KPC9zdHlsZT4KPHBhdGggY2xhc3M9InM3IiBkPSJNNTAgMzZjNDMtMjggMTExLTMyIDE2NS0xOCA2MSAxNiAxMDQgNjEgMTE5IDExNyAxNyA2NS03IDEyOC02MCAxNjMtNTUgMzctMTM3IDQwLTE5NyA3LTU3LTMxLTg1LTg5LTczLTE0OUMxMyAxMDMgMjAgNTggNTAgMzZ6Ii8+CjxwYXRoIGNsYXNzPSJzMCIgZD0iTTE1MSAxMDdjMTIgNCA0MyAyNSA2NSA0MSAxIDgtMyAxOS04IDI4LTkgMTYtMTggMzEtMjcgNDcgMTUtMSAzMS00IDQ2LTMgOCA3IDkgMzAgMTEgNDkgMSAxMCA0IDI1IDAgMzUtMiA1LTUgOC0xMCA5LTIyIDQtNDkgNi03MiA4LTctMS0xMC01LTEwLTEyLTItMjEtNi00NC03LTY1LTEtMTQgMi0yMCAxNi0yMi0xOC0xMS0zNy0yMi01NS0zNC02LTQtOC05LTYtMTYgNi0xNCAyMS0zOSAzMC01NCA3LTEyIDE0LTE2IDI3LTExeiIvPgo8cGF0aCBjbGFzcz0iczEiIGQ9Ik0xMDAgMjA3YzggNCAxNyAxOSAyNSAzMiA4IDEyIDE4IDI3IDE5IDM5LTIgOC0xMyAxNS0yMiAyMC0xNCA5LTMwIDE4LTQ0IDI3LTYgNC0xMiA0LTE3LTEtMTEtMTEtMjctMzktMzUtNTMtMy02LTItMTIgMy0xNyAxNy0xMyA0Mi0yNyA2MS0zOSA0LTMgNi01IDEwLTh6Ii8+CjxwYXRoIGNsYXNzPSJzMjMiIGQ9Ik0xNzkgMWMxMiA1IDQzIDMzIDYwIDQ4IDIgOS04IDIyLTE2IDMyLTEwIDEyLTIyIDI3LTM0IDQzLTYgNS0xMyAxLTIwLTQtMTUtMTItMzEtMjUtNDYtMzgtMy02IDEtMTMgNy0yMSAxMC0xMyAyMi0yNyAzMy00MSA2LTggMTAtMTcgMTYtMTl6Ii8+CjxwYXRoIGNsYXNzPSJzMSIgZD0iTTI3NCAyYzE1IDIgNTMgMjAgNjcgMjggOSA2IDYgMTkgMSAzMS04IDE4LTE3IDM2LTI1IDU1LTE1LTItMzQtOC01My0xNi0xMy01LTI1LTExLTM0LTE3IDEtMTEgMTAtMjcgMTUtMzkgNy0xNSAxMy0zNiAyOS00MnoiLz4KPHBhdGggY2xhc3M9InMwIiBkPSJNMTAyIDEwYzggMCAxMiA0IDEzIDEzIDMgMjAgNSAzOSA4IDU5IDEgMTAtMyAxNi0xMyAxOC0yMiA0LTQ4IDctNzAgOS04IDAtMTItNC0xMy0xMi0zLTIyLTYtNDctNy02OSAyLTggNi0xMSAxNC0xMiAyMy0zIDQ2LTYgNjgtNnoiLz4KPHBhdGggY2xhc3M9InMxMCIgZD0iTTE1MyAxMjFjOSAyIDM4IDIxIDQ5IDMwLTEgNC00IDgtNyAxMi02LTItMTItNy0xOC0xMC04IDEzLTE2IDI3LTIzIDQwLTQgNi03IDgtMTIgNS00LTItOC01LTEyLTggNy0xNiAyMS0zNSAzMC01Mi01LTMtMTAtNi0xNS0xMCAyLTQgNC03IDgtN3oiLz4KPHBhdGggY2xhc3M9InMxNCIgZD0iTTcwIDI1MGMxNC0xMyA0MS0xMyA1MCAzIDQgMTYtOSAyNS0yNCAyOS0xNyA0LTM0LTEtMzgtMTUtMS04IDQtMTMgMTItMTd6Ii8+CjxwYXRoIGNsYXNzPSJzMTQiIGQ9Ik0yODcgMjQyYzE1LTMgMjMgOCAxOSAyMy00IDE0LTE0IDIyLTI3IDE4LTEzLTQtMTYtMTUtOS0yOCA0LTggOS0xMiAxNy0xM3oiLz4KPC9zdmc+">
+  <img src="https://i.ibb.co/9m6hW6bn/kranoumpanoumpanoumpa-1.png">
   <strong>tioumpa.org</strong>
-  <div class="theme-control" onclick="event.stopPropagation()">
-    <label for="themeSelect">Θέμα</label>
-    <select id="themeSelect" onchange="setTheme(this.value)">
-      <option value="system">Αυτόματο</option>
-      <option value="dark" selected>Σκούρο</option>
-      <option value="light">Ανοιχτό</option>
-    </select>
-  </div>
 </div>
 
-<div class="app">
-  <aside class="sidebar" id="sidebar">
-    <div class="filter-box">
-      <div class="filter-title">ΦΙΛΤΡΑ</div>
-      <div class="filters" id="filters"></div>
-    </div>
-    <div id="list"></div>
-  </aside>
-
-  <div class="resizer" id="resizer" title="Σύρε για αλλαγή πλάτους"></div>
-
-  <main class="content" id="content"></main>
-</div>
+<div id="app"></div>
 
 <script>
 
-const savedTheme = localStorage.getItem("themeChoice") || "dark";
-applyTheme(savedTheme);
+function goHome(){
+  document.getElementById("app").innerHTML = `
+  <div class="home">
+    <img class="home-logo" src="https://i.ibb.co/9m6hW6bn/kranoumpanoumpanoumpa-1.png">
 
-function applyTheme(value) {
-  if (value === "system") {
-    document.documentElement.removeAttribute("data-theme");
-  } else {
-    document.documentElement.setAttribute("data-theme", value);
-  }
-}
+    <h1>tioumpa.org</h1>
+    <div class="subtitle">ΤΟ ΛΕΞΙΚΟ ΤΟΥ TEOSTY</div>
 
-function setTheme(value) {
-  localStorage.setItem("themeChoice", value);
-  applyTheme(value);
-}
-
-window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", () => {
-  const choice = localStorage.getItem("themeChoice") || "system";
-  if (choice === "system") applyTheme("system");
-});
-
-let entries = [];
-let clicks = JSON.parse(localStorage.getItem("clicks") || "{}");
-let favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
-let bubbleTimer = null;
-let activeFilter = "Όλα";
-let searchQuery = "";
-
-fetch("data.txt")
-  .then(r => {
-    if (!r.ok) throw new Error("data.txt not found");
-    return r.text();
-  })
-  .then(text => init(text))
-  .catch(err => {
-    document.getElementById("content").innerHTML = `
-      <h2>Δεν φορτώθηκε το data.txt</h2>
-      <p>Βεβαιώσου ότι το αρχείο λέγεται ακριβώς <b>data.txt</b> και είναι στον ίδιο φάκελο με το index.html.</p>
-    `;
-    console.error(err);
-  });
-
-function init(text) {
-  const themeSelect = document.getElementById("themeSelect");
-  if (themeSelect) themeSelect.value = localStorage.getItem("themeChoice") || "system";
-
-  entries = text
-    .split(/\r?\n(?=Ατάκα\s*\d+\s*:|Ατακα\s*\d+\s*:|Ατάκα\d+\s*:|Ατακα\d+\s*:|Ατάκα\s*\d+\s+|Ατακα\s*\d+\s+)/g)
-    .map(block => {
-      const firstLine = block.split(/\r?\n/)[0] || "";
-      const title = firstLine
-        .replace(/^Ατάκα\s*\d+\s*:?\s*/i, "")
-        .replace(/^Ατακα\s*\d+\s*:?\s*/i, "")
-        .trim();
-      return { title, full: block };
-    })
-    .filter(e => e.title);
-
-  setupResizer();
-  renderFilters();
-  renderList();
-  route();
-  startBubbles();
-}
-
-window.addEventListener("hashchange", route);
-
-function normalizeGreekLetter(s) {
-  const first = (s || "").trim().charAt(0).toLocaleUpperCase("el-GR");
-  return first.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-}
-
-function getEntryCleanText(entry) {
-  let lines = entry.full.split(/\r?\n/);
-  lines.shift();
-  return lines.join("\n")
-    .replace("Περιγραφή:", "")
-    .replace("Περγιφραφή:", "")
-    .trim();
-}
-
-function detectType(title, text = "") {
-  const t = (title + " " + text).toLowerCase();
-
-  if (t.includes("μιμητικός ήχος") || t.includes("ήχος")) return "Ήχος";
-  if (title.endsWith("ω") || title.endsWith("ομαι") || title.endsWith("ώ")) return "Ρήμα";
-
-  const firstWord = title.split(/[ ,;/!]/)[0].trim();
-
-  if (
-    firstWord.endsWith("ος") || firstWord.endsWith("ης") || firstWord.endsWith("ας") ||
-    firstWord.endsWith("α") || firstWord.endsWith("η") || firstWord.endsWith("ι")
-  ) return "Ουσιαστικό";
-
-  if (
-    title.includes(" ") || title.includes(";") || title.includes(",") ||
-    title.includes("/") || title.includes("!")
-  ) return "Έκφραση";
-
-  return "Λήμμα";
-}
-
-function getEntryType(entry) {
-  return detectType(entry.title, getEntryCleanText(entry));
-}
-
-function renderFilters() {
-  const types = ["Όλα", ...new Set(entries.map(getEntryType))].sort((a,b) => {
-    if (a === "Όλα") return -1;
-    if (b === "Όλα") return 1;
-    return a.localeCompare(b, "el");
-  });
-
-  const box = document.getElementById("filters");
-  box.innerHTML = "";
-
-  types.forEach(type => {
-    const btn = document.createElement("button");
-    btn.className = "filter-btn" + (type === activeFilter ? " active" : "");
-    btn.textContent = type;
-    btn.onclick = () => {
-      activeFilter = type;
-      syncHomeFilter();
-      renderFilters();
-      renderList();
-    };
-    box.appendChild(btn);
-  });
-}
-
-function currentFilteredEntries() {
-  const q = searchQuery.toLocaleLowerCase("el-GR").trim();
-
-  return entries.filter(e => {
-    const matchesType = activeFilter === "Όλα" || getEntryType(e) === activeFilter;
-    const matchesSearch =
-      !q ||
-      e.title.toLocaleLowerCase("el-GR").includes(q) ||
-      getEntryCleanText(e).toLocaleLowerCase("el-GR").includes(q);
-
-    return matchesType && matchesSearch;
-  });
-}
-
-function renderList() {
-  const sorted = currentFilteredEntries().sort((a,b) =>
-    a.title.localeCompare(b.title, "el", { sensitivity: "base" })
-  );
-
-  const list = document.getElementById("list");
-  list.innerHTML = "";
-
-  let current = "";
-
-  sorted.forEach(item => {
-    const letter = normalizeGreekLetter(item.title);
-
-    if (letter !== current) {
-      current = letter;
-      const l = document.createElement("div");
-      l.className = "letter";
-      l.textContent = letter;
-      list.appendChild(l);
-    }
-
-    const w = document.createElement("div");
-    w.className = "word";
-    w.textContent = item.title;
-    w.onclick = () => {
-      location.hash = encodeURIComponent(item.title);
-    };
-    list.appendChild(w);
-  });
-}
-
-function route() {
-  const name = decodeURIComponent(location.hash.replace("#", ""));
-
-  if (!name) {
-    showHome();
-    return;
-  }
-
-  const entry = entries.find(e => e.title === name);
-
-  if (!entry) {
-    showHome();
-    return;
-  }
-
-  openEntry(entry);
-}
-
-function showHome() {
-  document.getElementById("content").innerHTML = `
-    <div class="home">
-      <img class="home-logo" src="data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDM0OCAzMzAiIHdpZHRoPSIzNDgiIGhlaWdodD0iMzMwIj4KPHN0eWxlPgouczB7ZmlsbDojZWRkNmIyfS5zMXtmaWxsOiNlY2Q1YjF9LnM3e2ZpbGw6IzA5MDg0YX0uczEwe2ZpbGw6IzgzMDgwN30uczE0e2ZpbGw6I2JkYTM3NH0uczIze2ZpbGw6I2RmYzA4OH0KPC9zdHlsZT4KPHBhdGggY2xhc3M9InM3IiBkPSJNNTAgMzZjNDMtMjggMTExLTMyIDE2NS0xOCA2MSAxNiAxMDQgNjEgMTE5IDExNyAxNyA2NS03IDEyOC02MCAxNjMtNTUgMzctMTM3IDQwLTE5NyA3LTU3LTMxLTg1LTg5LTczLTE0OUMxMyAxMDMgMjAgNTggNTAgMzZ6Ii8+CjxwYXRoIGNsYXNzPSJzMCIgZD0iTTE1MSAxMDdjMTIgNCA0MyAyNSA2NSA0MSAxIDgtMyAxOS04IDI4LTkgMTYtMTggMzEtMjcgNDcgMTUtMSAzMS00IDQ2LTMgOCA3IDkgMzAgMTEgNDkgMSAxMCA0IDI1IDAgMzUtMiA1LTUgOC0xMCA5LTIyIDQtNDkgNi03MiA4LTctMS0xMC01LTEwLTEyLTItMjEtNi00NC03LTY1LTEtMTQgMi0yMCAxNi0yMi0xOC0xMS0zNy0yMi01NS0zNC02LTQtOC05LTYtMTYgNi0xNCAyMS0zOSAzMC01NCA3LTEyIDE0LTE2IDI3LTExeiIvPgo8cGF0aCBjbGFzcz0iczEiIGQ9Ik0xMDAgMjA3YzggNCAxNyAxOSAyNSAzMiA4IDEyIDE4IDI3IDE5IDM5LTIgOC0xMyAxNS0yMiAyMC0xNCA5LTMwIDE4LTQ0IDI3LTYgNC0xMiA0LTE3LTEtMTEtMTEtMjctMzktMzUtNTMtMy02LTItMTIgMy0xNyAxNy0xMyA0Mi0yNyA2MS0zOSA0LTMgNi01IDEwLTh6Ii8+CjxwYXRoIGNsYXNzPSJzMjMiIGQ9Ik0xNzkgMWMxMiA1IDQzIDMzIDYwIDQ4IDIgOS04IDIyLTE2IDMyLTEwIDEyLTIyIDI3LTM0IDQzLTYgNS0xMyAxLTIwLTQtMTUtMTItMzEtMjUtNDYtMzgtMy02IDEtMTMgNy0yMSAxMC0xMyAyMi0yNyAzMy00MSA2LTggMTAtMTcgMTYtMTl6Ii8+CjxwYXRoIGNsYXNzPSJzMSIgZD0iTTI3NCAyYzE1IDIgNTMgMjAgNjcgMjggOSA2IDYgMTkgMSAzMS04IDE4LTE3IDM2LTI1IDU1LTE1LTItMzQtOC01My0xNi0xMy01LTI1LTExLTM0LTE3IDEtMTEgMTAtMjcgMTUtMzkgNy0xNSAxMy0zNiAyOS00MnoiLz4KPHBhdGggY2xhc3M9InMwIiBkPSJNMTAyIDEwYzggMCAxMiA0IDEzIDEzIDMgMjAgNSAzOSA4IDU5IDEgMTAtMyAxNi0xMyAxOC0yMiA0LTQ4IDctNzAgOS04IDAtMTItNC0xMy0xMi0zLTIyLTYtNDctNy02OSAyLTggNi0xMSAxNC0xMiAyMy0zIDQ2LTYgNjgtNnoiLz4KPHBhdGggY2xhc3M9InMxMCIgZD0iTTE1MyAxMjFjOSAyIDM4IDIxIDQ5IDMwLTEgNC00IDgtNyAxMi02LTItMTItNy0xOC0xMC04IDEzLTE2IDI3LTIzIDQwLTQgNi03IDgtMTIgNS00LTItOC01LTEyLTggNy0xNiAyMS0zNSAzMC01Mi01LTMtMTAtNi0xNS0xMCAyLTQgNC03IDgtN3oiLz4KPHBhdGggY2xhc3M9InMxNCIgZD0iTTcwIDI1MGMxNC0xMyA0MS0xMyA1MCAzIDQgMTYtOSAyNS0yNCAyOS0xNyA0LTM0LTEtMzgtMTUtMS04IDQtMTMgMTItMTd6Ii8+CjxwYXRoIGNsYXNzPSJzMTQiIGQ9Ik0yODcgMjQyYzE1LTMgMjMgOCAxOSAyMy00IDE0LTE0IDIyLTI3IDE4LTEzLTQtMTYtMTUtOS0yOCA0LTggOS0xMiAxNy0xM3oiLz4KPC9zdmc+">
-      <h1>tioumpa.org</h1>
-      <div class="subtitle">ΤΟ ΛΕΞΙΚΟ ΤΟΥ TEOSTY</div>
-      <div class="email">Αν θέλετε να επικοινωνήσετε μαζί μας για οποιαδήποτε αλλαγή και προσθήκη στείλτε μας μήνυμα στο: info@tioumpa.org</div>
-      <div class="search-copy">Αναζήτηση σε ${entries.length} καταχωρήσεις από το λεξιλόγιο του Teosty.</div>
-
-      <div class="search-wrapper">
-        <div class="search-main">
-          <img class="search-icon" src="https://uxwing.com/wp-content/themes/uxwing/download/user-interface/search-icon.png">
-          <input id="searchMain" placeholder="Αναζήτηση..." value="${escapeAttr(searchQuery)}">
-          <span class="mic" onclick="voiceSearch(event)">🎤</span>
-        </div>
-        <select id="searchCategory"></select>
-        <button onclick="clearSearch()">Καθαρισμός</button>
-      </div>
-
-      <div class="home-toggle-section">
-        <button onclick="toggleHomeList('trendingBox')">🔥 Εμφάνιση Trending / Popular</button>
-        <div id="trendingBox" class="hidden-box">${getTrendingHTML()}</div>
-      </div>
-
-      <div class="home-toggle-section">
-        <button onclick="toggleHomeList('favoritesBox')">⭐ Εμφάνιση Favorites</button>
-        <div id="favoritesBox" class="hidden-box">${getFavoritesHTML()}</div>
-      </div>
-
-      <div class="random-title">ΤΥΧΑΙΕΣ ΛΕΞΕΙΣ</div>
-      <div class="bubbles" id="bubbles"></div>
-
-      
+    <div class="email">
+      Αν θέλετε να επικοινωνήσετε μαζί μας για οποιαδήποτε αλλαγή και προσθήκη
+      στείλτε μας μήνυμα στο: info@tioumpa.org
     </div>
-  `;
 
-  const input = document.getElementById("searchMain");
-  input.addEventListener("input", e => {
-    searchQuery = e.target.value;
-    renderList();
-  });
-
-  buildHomeCategorySelect();
-  renderBubbles();
-}
-
-function buildHomeCategorySelect() {
-  const select = document.getElementById("searchCategory");
-  if (!select) return;
-
-  const types = ["Όλα", ...new Set(entries.map(getEntryType))].sort((a,b) => {
-    if (a === "Όλα") return -1;
-    if (b === "Όλα") return 1;
-    return a.localeCompare(b, "el");
-  });
-
-  select.innerHTML = types.map(type =>
-    `<option value="${escapeAttr(type)}" ${type === activeFilter ? "selected" : ""}>${escapeHTML(type)}</option>`
-  ).join("");
-
-  select.onchange = e => {
-    activeFilter = e.target.value;
-    renderFilters();
-    renderList();
-  };
-}
-
-function syncHomeFilter() {
-  const select = document.getElementById("searchCategory");
-  if (select) select.value = activeFilter;
-}
-
-function clearSearch() {
-  searchQuery = "";
-  activeFilter = "Όλα";
-  renderFilters();
-  renderList();
-  showHome();
-}
-
-function getTrendingHTML() {
-  const trending = Object.entries(clicks)
-    .sort((a,b) => b[1] - a[1])
-    .slice(0,5)
-    .map(([word]) => `<div class="home-list-item" onclick="location.hash='${encodeURIComponent(word)}'">${escapeHTML(word)}</div>`)
-    .join("");
-
-  return trending || `<div class="home-list-item">Δεν υπάρχουν ακόμα δεδομένα</div>`;
-}
-
-function getFavoritesHTML() {
-  return favorites
-    .map(word => `<div class="home-list-item" onclick="location.hash='${encodeURIComponent(word)}'">${escapeHTML(word)}</div>`)
-    .join("") || `<div class="home-list-item">Δεν έχεις αποθηκεύσει ακόμα αγαπημένα</div>`;
-}
-
-function toggleHomeList(id) {
-  const box = document.getElementById(id);
-  if (box) box.classList.toggle("open");
-}
-
-function renderBubbles() {
-  const c = document.getElementById("bubbles");
-  if (!c || !entries.length) return;
-
-  c.classList.remove("fade-in");
-
-  setTimeout(() => {
-    c.innerHTML = "";
-
-    const shuffled = [...entries].sort(() => Math.random() - 0.5).slice(0, 7);
-
-    shuffled.forEach(item => {
-      const isFav = favorites.includes(item.title);
-
-      const b = document.createElement("div");
-      b.className = "bubble";
-      b.innerHTML = `${isFav ? "⭐ " : ""}${escapeHTML(item.title)}`;
-      b.onclick = () => {
-        location.hash = encodeURIComponent(item.title);
-      };
-
-      c.appendChild(b);
-    });
-
-    c.classList.add("fade-in");
-  }, 200);
-}
-
-function startBubbles() {
-  if (bubbleTimer) clearInterval(bubbleTimer);
-  bubbleTimer = setInterval(renderBubbles, 6000);
-}
-
-function detectSynonyms(text) {
-  const match = text.match(/Συν:\s*([^\n.]+)/i);
-  return match ? match[1].trim() : "";
-}
-
-function detectDerivatives(title) {
-  const map = {
-    "Τιούμπα": "Τιούμπε",
-    "Ξεδίπλωμα": "ξεδιπλώνω, ξεδιπλωμένος",
-    "Χόντρεμα": "χοντραίνω",
-    "Καφεδίνκος": "καφές, καφεδάκι"
-  };
-  return map[title] || "";
-}
-
-function detectAntonyms(title) {
-  return "";
-}
-
-function buildMeta(title, text) {
-  const rows = [];
-
-  const type = detectType(title, text);
-  if (type) rows.push(`<span class="meta-pill">${type}</span>`);
-
-  const derivatives = detectDerivatives(title);
-  if (derivatives) rows.push(`<span class="meta-pill"><b>Παράγωγα:</b> ${escapeHTML(derivatives)}</span>`);
-
-  const synonyms = detectSynonyms(text);
-  if (synonyms) rows.push(`<span class="meta-pill"><b>Συνώνυμα:</b> ${escapeHTML(synonyms)}</span>`);
-
-  const antonyms = detectAntonyms(title);
-  if (antonyms) rows.push(`<span class="meta-pill"><b>Αντώνυμα:</b> ${escapeHTML(antonyms)}</span>`);
-
-  if (!rows.length) return "";
-  return `<div class="entry-meta">${rows.join("")}</div>`;
-}
-
-function getDeclension(title) {
-  let word = title.split(/[ ,;/!]/)[0].trim();
-
-  const known = {
-    "Τάταρος": ["ο Τάταρος", "του Τάταρου", "τον Τάταρο", "Τάταρε", "οι Τάταροι", "των Τατάρων", "τους Τάταρους", "Τάταροι"],
-    "Χιμπατζής": ["ο Χιμπατζής", "του Χιμπατζή", "τον Χιμπατζή", "Χιμπατζή", "οι Χιμπατζήδες", "των Χιμπατζήδων", "τους Χιμπατζήδες", "Χιμπατζήδες"],
-    "Βατραχομούρης": ["ο Βατραχομούρης", "του Βατραχομούρη", "τον Βατραχομούρη", "Βατραχομούρη", "οι Βατραχομούρηδες", "των Βατραχομούρηδων", "τους Βατραχομούρηδες", "Βατραχομούρηδες"],
-    "Λίγδας": ["ο Λίγδας", "του Λίγδα", "τον Λίγδα", "Λίγδα", "οι Λίγδες", "των Λίγδων", "τους Λίγδες", "Λίγδες"],
-    "Γιαταγάνι": ["το Γιαταγάνι", "του Γιαταγανιού", "το Γιαταγάνι", "Γιαταγάνι", "τα Γιαταγάνια", "των Γιαταγανιών", "τα Γιαταγάνια", "Γιαταγάνια"],
-    "Ροδέλα": ["η Ροδέλα", "της Ροδέλας", "τη Ροδέλα", "Ροδέλα", "οι Ροδέλες", "των Ροδελών", "τις Ροδέλες", "Ροδέλες"],
-    "Κλανοβαλβίδα": ["η Κλανοβαλβίδα", "της Κλανοβαλβίδας", "την Κλανοβαλβίδα", "Κλανοβαλβίδα", "οι Κλανοβαλβίδες", "των Κλανοβαλβίδων", "τις Κλανοβαλβίδες", "Κλανοβαλβίδες"],
-    "Πριμαντόνα": ["η Πριμαντόνα", "της Πριμαντόνας", "την Πριμαντόνα", "Πριμαντόνα", "οι Πριμαντόνες", "των Πριμαντόνων", "τις Πριμαντόνες", "Πριμαντόνες"],
-    "Τρύπα": ["η Τρύπα", "της Τρύπας", "την Τρύπα", "Τρύπα", "οι Τρύπες", "των Τρυπών", "τις Τρύπες", "Τρύπες"],
-    "Σωληνίσκος": ["ο Σωληνίσκος", "του Σωληνίσκου", "τον Σωληνίσκο", "Σωληνίσκε", "οι Σωληνίσκοι", "των Σωληνίσκων", "τους Σωληνίσκους", "Σωληνίσκοι"],
-    "Μουσλούκι": ["το Μουσλούκι", "του Μουσλουκιού", "το Μουσλούκι", "Μουσλούκι", "τα Μουσλούκια", "των Μουσλουκιών", "τα Μουσλούκια", "Μουσλούκια"]
-  };
-
-  return known[word] || null;
-}
-
-
-function normalizeDeclensionForm(form) {
-  return String(form).replace(/^(ο|η|το|του|της|τον|την|οι|τα|των|τους|τις)\s+(.)(.*)$/u, (m, art, first, rest) => {
-    return art + " " + first.toLocaleLowerCase("el-GR") + rest;
-  }).replace(/^(.)(.*)$/u, (m, first, rest) => first.toLocaleLowerCase("el-GR") + rest);
-}
-
-function buildDeclensionTable(title) {
-  const d = getDeclension(title);
-  if (!d) return "";
-  const n = d.map(normalizeDeclensionForm);
-
-  return `
-    <div class="declension-box">
-      <div class="declension-title">Κλίση</div>
-      <table>
-        <tr><th>Πτώση</th><th>Ενικός αριθμός</th><th>Πληθυντικός αριθμός</th></tr>
-        <tr><td>Ονομαστική</td><td>${escapeHTML(n[0])}</td><td>${escapeHTML(n[4])}</td></tr>
-        <tr><td>Γενική</td><td>${escapeHTML(n[1])}</td><td>${escapeHTML(n[5])}</td></tr>
-        <tr><td>Αιτιατική</td><td>${escapeHTML(n[2])}</td><td>${escapeHTML(n[6])}</td></tr>
-        <tr><td>Κλητική</td><td>${escapeHTML(n[3])}</td><td>${escapeHTML(n[7])}</td></tr>
-      </table>
+    <div class="search">
+      <img src="https://uxwing.com/wp-content/themes/uxwing/download/user-interface/search-icon.png">
+      <input placeholder="Αναζήτηση...">
     </div>
+
+  </div>
   `;
 }
 
-function linkReferences(text, currentTitle) {
-  let result = text;
+goHome();
 
-  const protectedParts = [];
-  result = result.replace(/<iframe[\s\S]*?<\/iframe>/gi, match => {
-    protectedParts.push(match);
-    return `@@IFRAME_${protectedParts.length - 1}@@`;
-  });
-
-  const sortedEntries = [...entries]
-    .filter(e => e.title !== currentTitle && e.title.length > 2)
-    .sort((a,b) => b.title.length - a.title.length);
-
-  sortedEntries.forEach(e => {
-    const escaped = e.title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const regex = new RegExp(escaped, "gi");
-
-    result = result.replace(regex, match => {
-      return `<span class="entry-ref" onclick="location.hash='${encodeURIComponent(e.title)}'">${match}</span>`;
-    });
-  });
-
-  protectedParts.forEach((part, i) => {
-    result = result.replace(`@@IFRAME_${i}@@`, part);
-  });
-
-  return result;
-}
-
-function openEntry(entry) {
-  clicks[entry.title] = (clicks[entry.title] || 0) + 1;
-  localStorage.setItem("clicks", JSON.stringify(clicks));
-
-  const isFav = favorites.includes(entry.title);
-
-  let clean = getEntryCleanText(entry);
-
-  const imageRegex = /(https?:\/\/[^\s"'<>]+\.(?:png|jpg|jpeg|gif|webp))/gi;
-  const images = clean.match(imageRegex) || [];
-
-  images.forEach(img => {
-    clean = clean.replace(img, "");
-  });
-
-  let imageHTML = "";
-  if (images.length) {
-    imageHTML = `
-      <div class="entry-images">
-        ${images.map(src => `<img src="${src}">`).join("")}
-      </div>
-    `;
-  }
-
-  document.getElementById("content").innerHTML = `
-    <button class="back-btn" onclick="goHome()">← Επιστροφή</button>
-
-    <article class="entry">
-      <div class="entry-title">
-        ${escapeHTML(entry.title)}
-        <span class="star" onclick="toggleFav(event, '${escapeQuotes(entry.title)}')">${isFav ? "⭐" : "☆"}</span>
-      </div>
-
-      <div class="entry-divider"></div>
-
-      ${buildMeta(entry.title, clean)}
-
-      <div class="entry-body">${linkReferences(clean, entry.title)}${imageHTML}${buildDeclensionTable(entry.title)}</div>
-    </article>
-  `;
-}
-
-function toggleFav(event, word) {
-  event.stopPropagation();
-
-  if (favorites.includes(word)) {
-    favorites = favorites.filter(f => f !== word);
-  } else {
-    favorites.push(word);
-  }
-
-  localStorage.setItem("favorites", JSON.stringify(favorites));
-  route();
-}
-
-function voiceSearch(event) {
-  event.stopPropagation();
-
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-  if (!SpeechRecognition) {
-    alert("Το μικρόφωνο δεν υποστηρίζεται σε αυτόν τον browser.");
-    return;
-  }
-
-  const r = new SpeechRecognition();
-  r.lang = "el-GR";
-
-  r.onresult = e => {
-    const text = e.results[0][0].transcript;
-    searchQuery = text;
-    const input = document.getElementById("searchMain");
-    if (input) input.value = text;
-    renderList();
-  };
-
-  r.start();
-}
-
-function goHome() {
-  history.pushState("", document.title, window.location.pathname + window.location.search);
-  showHome();
-}
-
-function setupResizer() {
-  const sidebar = document.getElementById("sidebar");
-  const resizer = document.getElementById("resizer");
-  if (!sidebar || !resizer) return;
-
-  const saved = localStorage.getItem("sidebarWidth");
-  if (saved) sidebar.style.width = saved + "px";
-
-  let dragging = false;
-
-  const start = e => {
-    dragging = true;
-    document.body.style.userSelect = "none";
-    e.preventDefault();
-  };
-
-  const move = e => {
-    if (!dragging || window.innerWidth <= 850) return;
-    const x = e.touches ? e.touches[0].clientX : e.clientX;
-    const width = Math.min(620, Math.max(280, x));
-    sidebar.style.width = width + "px";
-    localStorage.setItem("sidebarWidth", width);
-  };
-
-  const end = () => {
-    dragging = false;
-    document.body.style.userSelect = "";
-  };
-
-  resizer.addEventListener("mousedown", start);
-  resizer.addEventListener("touchstart", start);
-  window.addEventListener("mousemove", move);
-  window.addEventListener("touchmove", move);
-  window.addEventListener("mouseup", end);
-  window.addEventListener("touchend", end);
-}
-
-function escapeQuotes(str) {
-  return String(str).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
-}
-
-function escapeHTML(str) {
-  return String(str)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;");
-}
-
-function escapeAttr(str) {
-  return escapeHTML(str).replaceAll('"', "&quot;");
-}
 </script>
 
 </body>
