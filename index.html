@@ -660,11 +660,11 @@ body {
   <img src="https://i.ibb.co/ZRJ23fvR/kranoumpanoumpanoumpa.png">
   <strong>tioumpa.org</strong>
   <div class="theme-control" onclick="event.stopPropagation()">
-    <label for="themeSelect">Color Theme</label>
+    <label for="themeSelect">Θέμα</label>
     <select id="themeSelect" onchange="setTheme(this.value)">
-      <option value="system">Auto</option>
+      <option value="system">Αυτόματο</option>
       <option value="dark" selected>Σκούρο</option>
-      <option value="light">Light</option>
+      <option value="light">Ανοιχτό</option>
     </select>
   </div>
 </div>
@@ -672,7 +672,7 @@ body {
 <div class="app">
   <aside class="sidebar" id="sidebar">
     <div class="filter-box">
-      <div class="filter-title">Filters</div>
+      <div class="filter-title">filters</div>
       <div class="filters" id="filters"></div>
     </div>
     <div id="list"></div>
@@ -710,7 +710,7 @@ let entries = [];
 let clicks = JSON.parse(localStorage.getItem("clicks") || "{}");
 let favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
 let bubbleTimer = null;
-let activeFilter = "Όλα";
+let activeFilter = "None";
 let searchQuery = "";
 
 fetch("data.txt")
@@ -986,7 +986,7 @@ function showHome() {
       <img class="home-logo" src="https://i.ibb.co/ZRJ23fvR/kranoumpanoumpanoumpa.png">
       <h1>tioumpa.org</h1>
       <div class="subtitle">ΤΟ ΛΕΞΙΚΟ ΤΟΥ TEOSTY</div>
-      <div class="email">Αν θέλετε να επικοινωνήσετε μαζί μας για οποιαδήποτε αλλαγή και προσθήκη στείλτε μας μήνυμα στο: tioumpagr@gmail.com</div>
+      <div class="email">Αν θέλετε να επικοινωνήσετε μαζί μας για οποιαδήποτε αλλαγή ή προσθήκη στείλτε στο: tioumpagr@gmail.com</div>
       <div class="search-copy">Αναζήτηση ${entries.length} λέξεων από το λεξικό του Teosty.</div>
 
       <div class="search-wrapper">
@@ -995,15 +995,17 @@ function showHome() {
           <input id="searchMain" placeholder="Αναζήτηση..." value="${escapeAttr(searchQuery)}">
           <span class="mic" onclick="voiceSearch(event)">🎤</span>
         </div>
+        <select id="searchCategory"></select>
+        <button onclick="clearSearch()">Clean</button>
       </div>
 
       <div class="home-toggle-section">
-        <button onclick="toggleHomeList('trendingBox')">🔥 Trends</button>
+        <button onclick="toggleHomeList('trendingBox')">🔥 Trend</button>
         <div id="trendingBox" class="hidden-box">${getTrendingHTML()}</div>
       </div>
 
       <div class="home-toggle-section">
-        <button onclick="toggleHomeList('favoritesBox')">⭐ αγαπημενα</button>
+        <button onclick="toggleHomeList('favoritesBox')">⭐ Αγαπημενα</button>
         <div id="favoritesBox" class="hidden-box">${getFavoritesHTML()}</div>
       </div>
 
@@ -1020,6 +1022,7 @@ function showHome() {
     renderList();
   });
 
+  buildHomeCategorySelect();
   renderBubbles();
 }
 
@@ -1051,7 +1054,7 @@ function syncHomeFilter() {
 
 function clearSearch() {
   searchQuery = "";
-  activeFilter = "Όλα";
+  activeFilter = "None";
   renderFilters();
   renderList();
   showHome();
