@@ -3,197 +3,311 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>tioumpa.gr</title>
+<title>tioumpa.org</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
+* { box-sizing: border-box; }
+
 body {
-    margin:0;
-    font-family:'Inter',sans-serif;
-    background:#0b1622;
-    color:#e6edf3;
+  margin: 0;
+  font-family: Inter, sans-serif;
+  background: #071421;
+  color: #e6edf3;
+  overflow: hidden;
 }
 
-/* HEADER */
 .header {
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:10px 20px;
-    border-bottom:1px solid #1f3a52;
-    cursor:pointer;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 18px;
+  border-bottom: 1px solid #1f3a52;
+  background: rgba(7,20,33,.95);
+  cursor: pointer;
 }
 
-/* LAYOUT */
+.header img {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+}
+
+.header strong {
+  font-size: 21px;
+}
+
 .app {
-    display:flex;
-    height:calc(100vh - 60px);
+  display: flex;
+  height: calc(100vh - 64px);
 }
 
 .sidebar {
-    width:320px;
-    border-right:1px solid #1f3a52;
-    overflow:auto;
-    padding:15px;
+  width: 360px;
+  min-width: 360px;
+  padding: 18px;
+  overflow-y: auto;
+  border-right: 1px solid #1f3a52;
+  background: rgba(8,24,38,.75);
 }
 
 .content {
-    flex:1;
-    padding:30px;
-    overflow:auto;
+  flex: 1;
+  padding: 36px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
-/* SEARCH */
-.search-wrapper {
-    position:relative;
-    display:flex;
-    justify-content:center;
-    margin-top:20px;
-}
-
-.search-wrapper input {
-    width:60%;
-    padding:12px 40px;
-    border-radius:12px;
-    border:none;
-    background:#12263a;
-    color:white;
-    font-family:Helvetica, Arial;
-    transition:0.3s;
-}
-
-.search-wrapper input:focus {
-    width:65%;
-}
-
-.search-icon {
-    position:absolute;
-    left:calc(20% + 10px);
-    top:50%;
-    transform:translateY(-50%);
-    width:16px;
-    filter:invert(1);
-}
-
-.mic {
-    position:absolute;
-    right:calc(20% + 10px);
-    top:50%;
-    transform:translateY(-50%);
-    cursor:pointer;
-}
-
-/* LETTER */
 .letter {
-    margin-top:15px;
-    font-weight:600;
-    border-bottom:1px solid #2a445c;
+  margin-top: 22px;
+  padding-bottom: 6px;
+  font-size: 18px;
+  font-weight: 600;
+  border-bottom: 1px solid #2a445c;
 }
 
-/* WORD */
 .word {
-    padding:10px;
-    cursor:pointer;
-}
-.word:hover {
-    background:#1b344a;
+  padding: 11px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  line-height: 1.35;
 }
 
-/* HOME */
+.word:hover {
+  background: rgba(255,255,255,.08);
+}
+
 .home {
-    text-align:center;
-    margin-top:40px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  animation: fadeIn .45s ease;
+}
+
+.home-logo {
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  animation: logoFloat 4s ease-in-out infinite;
+  display: block;
+}
+
+@keyframes logoFloat {
+  0%,100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-12px) rotate(2deg); }
+}
+
+.home h1 {
+  margin: 18px 0 4px;
+  font-size: 42px;
 }
 
 .subtitle {
-    font-size:14px;
-    color:#8aa4bf;
+  font-size: 14px;
+  letter-spacing: .08em;
+  color: #9fb3c8;
 }
 
 .email {
-    font-size:12px;
-    margin-top:5px;
-    color:#6f8aa5;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #7890a8;
 }
 
-/* BUBBLES */
+.search-wrapper {
+  position: relative;
+  margin-top: 28px;
+  width: min(620px, 92%);
+}
+
+.search-wrapper input {
+  width: 100%;
+  padding: 15px 48px;
+  border: 1px solid #28445f;
+  border-radius: 18px;
+  background: rgba(18,38,58,.85);
+  color: white;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  outline: none;
+  transition: transform .25s ease, box-shadow .25s ease, border .25s ease;
+}
+
+.search-wrapper input:focus {
+  transform: scale(1.035);
+  border-color: #6aa3ff;
+  box-shadow: 0 0 30px rgba(88,166,255,.22);
+}
+
+.search-icon {
+  position: absolute;
+  left: 17px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 17px;
+  height: 17px;
+  filter: invert(1);
+  opacity: .85;
+}
+
+.mic {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.random-title {
+  margin-top: 34px;
+  font-size: 12px;
+  letter-spacing: .12em;
+  color: #8aa4bf;
+}
+
 .bubbles {
-    margin-top:20px;
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:15px;
+  margin-top: 18px;
+  width: min(720px, 95%);
+  min-height: 145px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+  align-items: center;
 }
 
 .bubble {
-    padding:10px 15px;
-    border-radius:20px;
-    background:rgba(255,255,255,0.08);
-    backdrop-filter:blur(10px);
-    animation:move 6s linear forwards;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.09);
+  border: 1px solid rgba(255,255,255,.15);
+  backdrop-filter: blur(14px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 10px 25px rgba(0,0,0,.22);
+  animation: bubbleMove 6s ease-in-out forwards;
+  cursor: pointer;
 }
 
-@keyframes move {
-    0% {transform:translate(0,0);}
-    25% {transform:translate(20px,-10px);}
-    50% {transform:translate(-15px,15px);}
-    75% {transform:translate(10px,5px);}
-    100% {transform:translate(0,0); opacity:0;}
+@keyframes bubbleMove {
+  0% { opacity: 0; transform: translate(0, 12px) scale(.92); }
+  15% { opacity: 1; }
+  35% { transform: translate(18px, -10px) scale(1); }
+  60% { transform: translate(-14px, 8px) scale(1.03); }
+  85% { opacity: 1; transform: translate(10px, -6px) scale(1); }
+  100% { opacity: 0; transform: translate(0, -18px) scale(.96); }
 }
 
-/* ENTRY */
+.entry {
+  animation: entryIn .45s ease;
+  max-width: 980px;
+}
+
+@keyframes entryIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .entry-title {
-    font-size:30px;
-    font-style:italic;
-    animation:fade 0.4s;
+  font-size: 34px;
+  font-style: italic;
+  font-weight: 400;
+  margin-bottom: 12px;
 }
 
 .entry-divider {
-    height:1px;
-    background:#2a445c;
-    margin:10px 0 20px;
+  height: 1px;
+  background: #2a445c;
+  margin-bottom: 26px;
 }
 
 .entry-body {
-    white-space:pre-wrap;
-    line-height:1.8;
+  white-space: pre-wrap;
+  line-height: 2;
+  font-size: 17px;
 }
 
-.entry-container {
-    display:flex;
-    gap:20px;
+.entry-body iframe {
+  display: block;
+  margin-top: 34px;
+  max-width: 760px;
+  width: 100%;
+  aspect-ratio: 16/9;
+  height: auto;
+  border-radius: 14px;
 }
 
-.entry-text {
-    flex:2;
+.entry-image {
+  float: right;
+  width: min(280px, 42%);
+  margin: 0 0 20px 24px;
+  border-radius: 16px;
 }
 
-.entry-img {
-    flex:1;
+.star {
+  cursor: pointer;
+  font-size: 25px;
+  margin-left: 12px;
+  vertical-align: middle;
 }
 
-.entry-img img {
-    width:100%;
-    border-radius:10px;
+.section-title {
+  margin-top: 26px;
+  font-size: 15px;
+  color: #9fb3c8;
 }
 
-iframe {
-    margin-top:20px;
-    width:100%;
+.home-list-item {
+  cursor: pointer;
+  padding: 6px;
 }
 
-@keyframes fade {
-    from{opacity:0; transform:translateY(10px);}
-    to{opacity:1;}
+.home-list-item:hover {
+  color: #78a6ff;
 }
 
-/* MOBILE */
-@media(max-width:800px){
-    .app {flex-direction:column;}
-    .sidebar {width:100%; height:200px;}
-    .entry-container {flex-direction:column;}
+@media (max-width: 850px) {
+  body { overflow: auto; }
+
+  .app {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .sidebar {
+    width: 100%;
+    min-width: 0;
+    max-height: 300px;
+    border-right: none;
+    border-bottom: 1px solid #1f3a52;
+  }
+
+  .content {
+    padding: 24px 18px;
+  }
+
+  .home-logo {
+    width: 130px;
+    height: 130px;
+  }
+
+  .home h1 {
+    font-size: 32px;
+  }
+
+  .entry-title {
+    font-size: 27px;
+  }
+
+  .entry-image {
+    float: none;
+    width: 100%;
+    margin: 18px 0;
+  }
 }
 </style>
 </head>
@@ -201,167 +315,261 @@ iframe {
 <body>
 
 <div class="header" onclick="goHome()">
-<img src="https://i.ibb.co/ZRJ23fvR/kranoumpanoumpanoumpa.png" height="40">
-<strong>tioumpa.gr</strong>
+  <img src="https://i.ibb.co/ZRJ23fvR/kranoumpanoumpanoumpa.png">
+  <strong>tioumpa.org</strong>
 </div>
 
 <div class="app">
+  <aside class="sidebar">
+    <div id="list"></div>
+  </aside>
 
-<div class="sidebar">
-<div id="list"></div>
-</div>
-
-<div class="content" id="content"></div>
-
+  <main class="content" id="content"></main>
 </div>
 
 <script>
-
-let entries=[];
+let entries = [];
+let clicks = JSON.parse(localStorage.getItem("clicks") || "{}");
+let favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+let bubbleTimer = null;
 
 fetch("data.txt")
-.then(r=>r.text())
-.then(text=>{
-    entries = text.split(/\n(?=Ατάκα)/g).map(e=>{
-        const title = e.split("\n")[0].replace(/Ατάκα[0-9]+:\s*/,"").trim();
-        return {title,full:e};
-    });
-
-    renderList();
-    route();
-    bubbleLoop();
-});
-
-/* ROUTER */
-window.addEventListener("hashchange",route);
-
-function route(){
-    let name=decodeURIComponent(location.hash.replace("#",""));
-    if(!name) return showHome();
-
-    let entry=entries.find(e=>e.title===name);
-    if(entry) openEntry(entry);
-}
-
-/* LIST */
-function renderList(){
-    let sorted=[...entries].sort((a,b)=>a.title.localeCompare(b.title,'el'));
-
-    const list=document.getElementById("list");
-    list.innerHTML="";
-
-    let current="";
-
-    sorted.forEach(item=>{
-        let l=item.title[0].toUpperCase();
-
-        if(l!==current){
-            current=l;
-            let div=document.createElement("div");
-            div.className="letter";
-            div.innerText=l;
-            list.appendChild(div);
-        }
-
-        let w=document.createElement("div");
-        w.className="word";
-        w.innerText=item.title;
-        w.onclick=()=>location.hash=item.title;
-
-        list.appendChild(w);
-    });
-}
-
-/* HOME */
-function showHome(){
+  .then(r => {
+    if (!r.ok) throw new Error("data.txt not found");
+    return r.text();
+  })
+  .then(text => init(text))
+  .catch(err => {
     document.getElementById("content").innerHTML = `
-        <div class="home">
-            <img src="https://i.ibb.co/ZRJ23fvR/kranoumpanoumpanoumpa.png">
-            <h2>tioumpa.gr</h2>
-            <div class="subtitle">ΤΟ ΛΕΞΙΚΟ ΤΟΥ TEOSTY</div>
-            <div class="email">tioumpa@gmail.com</div>
-
-            <div class="search-wrapper">
-                <img class="search-icon" src="https://uxwing.com/wp-content/themes/uxwing/download/user-interface/search-icon.png">
-                <input id="searchMain" placeholder="Αναζήτηση...">
-                <span class="mic" onclick="voice()">🎤</span>
-            </div>
-
-            <div style="margin-top:15px; font-size:13px;">τυχαιες λεξεις</div>
-            <div class="bubbles" id="bubbles"></div>
-        </div>
+      <h2>Δεν φορτώθηκε το data.txt</h2>
+      <p>Βεβαιώσου ότι το αρχείο λέγεται ακριβώς <b>data.txt</b> και είναι στον ίδιο φάκελο με το index.html.</p>
     `;
+    console.error(err);
+  });
 
-    document.getElementById("searchMain").addEventListener("input",e=>{
-        filter(e.target.value);
-    });
+function init(text) {
+  entries = text
+    .split(/\r?\n(?=Ατάκα\s*\d+\s*:|Ατακα\s*\d+\s*:|Ατάκα\d+\s*:|Ατακα\d+\s*:)/g)
+    .map(block => {
+      const firstLine = block.split(/\r?\n/)[0] || "";
+      const title = firstLine
+        .replace(/^Ατάκα\s*\d+\s*:\s*/i, "")
+        .replace(/^Ατακα\s*\d+\s*:\s*/i, "")
+        .trim();
+      return { title, full: block };
+    })
+    .filter(e => e.title);
+
+  renderList();
+  route();
+  startBubbles();
 }
 
-/* FILTER */
-function filter(q){
-    q=q.toLowerCase();
-    document.querySelectorAll(".word").forEach(el=>{
-        el.style.display = el.innerText.toLowerCase().includes(q) ? "block":"none";
-    });
+window.addEventListener("hashchange", route);
+
+function normalizeGreekLetter(s) {
+  const first = (s || "").trim().charAt(0).toLocaleUpperCase("el-GR");
+  return first
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
 }
 
-/* BUBBLES */
-function bubbleLoop(){
-    setInterval(()=>{
-        const c=document.getElementById("bubbles");
-        if(!c) return;
-        c.innerHTML="";
+function renderList() {
+  const sorted = [...entries].sort((a,b) =>
+    a.title.localeCompare(b.title, "el", { sensitivity: "base" })
+  );
 
-        for(let i=0;i<6;i++){
-            let w=entries[Math.floor(Math.random()*entries.length)].title;
-            let div=document.createElement("div");
-            div.className="bubble";
-            div.innerText=w;
-            c.appendChild(div);
-        }
+  const list = document.getElementById("list");
+  list.innerHTML = "";
 
-    },6000);
-}
+  let current = "";
 
-/* ENTRY */
-function openEntry(entry){
+  sorted.forEach(item => {
+    const letter = normalizeGreekLetter(item.title);
 
-    let lines=entry.full.split("\n");
-    lines.shift();
+    if (letter !== current) {
+      current = letter;
+      const l = document.createElement("div");
+      l.className = "letter";
+      l.textContent = letter;
+      list.appendChild(l);
+    }
 
-    let clean=lines.join("\n").replace("Περιγραφή:","");
-
-    let imgMatch=clean.match(/https?:\/\/.*\.(jpg|png|jpeg|gif)/);
-    let imgHTML = imgMatch ? `<img src="${imgMatch[0]}">` : "";
-
-    document.getElementById("content").innerHTML=`
-        <div class="entry-title">${entry.title}</div>
-        <div class="entry-divider"></div>
-
-        <div class="entry-container">
-            <div class="entry-text">${clean}</div>
-            <div class="entry-img">${imgHTML}</div>
-        </div>
-    `;
-}
-
-/* VOICE */
-function voice(){
-    const r=new (window.SpeechRecognition||window.webkitSpeechRecognition)();
-    r.lang="el-GR";
-    r.onresult=e=>{
-        document.getElementById("searchMain").value=e.results[0][0].transcript;
-        filter(e.results[0][0].transcript);
+    const w = document.createElement("div");
+    w.className = "word";
+    w.textContent = item.title;
+    w.onclick = () => {
+      location.hash = encodeURIComponent(item.title);
     };
-    r.start();
+    list.appendChild(w);
+  });
 }
 
-/* BACK */
-function goHome(){
-    location.hash="";
+function route() {
+  const name = decodeURIComponent(location.hash.replace("#", ""));
+
+  if (!name) {
     showHome();
+    return;
+  }
+
+  const entry = entries.find(e => e.title === name);
+
+  if (!entry) {
+    showHome();
+    return;
+  }
+
+  openEntry(entry);
 }
 
+function showHome() {
+  const trending = Object.entries(clicks)
+    .sort((a,b) => b[1] - a[1])
+    .slice(0,5)
+    .map(([word]) => `<div class="home-list-item" onclick="location.hash='${encodeURIComponent(word)}'">${word}</div>`)
+    .join("");
+
+  const favs = favorites
+    .map(word => `<div class="home-list-item" onclick="location.hash='${encodeURIComponent(word)}'">${word}</div>`)
+    .join("");
+
+  document.getElementById("content").innerHTML = `
+    <div class="home">
+      <img class="home-logo" src="https://i.ibb.co/ZRJ23fvR/kranoumpanoumpanoumpa.png">
+      <h1>tioumpa.org</h1>
+      <div class="subtitle">ΤΟ ΛΕΞΙΚΟ ΤΟΥ TEOSTY</div>
+      <div class="email">Αν θέλετε να επικοινωνήσετε μαζί μας για οποιαδήποτε αλλαγή και πρόσθεση στείλτε μας μήνυμα στο: tioumpa@gmail.com</div>
+
+      <div class="search-wrapper">
+        <img class="search-icon" src="https://uxwing.com/wp-content/themes/uxwing/download/user-interface/search-icon.png">
+        <input id="searchMain" placeholder="Αναζήτηση...">
+        <span class="mic" onclick="voiceSearch(event)">🎤</span>
+      </div>
+
+      <div class="section-title">🔥 Trending / Popular</div>
+      ${trending || `<div class="home-list-item">Δεν υπάρχουν ακόμα δεδομένα</div>`}
+
+      <div class="section-title">⭐ Favorites</div>
+      ${favs || `<div class="home-list-item">Δεν έχεις αποθηκεύσει ακόμα αγαπημένα</div>`}
+
+      <div class="random-title">ΤΥΧΑΙΕΣ ΛΕΞΕΙΣ</div>
+      <div class="bubbles" id="bubbles"></div>
+    </div>
+  `;
+
+  const input = document.getElementById("searchMain");
+  input.addEventListener("input", e => filterSidebar(e.target.value));
+
+  renderBubbles();
+}
+
+function filterSidebar(q) {
+  q = q.toLocaleLowerCase("el-GR");
+  document.querySelectorAll(".word").forEach(el => {
+    el.style.display = el.textContent.toLocaleLowerCase("el-GR").includes(q) ? "block" : "none";
+  });
+}
+
+function renderBubbles() {
+  const c = document.getElementById("bubbles");
+  if (!c || !entries.length) return;
+
+  c.innerHTML = "";
+
+  const shuffled = [...entries].sort(() => Math.random() - 0.5).slice(0, 7);
+
+  shuffled.forEach(item => {
+    const b = document.createElement("div");
+    b.className = "bubble";
+    b.textContent = item.title;
+    b.onclick = () => {
+      location.hash = encodeURIComponent(item.title);
+    };
+    c.appendChild(b);
+  });
+}
+
+function startBubbles() {
+  if (bubbleTimer) clearInterval(bubbleTimer);
+  bubbleTimer = setInterval(renderBubbles, 6000);
+}
+
+function openEntry(entry) {
+  clicks[entry.title] = (clicks[entry.title] || 0) + 1;
+  localStorage.setItem("clicks", JSON.stringify(clicks));
+
+  const isFav = favorites.includes(entry.title);
+
+  let lines = entry.full.split(/\r?\n/);
+  lines.shift();
+
+  let clean = lines.join("\n").replace("Περιγραφή:", "").replace("Περγιφραφή:", "");
+
+  const imageRegex = /(https?:\/\/[^\s"'<>]+\.(?:png|jpg|jpeg|gif|webp))/i;
+  const imageMatch = clean.match(imageRegex);
+  let imageHTML = "";
+
+  if (imageMatch) {
+    imageHTML = `<img class="entry-image" src="${imageMatch[0]}">`;
+    clean = clean.replace(imageMatch[0], "");
+  }
+
+  document.getElementById("content").innerHTML = `
+    <article class="entry">
+      <div class="entry-title">
+        ${entry.title}
+        <span class="star" onclick="toggleFav(event, '${escapeQuotes(entry.title)}')">${isFav ? "⭐" : "☆"}</span>
+      </div>
+      <div class="entry-divider"></div>
+      ${imageHTML}
+      <div class="entry-body">${clean}</div>
+    </article>
+  `;
+}
+
+function escapeQuotes(str) {
+  return str.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+}
+
+function toggleFav(event, word) {
+  event.stopPropagation();
+
+  if (favorites.includes(word)) {
+    favorites = favorites.filter(f => f !== word);
+  } else {
+    favorites.push(word);
+  }
+
+  localStorage.setItem("favorites", JSON.stringify(favorites));
+  route();
+}
+
+function voiceSearch(event) {
+  event.stopPropagation();
+
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    alert("Το μικρόφωνο δεν υποστηρίζεται σε αυτόν τον browser.");
+    return;
+  }
+
+  const r = new SpeechRecognition();
+  r.lang = "el-GR";
+  r.onresult = e => {
+    const text = e.results[0][0].transcript;
+    const input = document.getElementById("searchMain");
+    if (input) input.value = text;
+    filterSidebar(text);
+  };
+  r.start();
+}
+
+function goHome() {
+  history.pushState("", document.title, window.location.pathname + window.location.search);
+  showHome();
+}
 </script>
 
 </body>
