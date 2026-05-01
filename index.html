@@ -18,6 +18,21 @@ body {
   overflow: hidden;
 }
 
+/* CUSTOM SCROLLBAR */
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: #071421; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #28445f, #5b7fa3);
+  border-radius: 999px;
+  border: 3px solid #071421;
+}
+::-webkit-scrollbar-thumb:hover { background: #78a6ff; }
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #5b7fa3 #071421;
+}
+
 .header {
   height: 64px;
   display: flex;
@@ -35,9 +50,7 @@ body {
   object-fit: contain;
 }
 
-.header strong {
-  font-size: 21px;
-}
+.header strong { font-size: 21px; }
 
 .app {
   display: flex;
@@ -75,9 +88,7 @@ body {
   line-height: 1.35;
 }
 
-.word:hover {
-  background: rgba(255,255,255,.08);
-}
+.word:hover { background: rgba(255,255,255,.08); }
 
 .home {
   min-height: 100%;
@@ -164,9 +175,7 @@ body {
   font-size: 18px;
 }
 
-.home-toggle-section {
-  margin-top: 20px;
-}
+.home-toggle-section { margin-top: 20px; }
 
 .home-toggle-section button {
   padding: 10px 16px;
@@ -178,27 +187,21 @@ body {
   font-family: Inter, sans-serif;
 }
 
-.home-toggle-section button:hover {
-  background: rgba(40,68,95,.9);
-}
+.home-toggle-section button:hover { background: rgba(40,68,95,.9); }
 
 .hidden-box {
   display: none;
   margin-top: 12px;
 }
 
-.hidden-box.open {
-  display: block;
-}
+.hidden-box.open { display: block; }
 
 .home-list-item {
   cursor: pointer;
   padding: 6px;
 }
 
-.home-list-item:hover {
-  color: #78a6ff;
-}
+.home-list-item:hover { color: #78a6ff; }
 
 .random-title {
   margin-top: 34px;
@@ -218,9 +221,7 @@ body {
   align-items: center;
 }
 
-.bubbles.fade-in {
-  animation: bubbleFade .8s ease;
-}
+.bubbles.fade-in { animation: bubbleFade .8s ease; }
 
 @keyframes bubbleFade {
   from { opacity: 0; }
@@ -240,6 +241,8 @@ body {
 .entry {
   animation: entryIn .45s ease;
   max-width: 980px;
+  min-height: 100%;
+  position: relative;
 }
 
 @keyframes entryIn {
@@ -260,15 +263,33 @@ body {
   margin-bottom: 26px;
 }
 
+.entry-meta {
+  margin: 18px 0 26px;
+  padding: 14px 16px;
+  border: 1px solid #28445f;
+  border-radius: 14px;
+  background: rgba(18,38,58,.45);
+  color: #b8c7d6;
+  line-height: 1.8;
+}
+
 .entry-body {
   white-space: pre-wrap;
-  line-height: 2;
+  line-height: 2.15;
   font-size: 17px;
 }
 
+.entry-ref {
+  color: #78a6ff;
+  font-style: italic;
+  cursor: pointer;
+}
+
+.entry-ref:hover { text-decoration: underline; }
+
 .entry-body iframe {
   display: block;
-  margin-top: 34px;
+  margin-top: 38px;
   max-width: 760px;
   width: 100%;
   aspect-ratio: 16/9;
@@ -276,11 +297,20 @@ body {
   border-radius: 14px;
 }
 
-.entry-image {
-  float: right;
-  width: min(280px, 42%);
-  margin: 0 0 20px 24px;
+.entry-images {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
+  margin-top: 30px;
+  width: 100%;
+}
+
+.entry-images img {
+  max-width: min(320px, 45%);
   border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 12px 30px rgba(0,0,0,.35);
 }
 
 .star {
@@ -303,9 +333,7 @@ body {
   z-index: 10;
 }
 
-.back-btn:hover {
-  background: rgba(40,68,95,.95);
-}
+.back-btn:hover { background: rgba(40,68,95,.95); }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(12px); }
@@ -328,27 +356,20 @@ body {
     border-bottom: 1px solid #1f3a52;
   }
 
-  .content {
-    padding: 24px 18px;
-  }
+  .content { padding: 24px 18px; }
 
   .home-logo {
     width: 130px;
     height: 130px;
   }
 
-  .home h1 {
-    font-size: 32px;
-  }
+  .home h1 { font-size: 32px; }
 
-  .entry-title {
-    font-size: 27px;
-  }
+  .entry-title { font-size: 27px; }
 
-  .entry-image {
-    float: none;
+  .entry-images img {
+    max-width: 100%;
     width: 100%;
-    margin: 18px 0;
   }
 }
 </style>
@@ -506,7 +527,7 @@ function getTrendingHTML() {
   const trending = Object.entries(clicks)
     .sort((a,b) => b[1] - a[1])
     .slice(0,5)
-    .map(([word]) => `<div class="home-list-item" onclick="location.hash='${encodeURIComponent(word)}'">${word}</div>`)
+    .map(([word]) => `<div class="home-list-item" onclick="location.hash='${encodeURIComponent(word)}'">${escapeHTML(word)}</div>`)
     .join("");
 
   return trending || `<div class="home-list-item">Δεν υπάρχουν ακόμα δεδομένα</div>`;
@@ -514,7 +535,7 @@ function getTrendingHTML() {
 
 function getFavoritesHTML() {
   return favorites
-    .map(word => `<div class="home-list-item" onclick="location.hash='${encodeURIComponent(word)}'">${word}</div>`)
+    .map(word => `<div class="home-list-item" onclick="location.hash='${encodeURIComponent(word)}'">${escapeHTML(word)}</div>`)
     .join("") || `<div class="home-list-item">Δεν έχεις αποθηκεύσει ακόμα αγαπημένα</div>`;
 }
 
@@ -579,6 +600,67 @@ function startBubbles() {
   bubbleTimer = setInterval(renderBubbles, 6000);
 }
 
+function detectType(title, text) {
+  const t = (title + " " + text).toLowerCase();
+
+  if (t.includes("μιμητικός ήχος") || t.includes("ήχος")) return "Ήχος";
+  if (title.includes(" ") || title.includes(";") || title.includes(",") || title.includes("/")) return "Έκφραση / Φράση";
+  if (title.endsWith("ω") || title.endsWith("ομαι") || title.endsWith("ώ")) return "Ρήμα";
+  if (title.endsWith("ος") || title.endsWith("ης") || title.endsWith("ας") || title.endsWith("α") || title.endsWith("η") || title.endsWith("ι")) return "Ουσιαστικό";
+  if (title.endsWith("ος") || title.endsWith("η") || title.endsWith("ο")) return "Επίθετο";
+
+  return "Λήμμα";
+}
+
+function detectSynonyms(text) {
+  const match = text.match(/Συν:\s*([^\n.]+)/i);
+  return match ? match[1].trim() : "—";
+}
+
+function detectDerivatives(title) {
+  const map = {
+    "Τιούμπα": "Τιούμπε",
+    "Ξεδίπλωμα": "ξεδιπλώνω, ξεδιπλωμένος",
+    "Χόντρεμα": "χοντραίνω",
+    "Καφεδίνκος": "καφές, καφεδάκι"
+  };
+  return map[title] || "—";
+}
+
+function detectAntonyms(title) {
+  return "—";
+}
+
+function buildMeta(title, text) {
+  return `
+    <div class="entry-meta">
+      <div><b>Κατηγορία:</b> ${detectType(title, text)}</div>
+      <div><b>Παράγωγα:</b> ${escapeHTML(detectDerivatives(title))}</div>
+      <div><b>Συνώνυμα:</b> ${escapeHTML(detectSynonyms(text))}</div>
+      <div><b>Αντώνυμα:</b> ${escapeHTML(detectAntonyms(title))}</div>
+    </div>
+  `;
+}
+
+function linkReferences(text, currentTitle) {
+  let result = text;
+
+  const sortedEntries = [...entries]
+    .filter(e => e.title !== currentTitle && e.title.length > 2)
+    .sort((a,b) => b.title.length - a.title.length);
+
+  sortedEntries.forEach(e => {
+    const escaped = e.title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const regex = new RegExp(escaped, "gi");
+
+    result = result.replace(regex, match => {
+      return `<span class="entry-ref" onclick="location.hash='${encodeURIComponent(e.title)}'">${match}</span>`;
+    });
+  });
+
+  return result;
+}
+
 function openEntry(entry) {
   clicks[entry.title] = (clicks[entry.title] || 0) + 1;
   localStorage.setItem("clicks", JSON.stringify(clicks));
@@ -588,15 +670,25 @@ function openEntry(entry) {
   let lines = entry.full.split(/\r?\n/);
   lines.shift();
 
-  let clean = lines.join("\n").replace("Περιγραφή:", "").replace("Περγιφραφή:", "");
+  let clean = lines.join("\n")
+    .replace("Περιγραφή:", "")
+    .replace("Περγιφραφή:", "")
+    .trimStart();
 
-  const imageRegex = /(https?:\/\/[^\s"'<>]+\.(?:png|jpg|jpeg|gif|webp))/i;
-  const imageMatch = clean.match(imageRegex);
+  const imageRegex = /(https?:\/\/[^\s"'<>]+\.(?:png|jpg|jpeg|gif|webp))/gi;
+  const images = clean.match(imageRegex) || [];
+
+  images.forEach(img => {
+    clean = clean.replace(img, "");
+  });
+
   let imageHTML = "";
-
-  if (imageMatch) {
-    imageHTML = `<img class="entry-image" src="${imageMatch[0]}">`;
-    clean = clean.replace(imageMatch[0], "");
+  if (images.length) {
+    imageHTML = `
+      <div class="entry-images">
+        ${images.map(src => `<img src="${src}">`).join("")}
+      </div>
+    `;
   }
 
   document.getElementById("content").innerHTML = `
@@ -607,9 +699,12 @@ function openEntry(entry) {
         ${escapeHTML(entry.title)}
         <span class="star" onclick="toggleFav(event, '${escapeQuotes(entry.title)}')">${isFav ? "⭐" : "☆"}</span>
       </div>
+
       <div class="entry-divider"></div>
-      ${imageHTML}
-      <div class="entry-body">${clean}</div>
+
+      ${buildMeta(entry.title, clean)}
+
+      <div class="entry-body">${linkReferences(clean, entry.title)}${imageHTML}</div>
     </article>
   `;
 }
@@ -656,7 +751,7 @@ function goHome() {
 }
 
 function escapeQuotes(str) {
-  return str.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+  return String(str).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
 }
 
 function escapeHTML(str) {
