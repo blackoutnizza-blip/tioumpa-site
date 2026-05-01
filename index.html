@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>tioumpa.org</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
@@ -18,7 +17,6 @@ body {
   overflow: hidden;
 }
 
-/* CUSTOM SCROLLBAR */
 ::-webkit-scrollbar { width: 12px; height: 12px; }
 ::-webkit-scrollbar-track { background: #071421; }
 ::-webkit-scrollbar-thumb {
@@ -27,11 +25,7 @@ body {
   border: 3px solid #071421;
 }
 ::-webkit-scrollbar-thumb:hover { background: #78a6ff; }
-
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #5b7fa3 #071421;
-}
+* { scrollbar-width: thin; scrollbar-color: #5b7fa3 #071421; }
 
 .header {
   height: 64px;
@@ -58,12 +52,38 @@ body {
 }
 
 .sidebar {
-  width: 360px;
-  min-width: 360px;
+  width: 380px;
+  min-width: 280px;
+  max-width: 620px;
   padding: 18px;
   overflow-y: auto;
   border-right: 1px solid #1f3a52;
   background: rgba(8,24,38,.75);
+}
+
+.resizer {
+  width: 8px;
+  cursor: col-resize;
+  background: linear-gradient(180deg, transparent, #28445f, transparent);
+  position: relative;
+}
+
+.resizer::after {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 50%;
+  width: 4px;
+  height: 70px;
+  transform: translateY(-50%);
+  border-radius: 999px;
+  background: #5b7fa3;
+  opacity: .7;
+}
+
+.resizer:hover::after {
+  background: #78a6ff;
+  opacity: 1;
 }
 
 .content {
@@ -73,8 +93,48 @@ body {
   overflow-x: hidden;
 }
 
+.filter-box {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  padding: 0 0 14px;
+  margin-bottom: 12px;
+  background: rgba(8,24,38,.96);
+  backdrop-filter: blur(12px);
+}
+
+.filter-title {
+  font-size: 12px;
+  color: #8aa4bf;
+  margin-bottom: 9px;
+  letter-spacing: .08em;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filter-btn {
+  padding: 7px 10px;
+  border: 1px solid #28445f;
+  border-radius: 999px;
+  background: rgba(18,38,58,.75);
+  color: #dce9f7;
+  cursor: pointer;
+  font-family: Inter, sans-serif;
+  font-size: 13px;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+  background: rgba(88,166,255,.22);
+  border-color: #78a6ff;
+}
+
 .letter {
-  margin-top: 22px;
+  margin-top: 20px;
   padding-bottom: 6px;
   font-size: 18px;
   font-weight: 600;
@@ -82,7 +142,7 @@ body {
 }
 
 .word {
-  padding: 11px 12px;
+  padding: 10px 12px;
   border-radius: 10px;
   cursor: pointer;
   line-height: 1.35;
@@ -130,13 +190,27 @@ body {
   color: #7890a8;
 }
 
-.search-wrapper {
-  position: relative;
-  margin-top: 28px;
-  width: min(620px, 92%);
+.search-copy {
+  margin-top: 18px;
+  font-size: 15px;
+  color: #b8c7d6;
 }
 
-.search-wrapper input {
+.search-wrapper {
+  position: relative;
+  margin-top: 22px;
+  width: min(760px, 94%);
+  display: grid;
+  grid-template-columns: 1fr 145px 120px;
+  gap: 8px;
+  align-items: center;
+}
+
+.search-main {
+  position: relative;
+}
+
+.search-main input {
   width: 100%;
   padding: 15px 48px;
   border: 1px solid #28445f;
@@ -149,8 +223,8 @@ body {
   transition: transform .25s ease, box-shadow .25s ease, border .25s ease;
 }
 
-.search-wrapper input:focus {
-  transform: scale(1.035);
+.search-main input:focus {
+  transform: scale(1.025);
   border-color: #6aa3ff;
   box-shadow: 0 0 30px rgba(88,166,255,.22);
 }
@@ -175,6 +249,18 @@ body {
   font-size: 18px;
 }
 
+.search-wrapper select,
+.search-wrapper button {
+  height: 49px;
+  border: 1px solid #28445f;
+  border-radius: 16px;
+  background: rgba(18,38,58,.85);
+  color: white;
+  font-family: Inter, sans-serif;
+  padding: 0 12px;
+  cursor: pointer;
+}
+
 .home-toggle-section { margin-top: 20px; }
 
 .home-toggle-section button {
@@ -190,11 +276,18 @@ body {
 .home-toggle-section button:hover { background: rgba(40,68,95,.9); }
 
 .hidden-box {
-  display: none;
-  margin-top: 12px;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  margin-top: 0;
+  transition: max-height .35s ease, opacity .25s ease, margin-top .25s ease;
 }
 
-.hidden-box.open { display: block; }
+.hidden-box.open {
+  max-height: 260px;
+  opacity: 1;
+  margin-top: 12px;
+}
 
 .home-list-item {
   cursor: pointer;
@@ -260,22 +353,27 @@ body {
 .entry-divider {
   height: 1px;
   background: #2a445c;
-  margin-bottom: 26px;
+  margin-bottom: 20px;
 }
 
 .entry-meta {
-  margin: 18px 0 26px;
-  padding: 14px 16px;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 20px;
+}
+
+.meta-pill {
+  padding: 8px 12px;
   border: 1px solid #28445f;
-  border-radius: 14px;
+  border-radius: 999px;
   background: rgba(18,38,58,.45);
   color: #b8c7d6;
-  line-height: 1.8;
 }
 
 .entry-body {
   white-space: pre-wrap;
-  line-height: 2.15;
+  line-height: 1.68;
   font-size: 17px;
 }
 
@@ -289,7 +387,7 @@ body {
 
 .entry-body iframe {
   display: block;
-  margin-top: 38px;
+  margin-top: 30px;
   max-width: 760px;
   width: 100%;
   aspect-ratio: 16/9;
@@ -302,7 +400,7 @@ body {
   flex-direction: column;
   align-items: flex-end;
   gap: 14px;
-  margin-top: 30px;
+  margin-top: 26px;
   width: 100%;
 }
 
@@ -314,36 +412,35 @@ body {
 }
 
 .declension-box {
-  margin-top: 34px;
+  margin-top: 28px;
   margin-left: auto;
-  width: min(560px, 100%);
-  padding: 16px;
+  width: min(460px, 100%);
+  padding: 14px;
   border: 1px solid #28445f;
-  border-radius: 16px;
-  background: rgba(18,38,58,.5);
+  border-radius: 14px;
+  background: rgba(18,38,58,.38);
 }
 
 .declension-title {
   font-weight: 600;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   color: #b8d7ff;
 }
 
 .declension-box table {
   width: 100%;
   border-collapse: collapse;
+  font-size: 14px;
 }
 
 .declension-box th,
 .declension-box td {
   border: 1px solid #28445f;
-  padding: 8px;
+  padding: 7px;
   text-align: center;
 }
 
-.declension-box th {
-  color: #9fb3c8;
-}
+.declension-box th { color: #9fb3c8; }
 
 .star {
   cursor: pointer;
@@ -367,6 +464,39 @@ body {
 
 .back-btn:hover { background: rgba(40,68,95,.95); }
 
+.socials {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.social {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: white;
+  border: 1px solid #28445f;
+  background: rgba(18,38,58,.85);
+  font-weight: 600;
+  transition: .2s;
+}
+
+.social:hover {
+  transform: translateY(-3px);
+  background: rgba(88,166,255,.22);
+}
+
+.social.youtube { color: #ff6b6b; }
+.social.instagram { color: #ff9bd2; }
+.social.tiktok { color: #f4f4f4; }
+.social.twitch { color: #b990ff; }
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
@@ -380,15 +510,23 @@ body {
     height: auto;
   }
 
+  .resizer { display: none; }
+
   .sidebar {
-    width: 100%;
+    width: 100% !important;
     min-width: 0;
-    max-height: 300px;
+    max-width: none;
+    max-height: 310px;
     border-right: none;
     border-bottom: 1px solid #1f3a52;
   }
 
   .content { padding: 24px 18px; }
+
+  .home {
+    justify-content: flex-start;
+    padding-top: 28px;
+  }
 
   .home-logo {
     width: 130px;
@@ -397,11 +535,25 @@ body {
 
   .home h1 { font-size: 32px; }
 
+  .search-wrapper {
+    grid-template-columns: 1fr;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .search-main input:focus { transform: none; }
+
   .entry-title { font-size: 27px; }
 
   .entry-images img {
     max-width: 100%;
     width: 100%;
+  }
+
+  .declension-box {
+    width: 100%;
+    margin-left: 0;
+    overflow-x: auto;
   }
 }
 </style>
@@ -415,9 +567,15 @@ body {
 </div>
 
 <div class="app">
-  <aside class="sidebar">
+  <aside class="sidebar" id="sidebar">
+    <div class="filter-box">
+      <div class="filter-title">ΦΙΛΤΡΑ</div>
+      <div class="filters" id="filters"></div>
+    </div>
     <div id="list"></div>
   </aside>
+
+  <div class="resizer" id="resizer" title="Σύρε για αλλαγή πλάτους"></div>
 
   <main class="content" id="content"></main>
 </div>
@@ -427,6 +585,8 @@ let entries = [];
 let clicks = JSON.parse(localStorage.getItem("clicks") || "{}");
 let favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
 let bubbleTimer = null;
+let activeFilter = "Όλα";
+let searchQuery = "";
 
 fetch("data.txt")
   .then(r => {
@@ -444,17 +604,19 @@ fetch("data.txt")
 
 function init(text) {
   entries = text
-    .split(/\r?\n(?=Ατάκα\s*\d+\s*:|Ατακα\s*\d+\s*:|Ατάκα\d+\s*:|Ατακα\d+\s*:)/g)
+    .split(/\r?\n(?=Ατάκα\s*\d+\s*:|Ατακα\s*\d+\s*:|Ατάκα\d+\s*:|Ατακα\d+\s*:|Ατάκα\s*\d+\s+|Ατακα\s*\d+\s+)/g)
     .map(block => {
       const firstLine = block.split(/\r?\n/)[0] || "";
       const title = firstLine
-        .replace(/^Ατάκα\s*\d+\s*:\s*/i, "")
-        .replace(/^Ατακα\s*\d+\s*:\s*/i, "")
+        .replace(/^Ατάκα\s*\d+\s*:?\s*/i, "")
+        .replace(/^Ατακα\s*\d+\s*:?\s*/i, "")
         .trim();
       return { title, full: block };
     })
     .filter(e => e.title);
 
+  setupResizer();
+  renderFilters();
   renderList();
   route();
   startBubbles();
@@ -467,8 +629,80 @@ function normalizeGreekLetter(s) {
   return first.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
+function getEntryCleanText(entry) {
+  let lines = entry.full.split(/\r?\n/);
+  lines.shift();
+  return lines.join("\n")
+    .replace("Περιγραφή:", "")
+    .replace("Περγιφραφή:", "")
+    .trim();
+}
+
+function detectType(title, text = "") {
+  const t = (title + " " + text).toLowerCase();
+
+  if (t.includes("μιμητικός ήχος") || t.includes("ήχος")) return "Ήχος";
+  if (title.endsWith("ω") || title.endsWith("ομαι") || title.endsWith("ώ")) return "Ρήμα";
+
+  const firstWord = title.split(/[ ,;/!]/)[0].trim();
+
+  if (
+    firstWord.endsWith("ος") || firstWord.endsWith("ης") || firstWord.endsWith("ας") ||
+    firstWord.endsWith("α") || firstWord.endsWith("η") || firstWord.endsWith("ι")
+  ) return "Ουσιαστικό";
+
+  if (
+    title.includes(" ") || title.includes(";") || title.includes(",") ||
+    title.includes("/") || title.includes("!")
+  ) return "Έκφραση";
+
+  return "Λήμμα";
+}
+
+function getEntryType(entry) {
+  return detectType(entry.title, getEntryCleanText(entry));
+}
+
+function renderFilters() {
+  const types = ["Όλα", ...new Set(entries.map(getEntryType))].sort((a,b) => {
+    if (a === "Όλα") return -1;
+    if (b === "Όλα") return 1;
+    return a.localeCompare(b, "el");
+  });
+
+  const box = document.getElementById("filters");
+  box.innerHTML = "";
+
+  types.forEach(type => {
+    const btn = document.createElement("button");
+    btn.className = "filter-btn" + (type === activeFilter ? " active" : "");
+    btn.textContent = type;
+    btn.onclick = () => {
+      activeFilter = type;
+      syncHomeFilter();
+      renderFilters();
+      renderList();
+    };
+    box.appendChild(btn);
+  });
+}
+
+function currentFilteredEntries() {
+  const q = searchQuery.toLocaleLowerCase("el-GR").trim();
+
+  return entries.filter(e => {
+    const matchesType = activeFilter === "Όλα" || getEntryType(e) === activeFilter;
+    const matchesSearch =
+      !q ||
+      e.title.toLocaleLowerCase("el-GR").includes(q) ||
+      getEntryCleanText(e).toLocaleLowerCase("el-GR").includes(q);
+
+    return matchesType && matchesSearch;
+  });
+}
+
 function renderList() {
-  const sorted = [...entries].sort((a,b) =>
+  const sorted = currentFilteredEntries().sort((a,b) =>
     a.title.localeCompare(b.title, "el", { sensitivity: "base" })
   );
 
@@ -522,37 +756,83 @@ function showHome() {
       <img class="home-logo" src="https://i.ibb.co/ZRJ23fvR/kranoumpanoumpanoumpa.png">
       <h1>tioumpa.org</h1>
       <div class="subtitle">ΤΟ ΛΕΞΙΚΟ ΤΟΥ TEOSTY</div>
-      <div class="email">Αν θέλετε να επικοινωνήσετε μαζί μας για οποιαδήποτε αλλαγή και πρόσθεση στείλτε μας μήνυμα στο: info@tioumpa.org</div>
+      <div class="email">Αν θέλετε να επικοινωνήσετε μαζί μας για οποιαδήποτε αλλαγή και προσθήκη στείλτε μας μήνυμα στο: info@tioumpa.org</div>
+      <div class="search-copy">Αναζήτηση σε ${entries.length} καταχωρήσεις από το λεξιλόγιο του Teosty.</div>
 
       <div class="search-wrapper">
-        <img class="search-icon" src="https://uxwing.com/wp-content/themes/uxwing/download/user-interface/search-icon.png">
-        <input id="searchMain" placeholder="Αναζήτηση...">
-        <span class="mic" onclick="voiceSearch(event)">🎤</span>
+        <div class="search-main">
+          <img class="search-icon" src="https://uxwing.com/wp-content/themes/uxwing/download/user-interface/search-icon.png">
+          <input id="searchMain" placeholder="Αναζήτηση..." value="${escapeAttr(searchQuery)}">
+          <span class="mic" onclick="voiceSearch(event)">🎤</span>
+        </div>
+        <select id="searchCategory"></select>
+        <button onclick="clearSearch()">Καθαρισμός</button>
       </div>
 
       <div class="home-toggle-section">
         <button onclick="toggleHomeList('trendingBox')">🔥 Εμφάνιση Trending / Popular</button>
-        <div id="trendingBox" class="hidden-box">
-          ${getTrendingHTML()}
-        </div>
+        <div id="trendingBox" class="hidden-box">${getTrendingHTML()}</div>
       </div>
 
       <div class="home-toggle-section">
         <button onclick="toggleHomeList('favoritesBox')">⭐ Εμφάνιση Favorites</button>
-        <div id="favoritesBox" class="hidden-box">
-          ${getFavoritesHTML()}
-        </div>
+        <div id="favoritesBox" class="hidden-box">${getFavoritesHTML()}</div>
       </div>
 
       <div class="random-title">ΤΥΧΑΙΕΣ ΛΕΞΕΙΣ</div>
       <div class="bubbles" id="bubbles"></div>
+
+      <div class="socials">
+        <a class="social instagram" href="#" title="Instagram">IG</a>
+        <a class="social youtube" href="#" title="YouTube">YT</a>
+        <a class="social tiktok" href="#" title="TikTok">TT</a>
+        <a class="social twitch" href="#" title="Twitch">TW</a>
+      </div>
     </div>
   `;
 
   const input = document.getElementById("searchMain");
-  input.addEventListener("input", e => filterSidebar(e.target.value));
+  input.addEventListener("input", e => {
+    searchQuery = e.target.value;
+    renderList();
+  });
 
+  buildHomeCategorySelect();
   renderBubbles();
+}
+
+function buildHomeCategorySelect() {
+  const select = document.getElementById("searchCategory");
+  if (!select) return;
+
+  const types = ["Όλα", ...new Set(entries.map(getEntryType))].sort((a,b) => {
+    if (a === "Όλα") return -1;
+    if (b === "Όλα") return 1;
+    return a.localeCompare(b, "el");
+  });
+
+  select.innerHTML = types.map(type =>
+    `<option value="${escapeAttr(type)}" ${type === activeFilter ? "selected" : ""}>${escapeHTML(type)}</option>`
+  ).join("");
+
+  select.onchange = e => {
+    activeFilter = e.target.value;
+    renderFilters();
+    renderList();
+  };
+}
+
+function syncHomeFilter() {
+  const select = document.getElementById("searchCategory");
+  if (select) select.value = activeFilter;
+}
+
+function clearSearch() {
+  searchQuery = "";
+  activeFilter = "Όλα";
+  renderFilters();
+  renderList();
+  showHome();
 }
 
 function getTrendingHTML() {
@@ -574,29 +854,6 @@ function getFavoritesHTML() {
 function toggleHomeList(id) {
   const box = document.getElementById(id);
   if (box) box.classList.toggle("open");
-}
-
-function filterSidebar(q) {
-  q = q.toLocaleLowerCase("el-GR");
-
-  document.querySelectorAll(".word").forEach(el => {
-    el.style.display = el.textContent.toLocaleLowerCase("el-GR").includes(q) ? "block" : "none";
-  });
-
-  document.querySelectorAll(".letter").forEach(letter => {
-    let next = letter.nextElementSibling;
-    let hasVisible = false;
-
-    while (next && !next.classList.contains("letter")) {
-      if (next.classList.contains("word") && next.style.display !== "none") {
-        hasVisible = true;
-        break;
-      }
-      next = next.nextElementSibling;
-    }
-
-    letter.style.display = hasVisible ? "block" : "none";
-  });
 }
 
 function renderBubbles() {
@@ -632,18 +889,6 @@ function startBubbles() {
   bubbleTimer = setInterval(renderBubbles, 6000);
 }
 
-function detectType(title, text) {
-  const t = (title + " " + text).toLowerCase();
-
-  if (t.includes("μιμητικός ήχος") || t.includes("ήχος")) return "Ήχος";
-  if (title.includes(" ") || title.includes(";") || title.includes(",") || title.includes("/") || title.includes("!")) return "Έκφραση / Φράση";
-  if (title.endsWith("ω") || title.endsWith("ομαι") || title.endsWith("ώ")) return "Ρήμα";
-  if (title.endsWith("ος") || title.endsWith("ης") || title.endsWith("ας") || title.endsWith("α") || title.endsWith("η") || title.endsWith("ι")) return "Ουσιαστικό";
-  if (title.endsWith("ο")) return "Επίθετο";
-
-  return "Λήμμα";
-}
-
 function detectSynonyms(text) {
   const match = text.match(/Συν:\s*([^\n.]+)/i);
   return match ? match[1].trim() : "";
@@ -667,26 +912,22 @@ function buildMeta(title, text) {
   const rows = [];
 
   const type = detectType(title, text);
-  if (type) rows.push(`<div><b>Κατηγορία:</b> ${type}</div>`);
+  if (type) rows.push(`<span class="meta-pill">${type}</span>`);
 
   const derivatives = detectDerivatives(title);
-  if (derivatives) rows.push(`<div><b>Παράγωγα:</b> ${escapeHTML(derivatives)}</div>`);
+  if (derivatives) rows.push(`<span class="meta-pill"><b>Παράγωγα:</b> ${escapeHTML(derivatives)}</span>`);
 
   const synonyms = detectSynonyms(text);
-  if (synonyms) rows.push(`<div><b>Συνώνυμα:</b> ${escapeHTML(synonyms)}</div>`);
+  if (synonyms) rows.push(`<span class="meta-pill"><b>Συνώνυμα:</b> ${escapeHTML(synonyms)}</span>`);
 
   const antonyms = detectAntonyms(title);
-  if (antonyms) rows.push(`<div><b>Αντώνυμα:</b> ${escapeHTML(antonyms)}</div>`);
+  if (antonyms) rows.push(`<span class="meta-pill"><b>Αντώνυμα:</b> ${escapeHTML(antonyms)}</span>`);
 
   if (!rows.length) return "";
   return `<div class="entry-meta">${rows.join("")}</div>`;
 }
 
-function isDeclinable(type) {
-  return ["Ουσιαστικό", "Επίθετο", "Λήμμα"].includes(type);
-}
-
-function getDeclension(title, type) {
+function getDeclension(title) {
   let word = title.split(/[ ,;/!]/)[0].trim();
 
   const known = {
@@ -699,48 +940,15 @@ function getDeclension(title, type) {
     "Κλανοβαλβίδα": ["η Κλανοβαλβίδα", "της Κλανοβαλβίδας", "την Κλανοβαλβίδα", "Κλανοβαλβίδα", "οι Κλανοβαλβίδες", "των Κλανοβαλβίδων", "τις Κλανοβαλβίδες", "Κλανοβαλβίδες"],
     "Πριμαντόνα": ["η Πριμαντόνα", "της Πριμαντόνας", "την Πριμαντόνα", "Πριμαντόνα", "οι Πριμαντόνες", "των Πριμαντόνων", "τις Πριμαντόνες", "Πριμαντόνες"],
     "Τρύπα": ["η Τρύπα", "της Τρύπας", "την Τρύπα", "Τρύπα", "οι Τρύπες", "των Τρυπών", "τις Τρύπες", "Τρύπες"],
-    "Σωληνίσκος": ["ο Σωληνίσκος", "του Σωληνίσκου", "τον Σωληνίσκο", "Σωληνίσκε", "οι Σωληνίσκοι", "των Σωληνίσκων", "τους Σωληνίσκους", "Σωληνίσκοι"]
+    "Σωληνίσκος": ["ο Σωληνίσκος", "του Σωληνίσκου", "τον Σωληνίσκο", "Σωληνίσκε", "οι Σωληνίσκοι", "των Σωληνίσκων", "τους Σωληνίσκους", "Σωληνίσκοι"],
+    "Μουσλούκι": ["το Μουσλούκι", "του Μουσλουκιού", "το Μουσλούκι", "Μουσλούκι", "τα Μουσλούκια", "των Μουσλουκιών", "τα Μουσλούκια", "Μουσλούκια"]
   };
 
-  if (known[word]) return known[word];
-
-  if (word.endsWith("ος")) {
-    const stem = word.slice(0, -2);
-    return [`ο ${word}`, `του ${stem}ου`, `τον ${word}`, `${stem}ε`, `οι ${stem}οι`, `των ${stem}ων`, `τους ${stem}ους`, `${stem}οι`];
-  }
-
-  if (word.endsWith("ης")) {
-    const stem = word.slice(0, -2);
-    return [`ο ${word}`, `του ${stem}η`, `τον ${stem}η`, `${stem}η`, `οι ${stem}ηδες`, `των ${stem}ηδων`, `τους ${stem}ηδες`, `${stem}ηδες`];
-  }
-
-  if (word.endsWith("ας")) {
-    const stem = word.slice(0, -2);
-    return [`ο ${word}`, `του ${stem}α`, `τον ${stem}α`, `${stem}α`, `οι ${stem}ες`, `των ${stem}ων`, `τους ${stem}ες`, `${stem}ες`];
-  }
-
-  if (word.endsWith("α")) {
-    const stem = word.slice(0, -1);
-    return [`η ${word}`, `της ${stem}ας`, `τη ${word}`, word, `οι ${stem}ες`, `των ${stem}ων`, `τις ${stem}ες`, `${stem}ες`];
-  }
-
-  if (word.endsWith("η")) {
-    const stem = word.slice(0, -1);
-    return [`η ${word}`, `της ${stem}ης`, `τη ${word}`, word, `οι ${stem}ες`, `των ${stem}ων`, `τις ${stem}ες`, `${stem}ες`];
-  }
-
-  if (word.endsWith("ι")) {
-    const stem = word.slice(0, -1);
-    return [`το ${word}`, `του ${stem}ιού`, `το ${word}`, word, `τα ${stem}ια`, `των ${stem}ιών`, `τα ${stem}ια`, `${stem}ια`];
-  }
-
-  return null;
+  return known[word] || null;
 }
 
-function buildDeclensionTable(title, type) {
-  if (!isDeclinable(type)) return "";
-
-  const d = getDeclension(title, type);
+function buildDeclensionTable(title) {
+  const d = getDeclension(title);
   if (!d) return "";
 
   return `
@@ -760,6 +968,12 @@ function buildDeclensionTable(title, type) {
 function linkReferences(text, currentTitle) {
   let result = text;
 
+  const protectedParts = [];
+  result = result.replace(/<iframe[\s\S]*?<\/iframe>/gi, match => {
+    protectedParts.push(match);
+    return `@@IFRAME_${protectedParts.length - 1}@@`;
+  });
+
   const sortedEntries = [...entries]
     .filter(e => e.title !== currentTitle && e.title.length > 2)
     .sort((a,b) => b.title.length - a.title.length);
@@ -773,6 +987,10 @@ function linkReferences(text, currentTitle) {
     });
   });
 
+  protectedParts.forEach((part, i) => {
+    result = result.replace(`@@IFRAME_${i}@@`, part);
+  });
+
   return result;
 }
 
@@ -782,13 +1000,7 @@ function openEntry(entry) {
 
   const isFav = favorites.includes(entry.title);
 
-  let lines = entry.full.split(/\r?\n/);
-  lines.shift();
-
-  let clean = lines.join("\n")
-    .replace("Περιγραφή:", "")
-    .replace("Περγιφραφή:", "")
-    .trimStart();
+  let clean = getEntryCleanText(entry);
 
   const imageRegex = /(https?:\/\/[^\s"'<>]+\.(?:png|jpg|jpeg|gif|webp))/gi;
   const images = clean.match(imageRegex) || [];
@@ -806,8 +1018,6 @@ function openEntry(entry) {
     `;
   }
 
-  const type = detectType(entry.title, clean);
-
   document.getElementById("content").innerHTML = `
     <button class="back-btn" onclick="goHome()">← Επιστροφή</button>
 
@@ -821,11 +1031,7 @@ function openEntry(entry) {
 
       ${buildMeta(entry.title, clean)}
 
-      <div class="entry-body">
-        ${linkReferences(clean, entry.title)}
-        ${imageHTML}
-        ${buildDeclensionTable(entry.title, type)}
-      </div>
+      <div class="entry-body">${linkReferences(clean, entry.title)}${imageHTML}${buildDeclensionTable(entry.title)}</div>
     </article>
   `;
 }
@@ -858,9 +1064,10 @@ function voiceSearch(event) {
 
   r.onresult = e => {
     const text = e.results[0][0].transcript;
+    searchQuery = text;
     const input = document.getElementById("searchMain");
     if (input) input.value = text;
-    filterSidebar(text);
+    renderList();
   };
 
   r.start();
@@ -869,6 +1076,43 @@ function voiceSearch(event) {
 function goHome() {
   history.pushState("", document.title, window.location.pathname + window.location.search);
   showHome();
+}
+
+function setupResizer() {
+  const sidebar = document.getElementById("sidebar");
+  const resizer = document.getElementById("resizer");
+  if (!sidebar || !resizer) return;
+
+  const saved = localStorage.getItem("sidebarWidth");
+  if (saved) sidebar.style.width = saved + "px";
+
+  let dragging = false;
+
+  const start = e => {
+    dragging = true;
+    document.body.style.userSelect = "none";
+    e.preventDefault();
+  };
+
+  const move = e => {
+    if (!dragging || window.innerWidth <= 850) return;
+    const x = e.touches ? e.touches[0].clientX : e.clientX;
+    const width = Math.min(620, Math.max(280, x));
+    sidebar.style.width = width + "px";
+    localStorage.setItem("sidebarWidth", width);
+  };
+
+  const end = () => {
+    dragging = false;
+    document.body.style.userSelect = "";
+  };
+
+  resizer.addEventListener("mousedown", start);
+  resizer.addEventListener("touchstart", start);
+  window.addEventListener("mousemove", move);
+  window.addEventListener("touchmove", move);
+  window.addEventListener("mouseup", end);
+  window.addEventListener("touchend", end);
 }
 
 function escapeQuotes(str) {
@@ -880,6 +1124,10 @@ function escapeHTML(str) {
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;");
+}
+
+function escapeAttr(str) {
+  return escapeHTML(str).replaceAll('"', "&quot;");
 }
 </script>
 
