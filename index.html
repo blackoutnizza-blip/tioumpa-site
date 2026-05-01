@@ -721,8 +721,8 @@ fetch("data.txt")
   .then(text => init(text))
   .catch(err => {
     document.getElementById("content").innerHTML = `
-      <h2>Δεν φορτώθηκε το data.txt</h2>
-      <p>Βεβαιώσου ότι το αρχείο λέγεται ακριβώς <b>data.txt</b> και είναι στον ίδιο φάκελο με το index.html.</p>
+      <h2>not loaded data.txt</h2>
+      <p> <b>data.txt</b>  index.html.</p>
     `;
     console.error(err);
   });
@@ -986,8 +986,8 @@ function showHome() {
       <img class="home-logo" src="https://i.ibb.co/ZRJ23fvR/kranoumpanoumpanoumpa.png">
       <h1>tioumpa.org</h1>
       <div class="subtitle">ΤΟ ΛΕΞΙΚΟ ΤΟΥ TEOSTY</div>
-      <div class="email">Αν θέλετε να επικοινωνήσετε μαζί μας για οποιαδήποτε αλλαγή και προσθήκη στείλτε μας μήνυμα στο: info@tioumpa.org</div>
-      <div class="search-copy">Αναζήτηση σε ${entries.length} καταχωρήσεις από το λεξιλόγιο του Teosty.</div>
+      <div class="email">Αν θέλετε να επικοινωνήσετε μαζί μας για οποιαδήποτε αλλαγή και προσθήκη στείλτε μας μήνυμα στο: tioumpagr@gmail.com</div>
+      <div class="search-copy">Αναζήτηση ${entries.length} λέξεων και ατάκες του Teosty.</div>
 
       <div class="search-wrapper">
         <div class="search-main">
@@ -996,16 +996,16 @@ function showHome() {
           <span class="mic" onclick="voiceSearch(event)">🎤</span>
         </div>
         <select id="searchCategory"></select>
-        <button onclick="clearSearch()">Καθαρισμός</button>
+        <button onclick="clearSearch()">Clean</button>
       </div>
 
       <div class="home-toggle-section">
-        <button onclick="toggleHomeList('trendingBox')">🔥 Εμφάνιση Trending / Popular</button>
+        <button onclick="toggleHomeList('trendingBox')">🔥 Trending λέξεις</button>
         <div id="trendingBox" class="hidden-box">${getTrendingHTML()}</div>
       </div>
 
       <div class="home-toggle-section">
-        <button onclick="toggleHomeList('favoritesBox')">⭐ Εμφάνιση Favorites</button>
+        <button onclick="toggleHomeList('favoritesBox')">⭐ Αγαπημενα</button>
         <div id="favoritesBox" class="hidden-box">${getFavoritesHTML()}</div>
       </div>
 
