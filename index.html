@@ -293,7 +293,7 @@ body {
   margin-top: 22px;
   width: min(760px, 94%);
   display: grid;
-  grid-template-columns: 1fr 120px;
+  grid-template-columns: 1fr 145px 120px;
   gap: 8px;
   align-items: center;
 }
@@ -671,6 +671,10 @@ body {
 
 <div class="app">
   <aside class="sidebar" id="sidebar">
+    <div class="filter-box">
+      <div class="filter-title">ΦΙΛΤΡΑ</div>
+      <div class="filters" id="filters"></div>
+    </div>
     <div id="list"></div>
   </aside>
 
@@ -892,16 +896,40 @@ function getEntryType(entry) {
 }
 
 function renderFilters() {
-  // Κατηγορίες/φίλτρα αφαιρέθηκαν προσωρινά.
+  const types = ["Όλα", ...new Set(entries.map(getEntryType))].sort((a,b) => {
+    if (a === "Όλα") return -1;
+    if (b === "Όλα") return 1;
+    return a.localeCompare(b, "el");
+  });
+
+  const box = document.getElementById("filters");
+  box.innerHTML = "";
+
+  types.forEach(type => {
+    const btn = document.createElement("button");
+    btn.className = "filter-btn" + (type === activeFilter ? " active" : "");
+    btn.textContent = type;
+    btn.onclick = () => {
+      activeFilter = type;
+      syncHomeFilter();
+      renderFilters();
+      renderList();
+    };
+    box.appendChild(btn);
+  });
 }
 
 function currentFilteredEntries() {
   const q = searchQuery.toLocaleLowerCase("el-GR").trim();
 
   return entries.filter(e => {
-    return !q ||
+    const matchesType = activeFilter === "Όλα" || getEntryType(e) === activeFilter;
+    const matchesSearch =
+      !q ||
       e.title.toLocaleLowerCase("el-GR").includes(q) ||
       getEntryCleanText(e).toLocaleLowerCase("el-GR").includes(q);
+
+    return matchesType && matchesSearch;
   });
 }
 
@@ -969,16 +997,17 @@ function showHome() {
           <input id="searchMain" placeholder="Αναζήτηση..." value="${escapeAttr(searchQuery)}">
           <span class="mic" onclick="voiceSearch(event)">🎤</span>
         </div>
+        <select id="searchCategory"></select>
         <button onclick="clearSearch()">Καθαρισμός</button>
       </div>
 
       <div class="home-toggle-section">
-        <button onclick="toggleHomeList('trendingBox')">🔥 Εμφάνιση Trending / Popular</button>
+        <button onclick="toggleHomeList('trendingBox')">🔥 Trending Λέξεις</button>
         <div id="trendingBox" class="hidden-box">${getTrendingHTML()}</div>
       </div>
 
       <div class="home-toggle-section">
-        <button onclick="toggleHomeList('favoritesBox')">⭐ Εμφάνιση Favorites</button>
+        <button onclick="toggleHomeList('favoritesBox')">⭐ Αγαπημένα</button>
         <div id="favoritesBox" class="hidden-box">${getFavoritesHTML()}</div>
       </div>
 
@@ -1000,6 +1029,7 @@ function showHome() {
     renderList();
   });
 
+  buildHomeCategorySelect();
   renderBubbles();
 }
 
@@ -1111,8 +1141,22 @@ function detectAntonyms(title) {
 }
 
 function buildMeta(title, text) {
-  // Κατηγορίες/AI detector κρυμμένα προσωρινά για να μη βγαίνουν λάθος.
-  return "";
+  const rows = [];
+
+  const type = detectType(title, text);
+  if (type) rows.push(`<span class="meta-pill">${type}</span>`);
+
+  const derivatives = detectDerivatives(title);
+  if (derivatives) rows.push(`<span class="meta-pill"><b>Παράγωγα:</b> ${escapeHTML(derivatives)}</span>`);
+
+  const synonyms = detectSynonyms(text);
+  if (synonyms) rows.push(`<span class="meta-pill"><b>Συνώνυμα:</b> ${escapeHTML(synonyms)}</span>`);
+
+  const antonyms = detectAntonyms(title);
+  if (antonyms) rows.push(`<span class="meta-pill"><b>Αντώνυμα:</b> ${escapeHTML(antonyms)}</span>`);
+
+  if (!rows.length) return "";
+  return `<div class="entry-meta">${rows.join("")}</div>`;
 }
 
 function getDeclension(title) {
