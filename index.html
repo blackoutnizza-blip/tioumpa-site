@@ -11,19 +11,19 @@
 
 :root {
   color-scheme: dark light;
-  --bg: var(--bg);
+  --bg: #0b1622;
   --text: #e6edf3;
-  --muted: var(--muted);
-  --muted-2: var(--muted-2);
-  --border: var(--border);
-  --border-soft: var(--border-soft);
-  --panel: var(--panel);
-  --panel-strong: var(--panel-strong);
-  --surface: var(--surface);
-  --surface-soft: var(--surface-soft);
-  --hover: var(--hover);
-  --accent: var(--accent);
-  --accent-soft: var(--accent-soft);
+  --muted: #7890a8;
+  --muted-2: #9fb3c8;
+  --border: #28445f;
+  --border-soft: #1f3a52;
+  --panel: rgba(15,31,47,.82);
+  --panel-strong: rgba(11,22,34,.96);
+  --surface: rgba(18,38,58,.88);
+  --surface-soft: rgba(18,38,58,.48);
+  --hover: rgba(255,255,255,.08);
+  --accent: #78a6ff;
+  --accent-soft: rgba(88,166,255,.22);
 }
 
 @media (prefers-color-scheme: light) {
@@ -46,19 +46,19 @@
 
 html[data-theme="dark"] {
   color-scheme: dark;
-  --bg: var(--bg);
+  --bg: #0b1622;
   --text: #e6edf3;
-  --muted: var(--muted);
-  --muted-2: var(--muted-2);
-  --border: var(--border);
-  --border-soft: var(--border-soft);
-  --panel: var(--panel);
-  --panel-strong: var(--panel-strong);
-  --surface: var(--surface);
-  --surface-soft: var(--surface-soft);
-  --hover: var(--hover);
-  --accent: var(--accent);
-  --accent-soft: var(--accent-soft);
+  --muted: #7890a8;
+  --muted-2: #9fb3c8;
+  --border: #28445f;
+  --border-soft: #1f3a52;
+  --panel: rgba(15,31,47,.82);
+  --panel-strong: rgba(11,22,34,.96);
+  --surface: rgba(18,38,58,.88);
+  --surface-soft: rgba(18,38,58,.48);
+  --hover: rgba(255,255,255,.08);
+  --accent: #78a6ff;
+  --accent-soft: rgba(88,166,255,.22);
 }
 
 html[data-theme="light"] {
@@ -657,7 +657,7 @@ body {
 <body>
 
 <div class="header" onclick="goHome()">
-  <img src="https://i.ibb.co/ZRJ23fvR/kranoumpanoumpanoumpa.png">
+  <img src="data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDM0OCAzMzAiIHdpZHRoPSIzNDgiIGhlaWdodD0iMzMwIj4KPHN0eWxlPgouczB7ZmlsbDojZWRkNmIyfS5zMXtmaWxsOiNlY2Q1YjF9LnM3e2ZpbGw6IzA5MDg0YX0uczEwe2ZpbGw6IzgzMDgwN30uczE0e2ZpbGw6I2JkYTM3NH0uczIze2ZpbGw6I2RmYzA4OH0KPC9zdHlsZT4KPHBhdGggY2xhc3M9InM3IiBkPSJNNTAgMzZjNDMtMjggMTExLTMyIDE2NS0xOCA2MSAxNiAxMDQgNjEgMTE5IDExNyAxNyA2NS03IDEyOC02MCAxNjMtNTUgMzctMTM3IDQwLTE5NyA3LTU3LTMxLTg1LTg5LTczLTE0OUMxMyAxMDMgMjAgNTggNTAgMzZ6Ii8+CjxwYXRoIGNsYXNzPSJzMCIgZD0iTTE1MSAxMDdjMTIgNCA0MyAyNSA2NSA0MSAxIDgtMyAxOS04IDI4LTkgMTYtMTggMzEtMjcgNDcgMTUtMSAzMS00IDQ2LTMgOCA3IDkgMzAgMTEgNDkgMSAxMCA0IDI1IDAgMzUtMiA1LTUgOC0xMCA5LTIyIDQtNDkgNi03MiA4LTctMS0xMC01LTEwLTEyLTItMjEtNi00NC03LTY1LTEtMTQgMi0yMCAxNi0yMi0xOC0xMS0zNy0yMi01NS0zNC02LTQtOC05LTYtMTYgNi0xNCAyMS0zOSAzMC01NCA3LTEyIDE0LTE2IDI3LTExeiIvPgo8cGF0aCBjbGFzcz0iczEiIGQ9Ik0xMDAgMjA3YzggNCAxNyAxOSAyNSAzMiA4IDEyIDE4IDI3IDE5IDM5LTIgOC0xMyAxNS0yMiAyMC0xNCA5LTMwIDE4LTQ0IDI3LTYgNC0xMiA0LTE3LTEtMTEtMTEtMjctMzktMzUtNTMtMy02LTItMTIgMy0xNyAxNy0xMyA0Mi0yNyA2MS0zOSA0LTMgNi01IDEwLTh6Ii8+CjxwYXRoIGNsYXNzPSJzMjMiIGQ9Ik0xNzkgMWMxMiA1IDQzIDMzIDYwIDQ4IDIgOS04IDIyLTE2IDMyLTEwIDEyLTIyIDI3LTM0IDQzLTYgNS0xMyAxLTIwLTQtMTUtMTItMzEtMjUtNDYtMzgtMy02IDEtMTMgNy0yMSAxMC0xMyAyMi0yNyAzMy00MSA2LTggMTAtMTcgMTYtMTl6Ii8+CjxwYXRoIGNsYXNzPSJzMSIgZD0iTTI3NCAyYzE1IDIgNTMgMjAgNjcgMjggOSA2IDYgMTkgMSAzMS04IDE4LTE3IDM2LTI1IDU1LTE1LTItMzQtOC01My0xNi0xMy01LTI1LTExLTM0LTE3IDEtMTEgMTAtMjcgMTUtMzkgNy0xNSAxMy0zNiAyOS00MnoiLz4KPHBhdGggY2xhc3M9InMwIiBkPSJNMTAyIDEwYzggMCAxMiA0IDEzIDEzIDMgMjAgNSAzOSA4IDU5IDEgMTAtMyAxNi0xMyAxOC0yMiA0LTQ4IDctNzAgOS04IDAtMTItNC0xMy0xMi0zLTIyLTYtNDctNy02OSAyLTggNi0xMSAxNC0xMiAyMy0zIDQ2LTYgNjgtNnoiLz4KPHBhdGggY2xhc3M9InMxMCIgZD0iTTE1MyAxMjFjOSAyIDM4IDIxIDQ5IDMwLTEgNC00IDgtNyAxMi02LTItMTItNy0xOC0xMC04IDEzLTE2IDI3LTIzIDQwLTQgNi03IDgtMTIgNS00LTItOC01LTEyLTggNy0xNiAyMS0zNSAzMC01Mi01LTMtMTAtNi0xNS0xMCAyLTQgNC03IDgtN3oiLz4KPHBhdGggY2xhc3M9InMxNCIgZD0iTTcwIDI1MGMxNC0xMyA0MS0xMyA1MCAzIDQgMTYtOSAyNS0yNCAyOS0xNyA0LTM0LTEtMzgtMTUtMS04IDQtMTMgMTItMTd6Ii8+CjxwYXRoIGNsYXNzPSJzMTQiIGQ9Ik0yODcgMjQyYzE1LTMgMjMgOCAxOSAyMy00IDE0LTE0IDIyLTI3IDE4LTEzLTQtMTYtMTUtOS0yOCA0LTggOS0xMiAxNy0xM3oiLz4KPC9zdmc+">
   <strong>tioumpa.org</strong>
   <div class="theme-control" onclick="event.stopPropagation()">
     <label for="themeSelect">Θέμα</label>
@@ -881,7 +881,7 @@ function route() {
 function showHome() {
   document.getElementById("content").innerHTML = `
     <div class="home">
-      <img class="home-logo" src="https://i.ibb.co/ZRJ23fvR/kranoumpanoumpanoumpa.png">
+      <img class="home-logo" src="data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDM0OCAzMzAiIHdpZHRoPSIzNDgiIGhlaWdodD0iMzMwIj4KPHN0eWxlPgouczB7ZmlsbDojZWRkNmIyfS5zMXtmaWxsOiNlY2Q1YjF9LnM3e2ZpbGw6IzA5MDg0YX0uczEwe2ZpbGw6IzgzMDgwN30uczE0e2ZpbGw6I2JkYTM3NH0uczIze2ZpbGw6I2RmYzA4OH0KPC9zdHlsZT4KPHBhdGggY2xhc3M9InM3IiBkPSJNNTAgMzZjNDMtMjggMTExLTMyIDE2NS0xOCA2MSAxNiAxMDQgNjEgMTE5IDExNyAxNyA2NS03IDEyOC02MCAxNjMtNTUgMzctMTM3IDQwLTE5NyA3LTU3LTMxLTg1LTg5LTczLTE0OUMxMyAxMDMgMjAgNTggNTAgMzZ6Ii8+CjxwYXRoIGNsYXNzPSJzMCIgZD0iTTE1MSAxMDdjMTIgNCA0MyAyNSA2NSA0MSAxIDgtMyAxOS04IDI4LTkgMTYtMTggMzEtMjcgNDcgMTUtMSAzMS00IDQ2LTMgOCA3IDkgMzAgMTEgNDkgMSAxMCA0IDI1IDAgMzUtMiA1LTUgOC0xMCA5LTIyIDQtNDkgNi03MiA4LTctMS0xMC01LTEwLTEyLTItMjEtNi00NC03LTY1LTEtMTQgMi0yMCAxNi0yMi0xOC0xMS0zNy0yMi01NS0zNC02LTQtOC05LTYtMTYgNi0xNCAyMS0zOSAzMC01NCA3LTEyIDE0LTE2IDI3LTExeiIvPgo8cGF0aCBjbGFzcz0iczEiIGQ9Ik0xMDAgMjA3YzggNCAxNyAxOSAyNSAzMiA4IDEyIDE4IDI3IDE5IDM5LTIgOC0xMyAxNS0yMiAyMC0xNCA5LTMwIDE4LTQ0IDI3LTYgNC0xMiA0LTE3LTEtMTEtMTEtMjctMzktMzUtNTMtMy02LTItMTIgMy0xNyAxNy0xMyA0Mi0yNyA2MS0zOSA0LTMgNi01IDEwLTh6Ii8+CjxwYXRoIGNsYXNzPSJzMjMiIGQ9Ik0xNzkgMWMxMiA1IDQzIDMzIDYwIDQ4IDIgOS04IDIyLTE2IDMyLTEwIDEyLTIyIDI3LTM0IDQzLTYgNS0xMyAxLTIwLTQtMTUtMTItMzEtMjUtNDYtMzgtMy02IDEtMTMgNy0yMSAxMC0xMyAyMi0yNyAzMy00MSA2LTggMTAtMTcgMTYtMTl6Ii8+CjxwYXRoIGNsYXNzPSJzMSIgZD0iTTI3NCAyYzE1IDIgNTMgMjAgNjcgMjggOSA2IDYgMTkgMSAzMS04IDE4LTE3IDM2LTI1IDU1LTE1LTItMzQtOC01My0xNi0xMy01LTI1LTExLTM0LTE3IDEtMTEgMTAtMjcgMTUtMzkgNy0xNSAxMy0zNiAyOS00MnoiLz4KPHBhdGggY2xhc3M9InMwIiBkPSJNMTAyIDEwYzggMCAxMiA0IDEzIDEzIDMgMjAgNSAzOSA4IDU5IDEgMTAtMyAxNi0xMyAxOC0yMiA0LTQ4IDctNzAgOS04IDAtMTItNC0xMy0xMi0zLTIyLTYtNDctNy02OSAyLTggNi0xMSAxNC0xMiAyMy0zIDQ2LTYgNjgtNnoiLz4KPHBhdGggY2xhc3M9InMxMCIgZD0iTTE1MyAxMjFjOSAyIDM4IDIxIDQ5IDMwLTEgNC00IDgtNyAxMi02LTItMTItNy0xOC0xMC04IDEzLTE2IDI3LTIzIDQwLTQgNi03IDgtMTIgNS00LTItOC01LTEyLTggNy0xNiAyMS0zNSAzMC01Mi01LTMtMTAtNi0xNS0xMCAyLTQgNC03IDgtN3oiLz4KPHBhdGggY2xhc3M9InMxNCIgZD0iTTcwIDI1MGMxNC0xMyA0MS0xMyA1MCAzIDQgMTYtOSAyNS0yNCAyOS0xNyA0LTM0LTEtMzgtMTUtMS04IDQtMTMgMTItMTd6Ii8+CjxwYXRoIGNsYXNzPSJzMTQiIGQ9Ik0yODcgMjQyYzE1LTMgMjMgOCAxOSAyMy00IDE0LTE0IDIyLTI3IDE4LTEzLTQtMTYtMTUtOS0yOCA0LTggOS0xMiAxNy0xM3oiLz4KPC9zdmc+">
       <h1>tioumpa.org</h1>
       <div class="subtitle">ΤΟ ΛΕΞΙΚΟ ΤΟΥ TEOSTY</div>
       <div class="email">Αν θέλετε να επικοινωνήσετε μαζί μας για οποιαδήποτε αλλαγή και προσθήκη στείλτε μας μήνυμα στο: info@tioumpa.org</div>
