@@ -11,19 +11,19 @@
 
 :root {
   color-scheme: dark light;
-  --bg: #071421;
+  --bg: var(--bg);
   --text: #e6edf3;
-  --muted: #7890a8;
-  --muted-2: #9fb3c8;
-  --border: #28445f;
-  --border-soft: #1f3a52;
-  --panel: rgba(8,24,38,.75);
-  --panel-strong: rgba(7,20,33,.95);
-  --surface: rgba(18,38,58,.85);
-  --surface-soft: rgba(18,38,58,.45);
-  --hover: rgba(255,255,255,.08);
-  --accent: #78a6ff;
-  --accent-soft: rgba(88,166,255,.22);
+  --muted: var(--muted);
+  --muted-2: var(--muted-2);
+  --border: var(--border);
+  --border-soft: var(--border-soft);
+  --panel: var(--panel);
+  --panel-strong: var(--panel-strong);
+  --surface: var(--surface);
+  --surface-soft: var(--surface-soft);
+  --hover: var(--hover);
+  --accent: var(--accent);
+  --accent-soft: var(--accent-soft);
 }
 
 @media (prefers-color-scheme: light) {
@@ -46,19 +46,19 @@
 
 html[data-theme="dark"] {
   color-scheme: dark;
-  --bg: #071421;
+  --bg: var(--bg);
   --text: #e6edf3;
-  --muted: #7890a8;
-  --muted-2: #9fb3c8;
-  --border: #28445f;
-  --border-soft: #1f3a52;
-  --panel: rgba(8,24,38,.75);
-  --panel-strong: rgba(7,20,33,.95);
-  --surface: rgba(18,38,58,.85);
-  --surface-soft: rgba(18,38,58,.45);
-  --hover: rgba(255,255,255,.08);
-  --accent: #78a6ff;
-  --accent-soft: rgba(88,166,255,.22);
+  --muted: var(--muted);
+  --muted-2: var(--muted-2);
+  --border: var(--border);
+  --border-soft: var(--border-soft);
+  --panel: var(--panel);
+  --panel-strong: var(--panel-strong);
+  --surface: var(--surface);
+  --surface-soft: var(--surface-soft);
+  --hover: var(--hover);
+  --accent: var(--accent);
+  --accent-soft: var(--accent-soft);
 }
 
 html[data-theme="light"] {
@@ -657,7 +657,7 @@ body {
 <body>
 
 <div class="header" onclick="goHome()">
-  <img src="https://i.ibb.co/9m6hW6bn/kranoumpanoumpanoumpa-1.png">
+  <img src="https://i.ibb.co/ZRJ23fvR/kranoumpanoumpanoumpa.png">
   <strong>tioumpa.org</strong>
   <div class="theme-control" onclick="event.stopPropagation()">
     <label for="themeSelect">Θέμα</label>
@@ -767,24 +767,126 @@ function getEntryCleanText(entry) {
 }
 
 function detectType(title, text = "") {
-  const t = (title + " " + text).toLowerCase();
+  const rawTitle = String(title || "").trim();
+  const cleanText = String(text || "").trim();
+  const lowerTitle = rawTitle.toLocaleLowerCase("el-GR").normalize("NFC");
+  const lowerText = cleanText.toLocaleLowerCase("el-GR").normalize("NFC");
+  const combined = (lowerTitle + " " + lowerText).normalize("NFC");
+  const words = lowerTitle.split(/\s+/).filter(Boolean);
+  const firstWord = (words[0] || "").replace(/[«»"'“”.,;:!?()[\]{}]/g, "");
+  const wordCount = words.length;
 
-  if (t.includes("μιμητικός ήχος") || t.includes("ήχος")) return "Ήχος";
-  if (title.endsWith("ω") || title.endsWith("ομαι") || title.endsWith("ώ")) return "Ρήμα";
+  const explicit = cleanText.match(/\[τύπος:\s*([^\]]+)\]/i) || cleanText.match(/\[type:\s*([^\]]+)\]/i);
+  if (explicit) return normalizeTypeName(explicit[1]);
 
-  const firstWord = title.split(/[ ,;/!]/)[0].trim();
+  const normalizedTitle = lowerTitle.replace(/[«»"'“”.,;:!?()[\]{}]/g, "").trim();
+
+  const articles = new Set(["ο","η","το","οι","τα","του","της","των","τον","την","τους","τις","στο","στη","στην","στον","στους","στις","στα","στοις"]);
+  if (articles.has(normalizedTitle)) return "Άρθρο";
+
+  const conjunctions = new Set(["και","κι","ή","είτε","ούτε","μήτε","αλλά","μα","όμως","ωστόσο","ενώ","καθώς","επειδή","διότι","γιατί","αν","άμα","εάν","όταν","αφού","ώστε","που","πως","ότι","σαν","καθότι","μολονότι","παρότι","δηλαδή"]);
+  if (conjunctions.has(normalizedTitle)) return "Σύνδεσμος";
+
+  const prepositions = new Set(["με","σε","εις","από","για","ως","προς","κατά","παρά","αντί","μετά","πριν","χωρίς","μέχρι","έως","ανά","δίχως"]);
+  if (prepositions.has(normalizedTitle)) return "Πρόθεση";
+
+  const pronouns = new Set(["εγώ","εσύ","αυτός","αυτή","αυτό","εμείς","εσείς","αυτοί","αυτές","αυτά","μου","σου","του","της","μας","σας","τους","με","σε","τον","την","το","ποιος","ποια","ποιο","τι","κάποιος","κάποια","κάποιο","κανείς","καμία","κανένα","όποιος","όποια","όποιο","που","ο οποίος","η οποία","το οποίο"]);
+  if (pronouns.has(normalizedTitle)) return "Αντωνυμία";
+
+  const particles = new Set(["να","θα","ας","μη","μην","δεν","δε"]);
+  if (particles.has(normalizedTitle)) return "Μόριο";
+
+  const interjections = new Set(["α","αχ","ω","ωχ","ουφ","ου","ε","εε","εεε","αμάν","μπράβο","άντε","ρε","πω","πωπω","χα","χαχα","χο","χε","οχ","ουπς","γκέγκε"]);
+  if (interjections.has(normalizedTitle)) return "Επιφώνημα";
+
+  const numerals = new Set(["ένα","δύο","δυο","τρία","τέσσερα","πέντε","έξι","εφτά","επτά","οχτώ","οκτώ","εννιά","εννέα","δέκα","πρώτος","δεύτερος","τρίτος"]);
+  if (numerals.has(normalizedTitle) || /^[0-9]+$/.test(normalizedTitle)) return "Αριθμητικό";
 
   if (
-    firstWord.endsWith("ος") || firstWord.endsWith("ης") || firstWord.endsWith("ας") ||
-    firstWord.endsWith("α") || firstWord.endsWith("η") || firstWord.endsWith("ι")
+    combined.includes("μιμητικός ήχος") ||
+    combined.includes("μιμητικ") ||
+    combined.includes("ηχομιμητικ") ||
+    combined.includes("ήχος") ||
+    (/^[α-ωάέήίόύώϊϋΐΰ]{1,4}([ -]?[α-ωάέήίόύώϊϋΐΰ]{1,4}){2,}$/i.test(lowerTitle) && /(μπ|γκ|τσ|ντ|πφ|χρ|βρ|ου|αχ|χα)/.test(lowerTitle))
+  ) return "Ήχος";
+
+  const hasPhrasePunctuation = /[;!?.,…]/.test(rawTitle);
+  if (wordCount >= 3 || hasPhrasePunctuation) return "Έκφραση";
+
+  const verbEndings = ["ομαι","ιέμαι","ούμαι","άμαι","αμαι","ιόμαστε","όμαστε","άω","αω","εύω","αίνω","ώνω","ίζω","άζω","εύομαι","ώ","ω"];
+  const verbHints = ["ρήμα","ενέργεια","πράξη","κάνω","κάνει","κάνεις","κάνουν","κάνουμε","χρησιμοποιείται όταν κάποιος κάνει","δηλώνει ότι","σημαίνει κάνω","αναφέρεται στην πράξη","το να ","ενεργώ","πράττω"];
+  if (verbEndings.some(end => firstWord.endsWith(end)) || verbHints.some(h => combined.includes(h))) return "Ρήμα";
+
+  if (firstWord.endsWith("μένος") || firstWord.endsWith("μένη") || firstWord.endsWith("μένο")) return "Μετοχή";
+
+  const adjectiveHints = ["επίθετο","χαρακτηρίζει","αυτός που είναι","αυτό που είναι","χαρακτηρισμός","περιγράφει κάποιον","περιγράφει κάτι","ιδιότητα"];
+  if (adjectiveHints.some(h => combined.includes(h))) return "Επίθετο";
+  if (/^[α-ωάέήίόύώϊϋΐΰ]+(ος|η|ο)\s*\/\s*[α-ωάέήίόύώϊϋΐΰ]+/i.test(lowerTitle)) return "Επίθετο";
+
+  const adverbHints = ["επίρρημα","με τρόπο","δηλώνει τρόπο","δηλώνει χρόνο","δηλώνει τόπο","χρονικά","τοπικά"];
+  if (adverbHints.some(h => combined.includes(h))) return "Επίρρημα";
+  if (firstWord.endsWith("ως") && wordCount === 1) return "Επίρρημα";
+
+  const nounHints = ["ουσιαστικό","πρόσωπο","πράγμα","αντικείμενο","μέρος του σώματος","ονομασία","λέξη για","σημαίνει ο","σημαίνει η","σημαίνει το","εργαλείο","ζώο"];
+  if (nounHints.some(h => combined.includes(h))) return "Ουσιαστικό";
+  if (/^(ο|η|το)\s+/.test(lowerTitle)) return "Ουσιαστικό";
+
+  if (wordCount === 2) {
+    if (articles.has(words[0])) return "Ουσιαστικό";
+    return "Έκφραση";
+  }
+
+  if (
+    firstWord.endsWith("ος") ||
+    firstWord.endsWith("ης") ||
+    firstWord.endsWith("ας") ||
+    firstWord.endsWith("της") ||
+    firstWord.endsWith("τήρας") ||
+    firstWord.endsWith("μα") ||
+    firstWord.endsWith("ση") ||
+    firstWord.endsWith("ια") ||
+    firstWord.endsWith("α") ||
+    firstWord.endsWith("η") ||
+    firstWord.endsWith("ι")
   ) return "Ουσιαστικό";
 
-  if (
-    title.includes(" ") || title.includes(";") || title.includes(",") ||
-    title.includes("/") || title.includes("!")
-  ) return "Έκφραση";
-
   return "Λήμμα";
+}
+
+function normalizeTypeName(value) {
+  const v = String(value || "").trim().toLocaleLowerCase("el-GR");
+  if (v.includes("αρθ")) return "Άρθρο";
+  if (v.includes("συνδε")) return "Σύνδεσμος";
+  if (v.includes("προθε")) return "Πρόθεση";
+  if (v.includes("αντων")) return "Αντωνυμία";
+  if (v.includes("μορι")) return "Μόριο";
+  if (v.includes("επιφων")) return "Επιφώνημα";
+  if (v.includes("αριθ")) return "Αριθμητικό";
+  if (v.includes("ρημ")) return "Ρήμα";
+  if (v.includes("ουσιασ")) return "Ουσιαστικό";
+  if (v.includes("επιθ")) return "Επίθετο";
+  if (v.includes("επιρ")) return "Επίρρημα";
+  if (v.includes("μετοχ")) return "Μετοχή";
+  if (v.includes("ηχ")) return "Ήχος";
+  if (v.includes("φρασ") || v.includes("εκφρ")) return "Έκφραση";
+  return value.trim();
+}
+
+function detectModifier(text = "") {
+  const raw = String(text || "");
+  const explicit = raw.match(/\[προσδιορισμός:\s*([^\]]+)\]/i) || raw.match(/\[modifier:\s*([^\]]+)\]/i);
+  if (explicit) return explicit[1].trim();
+
+  const t = raw.toLocaleLowerCase("el-GR");
+
+  if (/(πού|εδώ|εκεί|πάνω|κάτω|μέσα|έξω|δίπλα|μακριά|κοντά|στο σπίτι|στην πόλη|στον χώρο)/.test(t)) return "Τοπικός προσδιορισμός";
+  if (/(πότε|χθες|σήμερα|αύριο|τώρα|μετά|πριν|τότε|πάντα|ποτέ|συχνά|κάποτε)/.test(t)) return "Χρονικός προσδιορισμός";
+  if (/(πώς|έτσι|σιγά|γρήγορα|αργά|καλά|άσχημα|έντονα|ήρεμα|με τρόπο)/.test(t)) return "Τροπικός προσδιορισμός";
+  if (/(πόσο|πολύ|λίγο|αρκετά|τόσο|υπερβολικά|εντελώς)/.test(t)) return "Ποσοτικός προσδιορισμός";
+  if (/(γιατί|επειδή|λόγω|εξαιτίας|από αυτό)/.test(t)) return "Αιτιολογικός προσδιορισμός";
+  if (/(για να|ώστε να|με σκοπό)/.test(t)) return "Τελικός προσδιορισμός";
+
+  return "";
 }
 
 function getEntryType(entry) {
@@ -881,7 +983,7 @@ function route() {
 function showHome() {
   document.getElementById("content").innerHTML = `
     <div class="home">
-      <img class="home-logo" src="https://i.ibb.co/9m6hW6bn/kranoumpanoumpanoumpa-1.png">
+      <img class="home-logo" src="https://i.ibb.co/ZRJ23fvR/kranoumpanoumpanoumpa.png">
       <h1>tioumpa.org</h1>
       <div class="subtitle">ΤΟ ΛΕΞΙΚΟ ΤΟΥ TEOSTY</div>
       <div class="email">Αν θέλετε να επικοινωνήσετε μαζί μας για οποιαδήποτε αλλαγή και προσθήκη στείλτε μας μήνυμα στο: info@tioumpa.org</div>
@@ -1035,7 +1137,10 @@ function buildMeta(title, text) {
   const rows = [];
 
   const type = detectType(title, text);
-  if (type) rows.push(`<span class="meta-pill">${type}</span>`);
+  if (type) rows.push(`<span class="meta-pill">${escapeHTML(type)}</span>`);
+
+  const modifier = detectModifier(text);
+  if (modifier) rows.push(`<span class="meta-pill">${escapeHTML(modifier)}</span>`);
 
   const derivatives = detectDerivatives(title);
   if (derivatives) rows.push(`<span class="meta-pill"><b>Παράγωγα:</b> ${escapeHTML(derivatives)}</span>`);
