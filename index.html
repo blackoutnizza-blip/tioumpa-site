@@ -521,6 +521,7 @@ body {
 }
 
 .declension-box table {
+  font-family: Helvetica, Arial, sans-serif;
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
@@ -662,7 +663,7 @@ body {
     <label for="themeSelect">Θέμα</label>
     <select id="themeSelect" onchange="setTheme(this.value)">
       <option value="system">Αυτόματο</option>
-      <option value="dark">Σκούρο</option>
+      <option value="dark" selected>Σκούρο</option>
       <option value="light">Ανοιχτό</option>
     </select>
   </div>
@@ -684,7 +685,7 @@ body {
 
 <script>
 
-const savedTheme = localStorage.getItem("themeChoice") || "system";
+const savedTheme = localStorage.getItem("themeChoice") || "dark";
 applyTheme(savedTheme);
 
 function applyTheme(value) {
@@ -909,12 +910,7 @@ function showHome() {
       <div class="random-title">ΤΥΧΑΙΕΣ ΛΕΞΕΙΣ</div>
       <div class="bubbles" id="bubbles"></div>
 
-      <div class="socials">
-        <a class="social instagram" href="#" title="Instagram">IG</a>
-        <a class="social youtube" href="#" title="YouTube">YT</a>
-        <a class="social tiktok" href="#" title="TikTok">TT</a>
-        <a class="social twitch" href="#" title="Twitch">TW</a>
-      </div>
+      
     </div>
   `;
 
