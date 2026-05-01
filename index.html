@@ -313,6 +313,38 @@ body {
   box-shadow: 0 12px 30px rgba(0,0,0,.35);
 }
 
+.declension-box {
+  margin-top: 34px;
+  margin-left: auto;
+  width: min(560px, 100%);
+  padding: 16px;
+  border: 1px solid #28445f;
+  border-radius: 16px;
+  background: rgba(18,38,58,.5);
+}
+
+.declension-title {
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #b8d7ff;
+}
+
+.declension-box table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.declension-box th,
+.declension-box td {
+  border: 1px solid #28445f;
+  padding: 8px;
+  text-align: center;
+}
+
+.declension-box th {
+  color: #9fb3c8;
+}
+
 .star {
   cursor: pointer;
   font-size: 25px;
@@ -604,17 +636,17 @@ function detectType(title, text) {
   const t = (title + " " + text).toLowerCase();
 
   if (t.includes("μιμητικός ήχος") || t.includes("ήχος")) return "Ήχος";
-  if (title.includes(" ") || title.includes(";") || title.includes(",") || title.includes("/")) return "Έκφραση / Φράση";
+  if (title.includes(" ") || title.includes(";") || title.includes(",") || title.includes("/") || title.includes("!")) return "Έκφραση / Φράση";
   if (title.endsWith("ω") || title.endsWith("ομαι") || title.endsWith("ώ")) return "Ρήμα";
   if (title.endsWith("ος") || title.endsWith("ης") || title.endsWith("ας") || title.endsWith("α") || title.endsWith("η") || title.endsWith("ι")) return "Ουσιαστικό";
-  if (title.endsWith("ος") || title.endsWith("η") || title.endsWith("ο")) return "Επίθετο";
+  if (title.endsWith("ο")) return "Επίθετο";
 
   return "Λήμμα";
 }
 
 function detectSynonyms(text) {
   const match = text.match(/Συν:\s*([^\n.]+)/i);
-  return match ? match[1].trim() : "—";
+  return match ? match[1].trim() : "";
 }
 
 function detectDerivatives(title) {
@@ -624,20 +656,103 @@ function detectDerivatives(title) {
     "Χόντρεμα": "χοντραίνω",
     "Καφεδίνκος": "καφές, καφεδάκι"
   };
-  return map[title] || "—";
+  return map[title] || "";
 }
 
 function detectAntonyms(title) {
-  return "—";
+  return "";
 }
 
 function buildMeta(title, text) {
+  const rows = [];
+
+  const type = detectType(title, text);
+  if (type) rows.push(`<div><b>Κατηγορία:</b> ${type}</div>`);
+
+  const derivatives = detectDerivatives(title);
+  if (derivatives) rows.push(`<div><b>Παράγωγα:</b> ${escapeHTML(derivatives)}</div>`);
+
+  const synonyms = detectSynonyms(text);
+  if (synonyms) rows.push(`<div><b>Συνώνυμα:</b> ${escapeHTML(synonyms)}</div>`);
+
+  const antonyms = detectAntonyms(title);
+  if (antonyms) rows.push(`<div><b>Αντώνυμα:</b> ${escapeHTML(antonyms)}</div>`);
+
+  if (!rows.length) return "";
+  return `<div class="entry-meta">${rows.join("")}</div>`;
+}
+
+function isDeclinable(type) {
+  return ["Ουσιαστικό", "Επίθετο", "Λήμμα"].includes(type);
+}
+
+function getDeclension(title, type) {
+  let word = title.split(/[ ,;/!]/)[0].trim();
+
+  const known = {
+    "Τάταρος": ["ο Τάταρος", "του Τάταρου", "τον Τάταρο", "Τάταρε", "οι Τάταροι", "των Τατάρων", "τους Τάταρους", "Τάταροι"],
+    "Χιμπατζής": ["ο Χιμπατζής", "του Χιμπατζή", "τον Χιμπατζή", "Χιμπατζή", "οι Χιμπατζήδες", "των Χιμπατζήδων", "τους Χιμπατζήδες", "Χιμπατζήδες"],
+    "Βατραχομούρης": ["ο Βατραχομούρης", "του Βατραχομούρη", "τον Βατραχομούρη", "Βατραχομούρη", "οι Βατραχομούρηδες", "των Βατραχομούρηδων", "τους Βατραχομούρηδες", "Βατραχομούρηδες"],
+    "Λίγδας": ["ο Λίγδας", "του Λίγδα", "τον Λίγδα", "Λίγδα", "οι Λίγδες", "των Λίγδων", "τους Λίγδες", "Λίγδες"],
+    "Γιαταγάνι": ["το Γιαταγάνι", "του Γιαταγανιού", "το Γιαταγάνι", "Γιαταγάνι", "τα Γιαταγάνια", "των Γιαταγανιών", "τα Γιαταγάνια", "Γιαταγάνια"],
+    "Ροδέλα": ["η Ροδέλα", "της Ροδέλας", "τη Ροδέλα", "Ροδέλα", "οι Ροδέλες", "των Ροδελών", "τις Ροδέλες", "Ροδέλες"],
+    "Κλανοβαλβίδα": ["η Κλανοβαλβίδα", "της Κλανοβαλβίδας", "την Κλανοβαλβίδα", "Κλανοβαλβίδα", "οι Κλανοβαλβίδες", "των Κλανοβαλβίδων", "τις Κλανοβαλβίδες", "Κλανοβαλβίδες"],
+    "Πριμαντόνα": ["η Πριμαντόνα", "της Πριμαντόνας", "την Πριμαντόνα", "Πριμαντόνα", "οι Πριμαντόνες", "των Πριμαντόνων", "τις Πριμαντόνες", "Πριμαντόνες"],
+    "Τρύπα": ["η Τρύπα", "της Τρύπας", "την Τρύπα", "Τρύπα", "οι Τρύπες", "των Τρυπών", "τις Τρύπες", "Τρύπες"],
+    "Σωληνίσκος": ["ο Σωληνίσκος", "του Σωληνίσκου", "τον Σωληνίσκο", "Σωληνίσκε", "οι Σωληνίσκοι", "των Σωληνίσκων", "τους Σωληνίσκους", "Σωληνίσκοι"]
+  };
+
+  if (known[word]) return known[word];
+
+  if (word.endsWith("ος")) {
+    const stem = word.slice(0, -2);
+    return [`ο ${word}`, `του ${stem}ου`, `τον ${word}`, `${stem}ε`, `οι ${stem}οι`, `των ${stem}ων`, `τους ${stem}ους`, `${stem}οι`];
+  }
+
+  if (word.endsWith("ης")) {
+    const stem = word.slice(0, -2);
+    return [`ο ${word}`, `του ${stem}η`, `τον ${stem}η`, `${stem}η`, `οι ${stem}ηδες`, `των ${stem}ηδων`, `τους ${stem}ηδες`, `${stem}ηδες`];
+  }
+
+  if (word.endsWith("ας")) {
+    const stem = word.slice(0, -2);
+    return [`ο ${word}`, `του ${stem}α`, `τον ${stem}α`, `${stem}α`, `οι ${stem}ες`, `των ${stem}ων`, `τους ${stem}ες`, `${stem}ες`];
+  }
+
+  if (word.endsWith("α")) {
+    const stem = word.slice(0, -1);
+    return [`η ${word}`, `της ${stem}ας`, `τη ${word}`, word, `οι ${stem}ες`, `των ${stem}ων`, `τις ${stem}ες`, `${stem}ες`];
+  }
+
+  if (word.endsWith("η")) {
+    const stem = word.slice(0, -1);
+    return [`η ${word}`, `της ${stem}ης`, `τη ${word}`, word, `οι ${stem}ες`, `των ${stem}ων`, `τις ${stem}ες`, `${stem}ες`];
+  }
+
+  if (word.endsWith("ι")) {
+    const stem = word.slice(0, -1);
+    return [`το ${word}`, `του ${stem}ιού`, `το ${word}`, word, `τα ${stem}ια`, `των ${stem}ιών`, `τα ${stem}ια`, `${stem}ια`];
+  }
+
+  return null;
+}
+
+function buildDeclensionTable(title, type) {
+  if (!isDeclinable(type)) return "";
+
+  const d = getDeclension(title, type);
+  if (!d) return "";
+
   return `
-    <div class="entry-meta">
-      <div><b>Κατηγορία:</b> ${detectType(title, text)}</div>
-      <div><b>Παράγωγα:</b> ${escapeHTML(detectDerivatives(title))}</div>
-      <div><b>Συνώνυμα:</b> ${escapeHTML(detectSynonyms(text))}</div>
-      <div><b>Αντώνυμα:</b> ${escapeHTML(detectAntonyms(title))}</div>
+    <div class="declension-box">
+      <div class="declension-title">Κλίση</div>
+      <table>
+        <tr><th>Πτώση</th><th>Ενικός αριθμός</th><th>Πληθυντικός αριθμός</th></tr>
+        <tr><td>Ονομαστική</td><td>${escapeHTML(d[0])}</td><td>${escapeHTML(d[4])}</td></tr>
+        <tr><td>Γενική</td><td>${escapeHTML(d[1])}</td><td>${escapeHTML(d[5])}</td></tr>
+        <tr><td>Αιτιατική</td><td>${escapeHTML(d[2])}</td><td>${escapeHTML(d[6])}</td></tr>
+        <tr><td>Κλητική</td><td>${escapeHTML(d[3])}</td><td>${escapeHTML(d[7])}</td></tr>
+      </table>
     </div>
   `;
 }
@@ -691,6 +806,8 @@ function openEntry(entry) {
     `;
   }
 
+  const type = detectType(entry.title, clean);
+
   document.getElementById("content").innerHTML = `
     <button class="back-btn" onclick="goHome()">← Επιστροφή</button>
 
@@ -704,7 +821,11 @@ function openEntry(entry) {
 
       ${buildMeta(entry.title, clean)}
 
-      <div class="entry-body">${linkReferences(clean, entry.title)}${imageHTML}</div>
+      <div class="entry-body">
+        ${linkReferences(clean, entry.title)}
+        ${imageHTML}
+        ${buildDeclensionTable(entry.title, type)}
+      </div>
     </article>
   `;
 }
