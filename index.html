@@ -11,19 +11,19 @@
 
 :root {
   color-scheme: dark light;
-  --bg: var(--bg);
+  --bg: #071421;
   --text: #e6edf3;
-  --muted: var(--muted);
-  --muted-2: var(--muted-2);
-  --border: var(--border);
-  --border-soft: var(--border-soft);
-  --panel: var(--panel);
-  --panel-strong: var(--panel-strong);
-  --surface: var(--surface);
-  --surface-soft: var(--surface-soft);
-  --hover: var(--hover);
-  --accent: var(--accent);
-  --accent-soft: var(--accent-soft);
+  --muted: #7890a8;
+  --muted-2: #9fb3c8;
+  --border: #28445f;
+  --border-soft: #1f3a52;
+  --panel: rgba(8,24,38,.75);
+  --panel-strong: rgba(7,20,33,.95);
+  --surface: rgba(18,38,58,.85);
+  --surface-soft: rgba(18,38,58,.45);
+  --hover: rgba(255,255,255,.08);
+  --accent: #78a6ff;
+  --accent-soft: rgba(88,166,255,.22);
 }
 
 @media (prefers-color-scheme: light) {
@@ -46,19 +46,19 @@
 
 html[data-theme="dark"] {
   color-scheme: dark;
-  --bg: var(--bg);
+  --bg: #071421;
   --text: #e6edf3;
-  --muted: var(--muted);
-  --muted-2: var(--muted-2);
-  --border: var(--border);
-  --border-soft: var(--border-soft);
-  --panel: var(--panel);
-  --panel-strong: var(--panel-strong);
-  --surface: var(--surface);
-  --surface-soft: var(--surface-soft);
-  --hover: var(--hover);
-  --accent: var(--accent);
-  --accent-soft: var(--accent-soft);
+  --muted: #7890a8;
+  --muted-2: #9fb3c8;
+  --border: #28445f;
+  --border-soft: #1f3a52;
+  --panel: rgba(8,24,38,.75);
+  --panel-strong: rgba(7,20,33,.95);
+  --surface: rgba(18,38,58,.85);
+  --surface-soft: rgba(18,38,58,.45);
+  --hover: rgba(255,255,255,.08);
+  --accent: #78a6ff;
+  --accent-soft: rgba(88,166,255,.22);
 }
 
 html[data-theme="light"] {
@@ -657,13 +657,13 @@ body {
 <body>
 
 <div class="header" onclick="goHome()">
-  <img src="https://i.ibb.co/ZRJ23fvR/kranoumpanoumpanoumpa.png">
+  <img src="https://i.ibb.co/9m6hW6bn/kranoumpanoumpanoumpa-1.png">
   <strong>tioumpa.org</strong>
   <div class="theme-control" onclick="event.stopPropagation()">
     <label for="themeSelect">Θέμα</label>
     <select id="themeSelect" onchange="setTheme(this.value)">
       <option value="system">Αυτόματο</option>
-      <option value="dark">Σκούρο</option>
+      <option value="dark" selected>Σκούρο</option>
       <option value="light">Ανοιχτό</option>
     </select>
   </div>
@@ -685,7 +685,7 @@ body {
 
 <script>
 
-const savedTheme = localStorage.getItem("themeChoice") || "system";
+const savedTheme = localStorage.getItem("themeChoice") || "dark";
 applyTheme(savedTheme);
 
 function applyTheme(value) {
@@ -763,132 +763,28 @@ function getEntryCleanText(entry) {
   return lines.join("\n")
     .replace("Περιγραφή:", "")
     .replace("Περγιφραφή:", "")
-    .replace(/\[τύπος:\s*[^\]]+\]/gi, "")
-    .replace(/\[type:\s*[^\]]+\]/gi, "")
     .trim();
 }
 
 function detectType(title, text = "") {
-  const rawTitle = String(title || "").trim();
-  const cleanText = String(text || "").trim();
-  const lowerTitle = rawTitle.toLocaleLowerCase("el-GR");
-  const lowerText = cleanText.toLocaleLowerCase("el-GR");
-  const combined = (lowerTitle + " " + lowerText).normalize("NFC");
+  const t = (title + " " + text).toLowerCase();
 
-  // 1) Χειροκίνητο override μέσα στο data.txt:
-  // γράψε κάπου στην περιγραφή: [τύπος: Ρήμα] ή [τύπος: Ουσιαστικό] κλπ.
-  const explicit = cleanText.match(/\[τύπος:\s*([^\]]+)\]/i) || cleanText.match(/\[type:\s*([^\]]+)\]/i);
-  if (explicit) return normalizeTypeName(explicit[1]);
+  if (t.includes("μιμητικός ήχος") || t.includes("ήχος")) return "Ήχος";
+  if (title.endsWith("ω") || title.endsWith("ομαι") || title.endsWith("ώ")) return "Ρήμα";
 
-  // 2) Γνωστά patterns από λεξικό / slang entries.
-  const knownTypes = {
-    "τιούμπα": "Έκφραση",
-    "τιούμπε": "Έκφραση",
-    "βουτς βουτς βουτς": "Ήχος",
-    "γκέγκε": "Έκφραση",
-    "ονοκοκοκο": "Έκφραση"
-  };
-  if (knownTypes[lowerTitle]) return knownTypes[lowerTitle];
+  const firstWord = title.split(/[ ,;/!]/)[0].trim();
 
-  // 3) Αν έχει πολλά σημεία στίξης ή ολόκληρη πρόταση, είναι έκφραση.
-  const hasPhrasePunctuation = /[;!?.,…]/.test(rawTitle);
-  const wordCount = rawTitle.split(/\s+/).filter(Boolean).length;
-  if (wordCount >= 3 || hasPhrasePunctuation) {
-    if (combined.includes("ήχος") || combined.includes("μιμητικ")) return "Ήχος";
-    return "Έκφραση";
-  }
-
-  // 4) Ρήματα: τα ελέγχουμε ΠΡΙΝ από ουσιαστικά.
-  // Πιάνει: -ω, -ώ, -άω, -άμαι, -ιέμαι, -ούμαι, -ομαι κλπ.
-  const firstWord = lowerTitle.split(/[ ,;/!()«»"']/)[0].trim();
-
-  const verbEndings = [
-    "ομαι", "άμαι", "ιέμαι", "ούμαι", "αμαι",
-    "άω", "αω", "ώ", "ω"
-  ];
-
-  const likelyVerbByEnding = verbEndings.some(end => firstWord.endsWith(end));
-
-  const verbHints = [
-    "ρήμα", "ενέργεια", "πράξη", "κάνω", "κάνει", "κάνεις", "κάνουν",
-    "χρησιμοποιείται όταν κάποιος κάνει", "δηλώνει ότι", "σημαίνει κάνω",
-    "αναφέρεται στην πράξη", "το να "
-  ];
-
-  const likelyVerbByText = verbHints.some(h => combined.includes(h));
-
-  if (likelyVerbByEnding || likelyVerbByText) return "Ρήμα";
-
-  // 5) Ήχος.
   if (
-    combined.includes("ήχος") ||
-    combined.includes("μιμητικός") ||
-    combined.includes("ηχομιμητικό") ||
-    combined.includes("ηχητικό")
-  ) return "Ήχος";
-
-  // 6) Επίθετα.
-  // Θέλουμε να ΜΗΝ τα μπερδεύει όλα με ουσιαστικά.
-  const adjectiveHints = [
-    "επίθετο", "χαρακτηρίζει", "αυτός που είναι", "αυτό που είναι",
-    "χαρακτηρισμός", "περιγράφει κάποιον", "περιγράφει κάτι"
-  ];
-  if (adjectiveHints.some(h => combined.includes(h))) return "Επίθετο";
-
-  // Κλασικές τριάδες επιθέτου: -ος/-η/-ο, -ος/-α/-ο, -ύς/-ιά/-ύ κλπ.
-  if (/^[α-ωάέήίόύώϊϋΐΰ]+(ος|η|ο)\s*\/\s*[α-ωάέήίόύώϊϋΐΰ]+/i.test(lowerTitle)) {
-    return "Επίθετο";
-  }
-
-  // 7) Ουσιαστικά με άρθρο ή λέξεις-κλειδιά.
-  const nounHints = [
-    "ουσιαστικό", "πρόσωπο", "πράγμα", "αντικείμενο", "μέρος του σώματος",
-    "ονομασία", "λέξη για", "σημαίνει ο", "σημαίνει η", "σημαίνει το"
-  ];
-  if (nounHints.some(h => combined.includes(h))) return "Ουσιαστικό";
-
-  if (/^(ο|η|το)\s+/.test(lowerTitle)) return "Ουσιαστικό";
-
-  // 8) Αν είναι δύο λέξεις και μοιάζει με ονοματική φράση, κράτα το ως Έκφραση,
-  // όχι ουσιαστικό, για να μη βγαίνουν λάθος κατηγορίες.
-  if (wordCount === 2) {
-    const second = lowerTitle.split(/\s+/)[1] || "";
-    if (second.endsWith("ος") || second.endsWith("ης") || second.endsWith("ας") || second.endsWith("α") || second.endsWith("η") || second.endsWith("ι")) {
-      return "Έκφραση";
-    }
-  }
-
-  // 9) Fallback ουσιαστικού μόνο για μονές λέξεις με έντονα ουσιαστικές καταλήξεις.
-  if (
-    firstWord.endsWith("ος") ||
-    firstWord.endsWith("ης") ||
-    firstWord.endsWith("ας") ||
-    firstWord.endsWith("της") ||
-    firstWord.endsWith("τήρας") ||
-    firstWord.endsWith("μα") ||
-    firstWord.endsWith("ση") ||
-    firstWord.endsWith("ια") ||
-    firstWord.endsWith("α") ||
-    firstWord.endsWith("η") ||
-    firstWord.endsWith("ι")
+    firstWord.endsWith("ος") || firstWord.endsWith("ης") || firstWord.endsWith("ας") ||
+    firstWord.endsWith("α") || firstWord.endsWith("η") || firstWord.endsWith("ι")
   ) return "Ουσιαστικό";
 
-  // 10) Αν έχει δύο λέξεις και δεν πιάστηκε αλλού, μάλλον είναι έκφραση.
-  if (wordCount > 1) return "Έκφραση";
+  if (
+    title.includes(" ") || title.includes(";") || title.includes(",") ||
+    title.includes("/") || title.includes("!")
+  ) return "Έκφραση";
 
   return "Λήμμα";
-}
-
-function normalizeTypeName(value) {
-  const v = String(value || "").trim().toLocaleLowerCase("el-GR");
-
-  if (v.includes("ρημ")) return "Ρήμα";
-  if (v.includes("ουσιασ")) return "Ουσιαστικό";
-  if (v.includes("επιθ")) return "Επίθετο";
-  if (v.includes("ηχ")) return "Ήχος";
-  if (v.includes("φρασ") || v.includes("εκφρ")) return "Έκφραση";
-
-  return value.trim();
 }
 
 function getEntryType(entry) {
@@ -985,7 +881,7 @@ function route() {
 function showHome() {
   document.getElementById("content").innerHTML = `
     <div class="home">
-      <img class="home-logo" src="https://i.ibb.co/ZRJ23fvR/kranoumpanoumpanoumpa.png">
+      <img class="home-logo" src="https://i.ibb.co/9m6hW6bn/kranoumpanoumpanoumpa-1.png">
       <h1>tioumpa.org</h1>
       <div class="subtitle">ΤΟ ΛΕΞΙΚΟ ΤΟΥ TEOSTY</div>
       <div class="email">Αν θέλετε να επικοινωνήσετε μαζί μας για οποιαδήποτε αλλαγή και προσθήκη στείλτε μας μήνυμα στο: info@tioumpa.org</div>
@@ -1002,24 +898,19 @@ function showHome() {
       </div>
 
       <div class="home-toggle-section">
-        <button onclick="toggleHomeList('trendingBox')">🔥 Trending Λέξεις</button>
+        <button onclick="toggleHomeList('trendingBox')">🔥 Εμφάνιση Trending / Popular</button>
         <div id="trendingBox" class="hidden-box">${getTrendingHTML()}</div>
       </div>
 
       <div class="home-toggle-section">
-        <button onclick="toggleHomeList('favoritesBox')">⭐ Αγαπημένα</button>
+        <button onclick="toggleHomeList('favoritesBox')">⭐ Εμφάνιση Favorites</button>
         <div id="favoritesBox" class="hidden-box">${getFavoritesHTML()}</div>
       </div>
 
       <div class="random-title">ΤΥΧΑΙΕΣ ΛΕΞΕΙΣ</div>
       <div class="bubbles" id="bubbles"></div>
 
-      <div class="socials">
-        <a class="social instagram" href="#" title="Instagram">IG</a>
-        <a class="social youtube" href="#" title="YouTube">YT</a>
-        <a class="social tiktok" href="#" title="TikTok">TT</a>
-        <a class="social twitch" href="#" title="Twitch">TW</a>
-      </div>
+      
     </div>
   `;
 
