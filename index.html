@@ -769,22 +769,22 @@ function getEntryCleanText(entry) {
 function detectType(title, text = "") {
   const t = (title + " " + text).toLowerCase();
 
-  if (t.includes("μιμητικός ήχος") || t.includes("ήχος")) return "Ήχος";
-  if (title.endsWith("ω") || title.endsWith("ομαι") || title.endsWith("ώ")) return "Ρήμα";
+  if (t.includes("μιμητικός ήχος") || t.includes("ήχος")) return " ";
+  if (title.endsWith("ω") || title.endsWith("ομαι") || title.endsWith("ώ")) return " ";
 
   const firstWord = title.split(/[ ,;/!]/)[0].trim();
 
   if (
     firstWord.endsWith("ος") || firstWord.endsWith("ης") || firstWord.endsWith("ας") ||
     firstWord.endsWith("α") || firstWord.endsWith("η") || firstWord.endsWith("ι")
-  ) return "Ουσιαστικό";
+  ) return " ";
 
   if (
     title.includes(" ") || title.includes(";") || title.includes(",") ||
     title.includes("/") || title.includes("!")
-  ) return "Έκφραση";
+  ) return " ";
 
-  return "Λήμμα";
+  return " ";
 }
 
 function getEntryType(entry) {
