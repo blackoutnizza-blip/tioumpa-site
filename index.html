@@ -779,7 +779,7 @@ function init(text) {
       const title = firstLine
         .replace(/^Ατάκα\s*\d+\s*:?\s*/i, "")
         .replace(/^Ατακα\s*\d+\s*:?\s*/i, "")
-        .replace(/(^|\s)\+[^\s.,;:!?]+/g, " ")
+        .replace(/(^|\s)\+[^+\n.,;:!?]+/g, " ")
         .trim();
       return { title, full: block };
     })
@@ -805,13 +805,13 @@ function getEntryCleanText(entry) {
   return lines.join("\n")
     .replace("Περιγραφή:", "")
     .replace("Περγιφραφή:", "")
-    .replace(/(^|\s)\+[^\s.,;:!?]+/g, " ")
+    .replace(/(^|\s)\+[^+\n.,;:!?]+/g, " ")
     .trim();
 }
 
 function detectTypes(title, text = "") {
   const all = title + " " + text;
-  const matches = [...all.matchAll(/(?:^|\s)\+([^\s.,;:!?]+)/g)];
+  const matches = [...all.matchAll(/(?:^|\s)\+([^+\n.,;:!?]+)/g)];
   return [...new Set(matches.map(m => m[1].trim()).filter(Boolean))];
 }
 
