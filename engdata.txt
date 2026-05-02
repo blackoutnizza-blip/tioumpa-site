@@ -376,5 +376,8 @@ A korasio who walks with a swaying gait.
 Περιγραφή: fighting
 Physical assault or hitting someone with the hand. e.g. "Min xirodikite!"
 
-Ατάκα97: Frapedoupoli
+Ατάκα97: Frapedoupoli +name
 Περιγραφή: Thessaloniki & Kostis Raptopoulos' show on Youtube. https://thessaloniki.travel/wp-content/uploads/2021/06/blog.jpg
+
+Ατάκα98: Greece, land of fire +phrase
+Περιγραφή: A poetic/exaggerated way of saying that “Greece is a land of fire,” meaning a place of intensity, passion, heatwaves, wildfires, or unrest.
