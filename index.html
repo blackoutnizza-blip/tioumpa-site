@@ -15,7 +15,7 @@
 
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-
+  
 <style>
 * { box-sizing: border-box; }
 
@@ -498,7 +498,7 @@ body {
 
 .entry-title {
   font-size: 34px;
-  font-style: regular;
+  font-style: italic;
   font-weight: 400;
   margin-bottom: 12px;
 }
@@ -532,7 +532,7 @@ body {
 
 .entry-ref {
   color: var(--accent);
-  font-style: regular;
+  font-style: italic;
   cursor: pointer;
 }
 
@@ -1017,6 +1017,172 @@ html[data-theme="light"] .search-icon {
   }
 }
 
+
+/* RIGHT DICTIONARY PANEL + FILTER FIX */
+.sidebar {
+  border-right: none;
+  border-left: 1px solid var(--border-soft);
+}
+
+.resizer {
+  background: linear-gradient(180deg, transparent, var(--border), transparent);
+}
+
+.filter-box {
+  border-radius: 24px;
+  padding: 12px;
+  max-height: 620px;
+  overflow: hidden;
+}
+
+.filter-box.collapsed {
+  max-height: 92px;
+  padding: 12px;
+}
+
+.filter-box.collapsed .filters {
+  max-height: 38px;
+  overflow: hidden;
+  padding-bottom: 2px;
+}
+
+.filter-box.collapsed .filters .filter-btn.active {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+}
+
+.filter-header {
+  margin-bottom: 10px;
+}
+
+.filter-box.collapsed .filter-header {
+  margin-bottom: 8px;
+}
+
+.filter-toggle {
+  width: 34px;
+  height: 28px;
+  border-radius: 999px;
+}
+
+/* COLOR THEME CONCEPT */
+.theme-concept {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.theme-auto {
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: Inter, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform .2s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.theme-auto:hover,
+.theme-auto.active {
+  transform: translateY(-1px);
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(120,166,255,.12);
+}
+
+.theme-toggle {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.theme-toggle-track {
+  position: relative;
+  width: 106px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: linear-gradient(135deg, rgba(29,61,98,.95), rgba(17,39,63,.9));
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 13px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 8px 22px rgba(0,0,0,.22);
+  overflow: hidden;
+}
+
+.theme-moon,
+.theme-sun {
+  position: relative;
+  z-index: 2;
+  font-size: 24px;
+  line-height: 1;
+  transition: transform .28s ease, opacity .28s ease;
+}
+
+.theme-moon {
+  color: #bfe0ff;
+}
+
+.theme-sun {
+  color: #79c7ff;
+}
+
+.theme-knob {
+  position: absolute;
+  z-index: 1;
+  left: 4px;
+  top: 4px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(105,153,211,.72);
+  border: 1px solid rgba(180,215,255,.55);
+  box-shadow: 0 0 0 4px rgba(120,166,255,.18), inset 0 1px 0 rgba(255,255,255,.22);
+  transition: left .34s cubic-bezier(.2,.9,.2,1), transform .34s cubic-bezier(.2,.9,.2,1), background .28s ease;
+}
+
+.theme-concept[data-theme-state="light"] .theme-knob {
+  left: 68px;
+  background: rgba(95,184,230,.72);
+}
+
+.theme-concept[data-theme-state="light"] .theme-sun {
+  transform: scale(1.1) rotate(25deg);
+}
+
+.theme-concept[data-theme-state="dark"] .theme-moon {
+  transform: scale(1.1) rotate(-12deg);
+}
+
+.theme-concept[data-theme-state="system"] .theme-knob {
+  left: 36px;
+}
+
+.theme-concept[data-theme-state="system"] .theme-moon,
+.theme-concept[data-theme-state="system"] .theme-sun {
+  opacity: .8;
+}
+
+.theme-option,
+.theme-indicator {
+  display: none;
+}
+
+@media (max-width: 850px) {
+  .sidebar {
+    border-left: none;
+    border-bottom: 1px solid var(--border-soft);
+  }
+}
+
 </style>
 </head>
 
@@ -1027,11 +1193,15 @@ html[data-theme="light"] .search-icon {
   <strong> </strong>
   <div class="theme-control" onclick="event.stopPropagation()">
     <label data-i18n="colorTheme">Color Theme</label>
-    <div class="theme-switch" id="themeSwitch">
-      <span class="theme-indicator" id="themeIndicator"></span>
-      <button class="theme-option" type="button" data-theme-value="system" onclick="setTheme('system')" data-i18n="auto">Auto</button>
-      <button class="theme-option" type="button" data-theme-value="dark" onclick="setTheme('dark')" data-i18n="dark">Dark</button>
-      <button class="theme-option" type="button" data-theme-value="light" onclick="setTheme('light')" data-i18n="light">Light</button>
+    <div class="theme-concept" id="themeSwitch">
+      <button class="theme-auto" type="button" data-theme-value="system" onclick="setTheme('system')" data-i18n="auto">Auto</button>
+      <button class="theme-toggle" type="button" id="themeToggle" onclick="toggleThemeMode()" aria-label="Toggle theme">
+        <span class="theme-toggle-track">
+          <span class="theme-moon">☾</span>
+          <span class="theme-sun">☀</span>
+          <span class="theme-knob"></span>
+        </span>
+      </button>
     </div>
   </div>
   <div class="lang-control" onclick="event.stopPropagation()">
@@ -1045,6 +1215,10 @@ html[data-theme="light"] .search-icon {
 </div>
 
 <div class="app">
+  <main class="content" id="content"></main>
+
+  <div class="resizer" id="resizer" title="Σύρε για αλλαγή πλάτους"></div>
+
   <aside class="sidebar" id="sidebar">
     <div class="filter-box" id="filterBox">
       <div class="filter-header">
@@ -1055,10 +1229,6 @@ html[data-theme="light"] .search-icon {
     </div>
     <div id="list"></div>
   </aside>
-
-  <div class="resizer" id="resizer" title="Σύρε για αλλαγή πλάτους"></div>
-
-  <main class="content" id="content"></main>
 </div>
 
 <script>
@@ -1066,7 +1236,7 @@ html[data-theme="light"] .search-icon {
 const translations = {
   el: {
     colorTheme: "Color Theme", language: "Γλώσσα", auto: "Auto", dark: "Dark", light: "Light", filters: "filters",
-    searchPlaceholder: "Αναζήτηση...", clear: "Clear", trends: "🔥 Trends", favorites: "⭐ Αγαπημενα", randomWords: "ΤΥΧΑΙΕΣ ΛΕΞΕΙΣ",
+    searchPlaceholder: "Αναζήτηση...", clean: "Clean", trends: "🔥 Trends", favorites: "⭐ Αγαπημενα", randomWords: "ΤΥΧΑΙΕΣ ΛΕΞΕΙΣ",
     noTrending: "Δεν υπάρχουν ακόμα δεδομένα", noFavorites: "Δεν έχεις αποθηκεύσει ακόμα αγαπημένα",
     dataTitle: "Δεν φορτώθηκε το data.txt", dataText: "Βεβαιώσου ότι το αρχείο λέγεται ακριβώς <b>data.txt</b> και είναι στον ίδιο φάκελο με το index.html.",
     micUnsupported: "Το μικρόφωνο δεν υποστηρίζεται σε αυτόν τον browser.", back: "← Επιστροφή", declension: "Κλίση",
@@ -1076,7 +1246,7 @@ const translations = {
   },
   en: {
     colorTheme: "Color Theme", language: "Language", auto: "Auto", dark: "Dark", light: "Light", filters: "filters",
-    searchPlaceholder: "Search...", clear: "Clear", trends: "🔥 Trends", favorites: "⭐ Favorites", randomWords: "RANDOM WORDS",
+    searchPlaceholder: "Search...", clean: "Clear", trends: "🔥 Trends", favorites: "⭐ Favorites", randomWords: "RANDOM WORDS",
     noTrending: "No data yet", noFavorites: "You have not saved any favorites yet",
     dataTitle: "data.txt did not load", dataText: "Make sure the file is named exactly <b>data.txt</b> and is in the same folder as index.html.",
     micUnsupported: "Microphone is not supported in this browser.", back: "← Back", declension: "Declension",
@@ -1138,9 +1308,28 @@ function moveIndicator(containerId, indicatorId, selector, valueAttr, value) {
   });
 }
 
+function effectiveThemeValue() {
+  const value = localStorage.getItem("themeChoice") || "dark";
+  if (value !== "system") return value;
+  return window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+}
+
 function updateThemeControl() {
   const value = localStorage.getItem("themeChoice") || "dark";
-  moveIndicator("themeSwitch", "themeIndicator", ".theme-option", "data-theme-value", value);
+  const effective = effectiveThemeValue();
+
+  const themeSwitch = document.getElementById("themeSwitch");
+  if (themeSwitch) {
+    themeSwitch.setAttribute("data-theme-state", value === "system" ? "system" : effective);
+  }
+
+  const auto = document.querySelector(".theme-auto");
+  if (auto) auto.classList.toggle("active", value === "system");
+}
+
+function toggleThemeMode() {
+  const effective = effectiveThemeValue();
+  setTheme(effective === "dark" ? "light" : "dark");
 }
 
 function updateLanguageControl() {
@@ -1180,6 +1369,7 @@ function setTheme(value) {
 window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", () => {
   const choice = localStorage.getItem("themeChoice") || "system";
   if (choice === "system") applyTheme("system");
+  updateThemeControl();
 });
 
 let entries = [];
@@ -1193,7 +1383,7 @@ let currentEntryId = null;
 let titleIdMap = JSON.parse(localStorage.getItem("titleIdMap") || "{}");
 
 function getLogoFile() {
-  return currentLanguage === "en" ? "engtioumpa.org.svg" : "tioumpa.org.svg";
+  return currentLanguage === "en" ? "eng.svg" : ".svg";
 }
 
 function updateLogo() {
@@ -1460,7 +1650,7 @@ function showHome() {
   document.getElementById("content").innerHTML = `
     <div class="home">
       <img class="home-logo" src="${getLogoFile()}">
-      <h1> </h1>
+      <h1></h1>
       <div class="subtitle">${t("subtitle")}</div>
       <div class="email">${t("email")}</div>
       <div class="search-copy">${t("searchCopy").replace("{count}", entries.length)}</div>
@@ -1477,11 +1667,6 @@ function showHome() {
 
       <button class="mobile-dictionary-toggle" id="mobileDictionaryToggle" onclick="toggleDictionaryResults()">${t("showDictionary")}</button>
       <div class="home-results" id="homeResults"></div>
-
-      <div class="home-toggle-section">
-        <button onclick="toggleHomeList('trendingBox')">${t("trends")}</button>
-        <div id="trendingBox" class="hidden-box">${getTrendingHTML()}</div>
-      </div>
 
       <div class="home-toggle-section">
         <button onclick="toggleHomeList('favoritesBox')">${t("favorites")}</button>
@@ -1878,7 +2063,7 @@ function setupResizer() {
   const move = e => {
     if (!dragging || window.innerWidth <= 850) return;
     const x = e.touches ? e.touches[0].clientX : e.clientX;
-    const width = Math.min(620, Math.max(280, x));
+    const width = Math.min(620, Math.max(280, window.innerWidth - x));
     sidebar.style.width = width + "px";
     localStorage.setItem("sidebarWidth", width);
   };
