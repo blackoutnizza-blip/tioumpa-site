@@ -317,7 +317,7 @@ body {
   width: 180px;
   height: 180px;
   object-fit: contain;
-  animation: logoFloat 4s ease-in-out infinite;
+  animation: none;
 }
 
 @keyframes logoFloat {
@@ -920,7 +920,7 @@ html[data-theme="light"] .search-icon {
 <body>
 
 <div class="header" onclick="goHome()">
-  <img src="https://i.ibb.co/9m6hW6bn/kranoumpanoumpanoumpa-1.png">
+  <img src="tioumpa.org.svg">
   <strong>tioumpa.org</strong>
   <div class="theme-control" onclick="event.stopPropagation()">
     <label data-i18n="colorTheme">Color Theme</label>
@@ -1281,7 +1281,7 @@ function route() {
 function showHome() {
   document.getElementById("content").innerHTML = `
     <div class="home">
-      <img class="home-logo" src="https://i.ibb.co/9m6hW6bn/kranoumpanoumpanoumpa-1.png">
+      <img class="home-logo" src="tioumpa.org.svg">
       <h1>tioumpa.org</h1>
       <div class="subtitle">${t("subtitle")}</div>
       <div class="email">${t("email")}</div>
