@@ -1,6 +1,4 @@
-from pathlib import Path
-
-content = r'''Ατάκα1: Tioumpa? +entry
+Ατάκα1: Tioumpa? +entry
 Περιγραφή:  What did I say?
 "What did I say?" when read quickly in Greek. Comes from the legends Red Dragon and Moschotelis. Mainly used when some Tataros has said something stupid / smart. When referring to someone in second person: "Tioumpe?"
 
@@ -135,7 +133,7 @@ A device for playing sound from records, mainly used in older times. https://www
 Περιγραφή:  Ouni carnation hat
 A bad condition of a person, thing, or situation.
 
-Ατάκα34: Korasio, Korasida +noun
+Ατάκα34: korasio +noun
 Περιγραφή:  Maiden, young girl
 Medieval/folk word meaning a beautiful girl, young woman.
 
