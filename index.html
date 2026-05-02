@@ -896,8 +896,8 @@ function loadData() {
   .then(text => init(text))
   .catch(err => {
     document.getElementById("content").innerHTML = `
-      <h2>Δεν φορτώθηκε το ${getDataFile()}</h2>
-      <p>Βεβαιώσου ότι το αρχείο λέγεται ακριβώς <b>${getDataFile()}</b> και είναι στον ίδιο φάκελο με το index.html.</p>
+      <h2>coming soon ${getDataFile()}</h2>
+      <p>  <b>${getDataFile()}</b>  .</p>
     `;
     console.error(err);
   });
