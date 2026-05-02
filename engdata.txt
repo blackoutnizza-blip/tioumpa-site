@@ -9,16 +9,15 @@ Chimpantzis: Gorilla mixed with orangutan.
 Vatrachomouris: Someone whose face reminds you of a frog, swollen, with big jowls.
 
 Ατάκα3: Etsi schedio +phrase
-Περιγραφή:  Like this plan / in this way
-In this way, like this. (syn. Toioutotropws)
+Περιγραφή: In this way, like this. (syn. Toioutotropws)
 
 Ατάκα4: Vouts Vouts Vouts +sound
 Περιγραφή:  Vroom-like sound
-Imitation sound of an engine / scooter.
+Imitation sound of an motor bike / scooter.
 
 Ατάκα5: Dakrya charas +phrase
 Περιγραφή:  Tears of joy
-Commonly... semen / white moisturizing substance that comes out of a handbrake / male organ (tioumpa?).
+Semen / white moisturizing substance that comes out of a handbrake / male organ (tioumpa?).
 Phrases: "That kolomagoulios muscle is worth many tears of joy"
 
 Ατάκα6: Kolomagoulios mys +entry
@@ -34,15 +33,14 @@ Male organ / penis / pucha / balls.
 Penis / handbrake in large dimensions. Syn: putsokontaro, palouki, kavli.
 
 Ατάκα9: Gkegke? Onokokoko gkegke? +phrase
-Περιγραφή:  Do you get it? Onokokoko, do you get it?
-Do you understand me or not? Mainly used when some idle / unpaid worker with negative IQ writes something in chat against Teosty's opinion and Thodoris explains it to him.
+Περιγραφή: Do you understand me or not? Mainly used when some idle / unpaid worker with negative IQ writes something in chat against Teosty's opinion and Thodoris explains it to him.
 
 Ατάκα10: Matonei petsaki +phrase
-Περιγραφή:  The little skin bleeds
-Sexual meaning, especially in a more vulgar tone. Also used when some machine/function is underperforming.
+Περιγραφή: The little skin bleeds
+Sexual meaning, especially in a more vulgar tone. Also used when some machine or a function is underperforming.
 
 Ατάκα11: Amisthi ergazomenos +entry
-Περιγραφή:  Unpaid worker
+Περιγραφή:  Unpaid / Unemployment worker
 A young man who shows no respect, wears dark clothes, commonly a kagkouras. He also shouts several vulgar expressions.
 
 Ατάκα12: Den echo lefta gia dikigorous +phrase
@@ -50,7 +48,7 @@ A young man who shows no respect, wears dark clothes, commonly a kagkouras. He a
 I cannot express my objective opinion because I am afraid of getting sued.
 
 Ατάκα13: Kranoumpa noumpa noumpa noumpa noumpatsero, einai enas katergaris champanero +song
-Περιγραφή:  Kranoumpa noumpa... he is a naughty habanero
+Περιγραφή:  Kranoumpa noumpa noumpa noumpa noumpatsero... he is a naughty habanero
 Mainly used when Teosty takes off his helmet. Comes from the song "Koumpatsero": <iframe width="560" height="315" src="https://www.youtube.com/embed/9weudkTQcAk?si=p8aRaQ9XK_zhTDf4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 Ατάκα14: Milimena, xigimena +phrase
@@ -74,7 +72,7 @@ A great opera singer, usually the soprano in the leading role. Mainly used when 
 A nice smell, fragrance, aroma.
 
 Ατάκα19: Mouslouki +noun
-Περιγραφή:  Huge thing / huge food item
+Περιγραφή:  Huge thing or huge food item
 Something very huge, tall, mainly food that is hard to consume.
 
 Ατάκα20: Endotera +noun
@@ -97,7 +95,7 @@ Masturbation, self-pleasure. "I wet" my underwear, "I play with it".
 Περιγραφή:  Direct shots
 The process through which we dynamically enter some related object.
 
-Ατάκα25: Rodela +noun
+Ατάκα25: rodela +noun
 Περιγραφή:  Washer / ring
 Butt hole, ass.
 
@@ -123,7 +121,7 @@ I am, feel, or look classy, clean, fine.
 
 Ατάκα31: Klanovalvida +noun
 Περιγραφή:  Fart valve
-Synonym of kolotrypida. The rodelα located at the back of every human, through which digestible mass / edible product is expelled and fresh protein mass is inserted, mainly for those who enjoy taking it from behind.
+Synonym of kolotrypida. The rodela located at the back of every human, through which digestible mass / edible product is expelled and fresh protein mass is inserted, mainly for those who enjoy taking it from behind.
 
 Ατάκα32: Grammofono (dekatias 80') +noun
 Περιγραφή:  Gramophone (80s decade)
@@ -158,7 +156,7 @@ A person addicted to substances, drug addict.
 
 Ατάκα40: Rgiolika +adjective
 Περιγραφή:  Jerk-like / trashy
-The female jerk / all of them, a derogatory term for a woman.
+The female jerk, a derogatory term for a woman.
 
 Ατάκα41: Aschimantras +adjective
 Περιγραφή:  Ugly-man
@@ -223,7 +221,7 @@ The phone number of Dimosthenis Liakopoulos publishing house (well-known author 
 
 Ατάκα57: Symplektis +noun
 Περιγραφή:  Clutch
-Term used by motorcyclists and passionate car drivers. Mainly used when the process of gas-mass ventilation happens with fast pulsating movements. e.g. "Without clutch I koumponed it."
+Term used by motorcyclists and passionate car drivers. Mainly used when the process of gas-mass ventilation happens with fast pulsating movements. e.g. "Without clutch I koumponed it." https://sekerisautoparts.gr/wp-content/uploads/2021/04/symplektis.jpg
 
 Ατάκα58: Assos (1) +number
 Περιγραφή:  Ace (1)
