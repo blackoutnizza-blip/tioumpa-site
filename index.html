@@ -3,10 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>tioumpa.org - Το λεξικό του Teosty</title>
+
+<meta name="description" content="Το tioumpa.org είναι το λεξικό του Teosty με ατάκες, λέξεις, φράσεις, clips και επεξηγήσεις από την κοινότητα.">
+
+<meta name="keywords" content="tioumpa, tioumpa.org, Teosty, λεξικό Teosty, ατάκες Teosty, λιγδας, ligdas, λιγειρος, booyah tv, booyah, μπουγια, hacky, χακι, τιουμπα, τουμπα, θεσσαλονικη, youtube, tiktok, instagram, insta, τικτοκ, τεοστυ, θοδωρης, αγορινα, clips, kick, κικ, drestvlog, its only, ιτς ονλυ">
+
+<meta name="author" content="tioumpa.org">
+<meta name="robots" content="index, follow">
+
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-
 <style>
 * { box-sizing: border-box; }
 
@@ -194,6 +202,57 @@ body {
   margin-bottom: 12px;
   background: var(--panel-strong);
   backdrop-filter: blur(12px);
+}
+
+
+.filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 9px;
+}
+
+.filter-toggle {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: Inter, sans-serif;
+  font-size: 12px;
+  padding: 4px 9px;
+  cursor: pointer;
+}
+
+.filter-toggle:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.filter-box.collapsed .filters .filter-btn:not(.active) {
+  display: none;
+}
+
+.lang-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lang-control label {
+  font-size: 12px;
+  color: var(--muted-2);
+}
+
+.lang-control select {
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: Inter, sans-serif;
+  padding: 0 10px;
+  cursor: pointer;
 }
 
 .filter-title {
@@ -438,7 +497,7 @@ body {
 
 .entry-title {
   font-size: 34px;
-  font-style: regular;
+  font-style: italic;
   font-weight: 400;
   margin-bottom: 12px;
 }
@@ -472,7 +531,7 @@ body {
 
 .entry-ref {
   color: var(--accent);
-  font-style: regular;
+  font-style: italic;
   cursor: pointer;
 }
 
@@ -701,19 +760,29 @@ html[data-theme="light"] .search-icon {
   <img src="https://i.ibb.co/9m6hW6bn/kranoumpanoumpanoumpa-1.png">
   <strong>tioumpa.org</strong>
   <div class="theme-control" onclick="event.stopPropagation()">
-    <label for="themeSelect">Color Theme</label>
+    <label for="themeSelect" data-i18n="colorTheme">Color Theme</label>
     <select id="themeSelect" onchange="setTheme(this.value)">
-      <option value="system">Auto</option>
-      <option value="dark" selected>Dark</option>
-      <option value="light">Light</option>
+      <option value="system" data-i18n="auto">Auto</option>
+      <option value="dark" selected data-i18n="dark">Dark</option>
+      <option value="light" data-i18n="light">Light</option>
+    </select>
+  </div>
+  <div class="lang-control" onclick="event.stopPropagation()">
+    <label for="langSelect" data-i18n="language">Γλώσσα</label>
+    <select id="langSelect" onchange="setLanguage(this.value)">
+      <option value="el">Ελληνικά</option>
+      <option value="en">English</option>
     </select>
   </div>
 </div>
 
 <div class="app">
   <aside class="sidebar" id="sidebar">
-    <div class="filter-box">
-      <div class="filter-title">filters</div>
+    <div class="filter-box" id="filterBox">
+      <div class="filter-header">
+        <div class="filter-title" data-i18n="filters">filters</div>
+        <button class="filter-toggle" id="filterToggle" onclick="toggleFilters(event)">−</button>
+      </div>
       <div class="filters" id="filters"></div>
     </div>
     <div id="list"></div>
@@ -726,8 +795,70 @@ html[data-theme="light"] .search-icon {
 
 <script>
 
+const translations = {
+  el: {
+    colorTheme: "Color Theme", language: "Γλώσσα", auto: "Auto", dark: "Dark", light: "Light", filters: "filters",
+    searchPlaceholder: "Αναζήτηση...", clean: "Clean", trends: "🔥 Trends", favorites: "⭐ Αγαπημενα", randomWords: "ΤΥΧΑΙΕΣ ΛΕΞΕΙΣ",
+    noTrending: "Δεν υπάρχουν ακόμα δεδομένα", noFavorites: "Δεν έχεις αποθηκεύσει ακόμα αγαπημένα",
+    dataTitle: "Δεν φορτώθηκε το data.txt", dataText: "Βεβαιώσου ότι το αρχείο λέγεται ακριβώς <b>data.txt</b> και είναι στον ίδιο φάκελο με το index.html.",
+    micUnsupported: "Το μικρόφωνο δεν υποστηρίζεται σε αυτόν τον browser.", back: "← Επιστροφή", declension: "Κλίση",
+    case: "Πτώση", singular: "Ενικός αριθμός", plural: "Πληθυντικός αριθμός", nominative: "Ονομαστική", genitive: "Γενική", accusative: "Αιτιατική", vocative: "Κλητική",
+    derivatives: "Παράγωγα:", synonyms: "Συνώνυμα:", antonyms: "Αντώνυμα:", searchCopy: "Αναζήτηση {count} λέξεων από το λεξικό του Teosty.",
+    subtitle: "ΤΟ ΛΕΞΙΚΟ ΤΟΥ TEOSTY", email: "Αν θέλετε να επικοινωνήσετε μαζί μας για οποιαδήποτε αλλαγή ή προσθήκη στείλτε στο: tioumpagr@gmail.com"
+  },
+  en: {
+    colorTheme: "Color Theme", language: "Language", auto: "Auto", dark: "Dark", light: "Light", filters: "filters",
+    searchPlaceholder: "Search...", clean: "Clear", trends: "🔥 Trends", favorites: "⭐ Favorites", randomWords: "RANDOM WORDS",
+    noTrending: "No data yet", noFavorites: "You have not saved any favorites yet",
+    dataTitle: "data.txt did not load", dataText: "Make sure the file is named exactly <b>data.txt</b> and is in the same folder as index.html.",
+    micUnsupported: "Microphone is not supported in this browser.", back: "← Back", declension: "Declension",
+    case: "Case", singular: "Singular", plural: "Plural", nominative: "Nominative", genitive: "Genitive", accusative: "Accusative", vocative: "Vocative",
+    derivatives: "Derivatives:", synonyms: "Synonyms:", antonyms: "Antonyms:", searchCopy: "Search {count} words from Teosty's dictionary.",
+    subtitle: "TEOSTY'S DICTIONARY", email: "To contact us about any change or addition, send an email to: tioumpagr@gmail.com"
+  }
+};
+
+let currentLanguage = localStorage.getItem("languageChoice") || "el";
+let filtersCollapsed = localStorage.getItem("filtersCollapsed") === "true";
+
+function t(key) { return translations[currentLanguage][key] || translations.el[key] || key; }
+
+function setLanguage(value) {
+  currentLanguage = value;
+  localStorage.setItem("languageChoice", value);
+  applyLanguage();
+  renderFilters();
+  if (entries.length) {
+    buildHomeCategorySelect();
+    route();
+  }
+  loadData();
+}
+
+function applyLanguage() {
+  document.documentElement.lang = currentLanguage;
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    if (translations[currentLanguage][key]) el.textContent = translations[currentLanguage][key];
+  });
+  const langSelect = document.getElementById("langSelect");
+  if (langSelect) langSelect.value = currentLanguage;
+}
+
+function getDataFile() {
+  return currentLanguage === "en" ? "engdata.txt" : "data.txt";
+}
+
 const savedTheme = localStorage.getItem("themeChoice") || "dark";
 applyTheme(savedTheme);
+
+window.addEventListener("DOMContentLoaded", () => {
+  applyLanguage();
+  const filterBox = document.getElementById("filterBox");
+  if (filterBox) filterBox.classList.toggle("collapsed", filtersCollapsed);
+  const filterToggle = document.getElementById("filterToggle");
+  if (filterToggle) filterToggle.textContent = filtersCollapsed ? "+" : "−";
+});
 
 function applyTheme(value) {
   if (value === "system") {
@@ -754,23 +885,32 @@ let bubbleTimer = null;
 let activeFilter = "Όλα";
 let searchQuery = "";
 
-fetch("data.txt")
+loadData();
+
+function loadData() {
+  fetch(getDataFile())
   .then(r => {
-    if (!r.ok) throw new Error("data.txt not found");
+    if (!r.ok) throw new Error(getDataFile() + " not found");
     return r.text();
   })
   .then(text => init(text))
   .catch(err => {
     document.getElementById("content").innerHTML = `
-      <h2>Δεν φορτώθηκε το data.txt</h2>
-      <p>Βεβαιώσου ότι το αρχείο λέγεται ακριβώς <b>data.txt</b> και είναι στον ίδιο φάκελο με το index.html.</p>
+      <h2>Δεν φορτώθηκε το ${getDataFile()}</h2>
+      <p>Βεβαιώσου ότι το αρχείο λέγεται ακριβώς <b>${getDataFile()}</b> και είναι στον ίδιο φάκελο με το index.html.</p>
     `;
     console.error(err);
   });
+}
 
 function init(text) {
   const themeSelect = document.getElementById("themeSelect");
   if (themeSelect) themeSelect.value = localStorage.getItem("themeChoice") || "system";
+  applyLanguage();
+  const filterBox = document.getElementById("filterBox");
+  if (filterBox) filterBox.classList.toggle("collapsed", filtersCollapsed);
+  const filterToggle = document.getElementById("filterToggle");
+  if (filterToggle) filterToggle.textContent = filtersCollapsed ? "+" : "−";
 
   entries = text
     .split(/\r?\n(?=Ατάκα\s*\d+\s*:|Ατακα\s*\d+\s*:|Ατάκα\d+\s*:|Ατακα\d+\s*:|Ατάκα\s*\d+\s+|Ατακα\s*\d+\s+)/g)
@@ -827,6 +967,16 @@ function getEntryType(entry) {
   return getEntryTypes(entry)[0] || "";
 }
 
+function toggleFilters(event) {
+  event.stopPropagation();
+  filtersCollapsed = !filtersCollapsed;
+  localStorage.setItem("filtersCollapsed", String(filtersCollapsed));
+  const filterBox = document.getElementById("filterBox");
+  if (filterBox) filterBox.classList.toggle("collapsed", filtersCollapsed);
+  const filterToggle = document.getElementById("filterToggle");
+  if (filterToggle) filterToggle.textContent = filtersCollapsed ? "+" : "−";
+}
+
 function renderFilters() {
   const types = ["Όλα", ...new Set(entries.flatMap(getEntryTypes))].sort((a,b) => {
     if (a === "Όλα") return -1;
@@ -849,6 +999,11 @@ function renderFilters() {
     };
     box.appendChild(btn);
   });
+
+  const filterBox = document.getElementById("filterBox");
+  if (filterBox) filterBox.classList.toggle("collapsed", filtersCollapsed);
+  const filterToggle = document.getElementById("filterToggle");
+  if (filterToggle) filterToggle.textContent = filtersCollapsed ? "+" : "−";
 }
 
 function currentFilteredEntries() {
@@ -919,31 +1074,31 @@ function showHome() {
     <div class="home">
       <img class="home-logo" src="https://i.ibb.co/9m6hW6bn/kranoumpanoumpanoumpa-1.png">
       <h1>tioumpa.org</h1>
-      <div class="subtitle">ΤΟ ΛΕΞΙΚΟ ΤΟΥ TEOSTY</div>
-      <div class="email">Αν θέλετε να επικοινωνήσετε μαζί μας για οποιαδήποτε αλλαγή ή προσθήκη στείλτε στο: tioumpagr@gmail.com</div>
-      <div class="search-copy">Αναζήτηση ${entries.length} λέξεων από το λεξικό του Teosty.</div>
+      <div class="subtitle">${t("subtitle")}</div>
+      <div class="email">${t("email")}</div>
+      <div class="search-copy">${t("searchCopy").replace("{count}", entries.length)}</div>
 
       <div class="search-wrapper">
         <div class="search-main">
           <img class="search-icon" src="https://uxwing.com/wp-content/themes/uxwing/download/user-interface/search-icon.png">
-          <input id="searchMain" placeholder="Αναζήτηση..." value="${escapeAttr(searchQuery)}">
+          <input id="searchMain" placeholder="${escapeAttr(t("searchPlaceholder"))}" value="${escapeAttr(searchQuery)}">
           <span class="mic" onclick="voiceSearch(event)">🎤</span>
         </div>
         <select id="searchCategory"></select>
-        <button onclick="clearSearch()">Clean</button>
+        <button onclick="clearSearch()">${t("clean")}</button>
       </div>
 
       <div class="home-toggle-section">
-        <button onclick="toggleHomeList('trendingBox')">🔥 Trends</button>
+        <button onclick="toggleHomeList('trendingBox')">${t("trends")}</button>
         <div id="trendingBox" class="hidden-box">${getTrendingHTML()}</div>
       </div>
 
       <div class="home-toggle-section">
-        <button onclick="toggleHomeList('favoritesBox')">⭐ Αγαπημενα</button>
+        <button onclick="toggleHomeList('favoritesBox')">${t("favorites")}</button>
         <div id="favoritesBox" class="hidden-box">${getFavoritesHTML()}</div>
       </div>
 
-      <div class="random-title">ΤΥΧΑΙΕΣ ΛΕΞΕΙΣ</div>
+      <div class="random-title">${t("randomWords")}</div>
       <div class="bubbles" id="bubbles"></div>
 
 
@@ -1001,13 +1156,13 @@ function getTrendingHTML() {
     .map(([word]) => `<div class="home-list-item" onclick="location.hash='${encodeURIComponent(word)}'">${escapeHTML(word)}</div>`)
     .join("");
 
-  return trending || `<div class="home-list-item">Δεν υπάρχουν ακόμα δεδομένα</div>`;
+  return trending || `<div class="home-list-item">${t("noTrending")}</div>`;
 }
 
 function getFavoritesHTML() {
   return favorites
     .map(word => `<div class="home-list-item" onclick="location.hash='${encodeURIComponent(word)}'">${escapeHTML(word)}</div>`)
-    .join("") || `<div class="home-list-item">Δεν έχεις αποθηκεύσει ακόμα αγαπημένα</div>`;
+    .join("") || `<div class="home-list-item">${t("noFavorites")}</div>`;
 }
 
 function toggleHomeList(id) {
@@ -1076,13 +1231,13 @@ function buildMeta(title, text) {
   });
 
   const derivatives = detectDerivatives(title);
-  if (derivatives) rows.push(`<span class="meta-pill"><b>Παράγωγα:</b> ${escapeHTML(derivatives)}</span>`);
+  if (derivatives) rows.push(`<span class="meta-pill"><b>${t("derivatives")}</b> ${escapeHTML(derivatives)}</span>`);
 
   const synonyms = detectSynonyms(text);
-  if (synonyms) rows.push(`<span class="meta-pill"><b>Συνώνυμα:</b> ${escapeHTML(synonyms)}</span>`);
+  if (synonyms) rows.push(`<span class="meta-pill"><b>${t("synonyms")}</b> ${escapeHTML(synonyms)}</span>`);
 
   const antonyms = detectAntonyms(title);
-  if (antonyms) rows.push(`<span class="meta-pill"><b>Αντώνυμα:</b> ${escapeHTML(antonyms)}</span>`);
+  if (antonyms) rows.push(`<span class="meta-pill"><b>${t("antonyms")}</b> ${escapeHTML(antonyms)}</span>`);
 
   if (!rows.length) return "";
   return `<div class="entry-meta">${rows.join("")}</div>`;
@@ -1122,13 +1277,13 @@ function buildDeclensionTable(title) {
 
   return `
     <div class="declension-box">
-      <div class="declension-title">Κλίση</div>
+      <div class="declension-title">${t("declension")}</div>
       <table>
-        <tr><th>Πτώση</th><th>Ενικός αριθμός</th><th>Πληθυντικός αριθμός</th></tr>
-        <tr><td>Ονομαστική</td><td>${escapeHTML(n[0])}</td><td>${escapeHTML(n[4])}</td></tr>
-        <tr><td>Γενική</td><td>${escapeHTML(n[1])}</td><td>${escapeHTML(n[5])}</td></tr>
-        <tr><td>Αιτιατική</td><td>${escapeHTML(n[2])}</td><td>${escapeHTML(n[6])}</td></tr>
-        <tr><td>Κλητική</td><td>${escapeHTML(n[3])}</td><td>${escapeHTML(n[7])}</td></tr>
+        <tr><th>${t("case")}</th><th>${t("singular")}</th><th>${t("plural")}</th></tr>
+        <tr><td>${t("nominative")}</td><td>${escapeHTML(n[0])}</td><td>${escapeHTML(n[4])}</td></tr>
+        <tr><td>${t("genitive")}</td><td>${escapeHTML(n[1])}</td><td>${escapeHTML(n[5])}</td></tr>
+        <tr><td>${t("accusative")}</td><td>${escapeHTML(n[2])}</td><td>${escapeHTML(n[6])}</td></tr>
+        <tr><td>${t("vocative")}</td><td>${escapeHTML(n[3])}</td><td>${escapeHTML(n[7])}</td></tr>
       </table>
     </div>
   `;
@@ -1188,7 +1343,7 @@ function openEntry(entry) {
   }
 
   document.getElementById("content").innerHTML = `
-    <button class="back-btn" onclick="goHome()">← Επιστροφή</button>
+    <button class="back-btn" onclick="goHome()">${t("back")}</button>
 
     <article class="entry">
       <div class="entry-title">
@@ -1224,7 +1379,7 @@ function voiceSearch(event) {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
   if (!SpeechRecognition) {
-    alert("Το μικρόφωνο δεν υποστηρίζεται σε αυτόν τον browser.");
+    alert(t("micUnsupported"));
     return;
   }
 
