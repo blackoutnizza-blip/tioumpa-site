@@ -12,7 +12,7 @@ Vatrachomouris: Someone whose face reminds you of a frog, swollen, with big jowl
 Περιγραφή:  Like this plan / in this way
 In this way, like this. (syn. Toioutotropws)
 
-Ατάκα4: Vouts Vouts Vouts +name
+Ατάκα4: Vouts Vouts Vouts +sound
 Περιγραφή:  Vroom-like sound
 Imitation sound of an engine / scooter.
 
@@ -141,7 +141,7 @@ Medieval/folk word meaning a beautiful girl, young woman.
 Περιγραφή:  Hole
 The kolotrypida, the vagina, the woman (refers to a known content creator who unfolds into content creation in Greek and English).
 
-Ατάκα36: Oouuouuouuouu +name
+Ατάκα36: Oouuouuouuouu +sound
 Περιγραφή:  Oouuouuouuouu
 Reply to people with negative IQ, mocking them. Comes from Kostas Tsekos. : <iframe width="560" height="315" src="https://www.youtube.com/embed/H1iDFQCHa_8?si=UMgTnt1XPI10A8br" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -175,7 +175,7 @@ Reply to people with negative IQ, meaning "I do not care... I continue my work."
 Περιγραφή:  Mucky guy
 Nasty insult. This characterization was created from a Teosty video where he ate spicy noodles and released gases through the anal canal (fart), the mouth (burp), and the nasal cavity (snot). Mainly used by kagkouras young men or the so-called unpaid workers.
 
-Ατάκα45: Tourourourou i toutoutoutou +name
+Ατάκα45: Tourourourou i toutoutoutou +sound
 Περιγραφή: Attempt to cover copyrighted music so that when the live is uploaded to YouTube it can be monetized.
 
 Ατάκα46: Yatagani +noun
