@@ -358,12 +358,12 @@ When we enter a subject / situation / object. Sometimes also when the rodelα / 
 Περιγραφή:  I ignite
 I set something on fire. e.g. "Pyrodotw solinisko nikotinis."
 
-Ατάκα92: emvathino
+Ατάκα92: emvathino +verb
 Περιγραφή: deepen
 I consider a topic in depth / I unfold in edible paths.
 
-Ατάκα93: Kranoumpa
+Ατάκα93: Kranoumpa +noun
 Περιγραφή: Helmet https://motofox.gr/6058/str-%CE%BA%CF%81%CE%AC%CE%BD%CE%BF%CF%82-%CE%B1%CE%BD%CE%BF%CE%B9%CF%87%CF%84%CF%8C-next-%CE%B3%CE%BA%CF%81%CE%B9-titanium.jpg
 
-Ατάκα94: Tromba marina
+Ατάκα94: Tromba marina +phrase
 Περιγραφή: Masturbating in the classic way, performing a reciprocating motion. (source slang.gr).
