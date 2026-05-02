@@ -779,6 +779,7 @@ function init(text) {
       const title = firstLine
         .replace(/^Ατάκα\s*\d+\s*:?\s*/i, "")
         .replace(/^Ατακα\s*\d+\s*:?\s*/i, "")
+        .replace(/(^|\s)\+[^\s.,;:!?]+/g, " ")
         .trim();
       return { title, full: block };
     })
@@ -804,36 +805,30 @@ function getEntryCleanText(entry) {
   return lines.join("\n")
     .replace("Περιγραφή:", "")
     .replace("Περγιφραφή:", "")
+    .replace(/(^|\s)\+[^\s.,;:!?]+/g, " ")
     .trim();
 }
 
+function detectTypes(title, text = "") {
+  const all = title + " " + text;
+  const matches = [...all.matchAll(/(?:^|\s)\+([^\s.,;:!?]+)/g)];
+  return [...new Set(matches.map(m => m[1].trim()).filter(Boolean))];
+}
+
 function detectType(title, text = "") {
-  const t = (title + " " + text).toLowerCase();
+  return detectTypes(title, text)[0] || "";
+}
 
-  if (t.includes("μιμητικός ήχος") || t.includes("ήχος")) return " ";
-  if (title.endsWith("ω") || title.endsWith("ομαι") || title.endsWith("ώ")) return " ";
-
-  const firstWord = title.split(/[ ,;/!]/)[0].trim();
-
-  if (
-    firstWord.endsWith("ος") || firstWord.endsWith("ης") || firstWord.endsWith("ας") ||
-    firstWord.endsWith("α") || firstWord.endsWith("η") || firstWord.endsWith("ι")
-  ) return " ";
-
-  if (
-    title.includes(" ") || title.includes(";") || title.includes(",") ||
-    title.includes("/") || title.includes("!")
-  ) return " ";
-
-  return " ";
+function getEntryTypes(entry) {
+  return detectTypes(entry.title, entry.full);
 }
 
 function getEntryType(entry) {
-  return detectType(entry.title, getEntryCleanText(entry));
+  return getEntryTypes(entry)[0] || "";
 }
 
 function renderFilters() {
-  const types = ["Όλα", ...new Set(entries.map(getEntryType))].sort((a,b) => {
+  const types = ["Όλα", ...new Set(entries.flatMap(getEntryTypes))].sort((a,b) => {
     if (a === "Όλα") return -1;
     if (b === "Όλα") return 1;
     return a.localeCompare(b, "el");
@@ -860,7 +855,7 @@ function currentFilteredEntries() {
   const q = searchQuery.toLocaleLowerCase("el-GR").trim();
 
   return entries.filter(e => {
-    const matchesType = activeFilter === "Όλα" || getEntryType(e) === activeFilter;
+    const matchesType = activeFilter === "Όλα" || getEntryTypes(e).includes(activeFilter);
     const matchesSearch =
       !q ||
       e.title.toLocaleLowerCase("el-GR").includes(q) ||
@@ -951,7 +946,7 @@ function showHome() {
       <div class="random-title">ΤΥΧΑΙΕΣ ΛΕΞΕΙΣ</div>
       <div class="bubbles" id="bubbles"></div>
 
-      
+
     </div>
   `;
 
@@ -969,7 +964,7 @@ function buildHomeCategorySelect() {
   const select = document.getElementById("searchCategory");
   if (!select) return;
 
-  const types = ["Όλα", ...new Set(entries.map(getEntryType))].sort((a,b) => {
+  const types = ["Όλα", ...new Set(entries.flatMap(getEntryTypes))].sort((a,b) => {
     if (a === "Όλα") return -1;
     if (b === "Όλα") return 1;
     return a.localeCompare(b, "el");
