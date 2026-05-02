@@ -15,6 +15,7 @@
 
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
 <style>
 * { box-sizing: border-box; }
 
@@ -497,7 +498,7 @@ body {
 
 .entry-title {
   font-size: 34px;
-  font-style: regular;
+  font-style: italic;
   font-weight: 400;
   margin-bottom: 12px;
 }
@@ -531,7 +532,7 @@ body {
 
 .entry-ref {
   color: var(--accent);
-  font-style: regular;
+  font-style: italic;
   cursor: pointer;
 }
 
@@ -751,6 +752,168 @@ html[data-theme="light"] .search-icon {
     opacity: .6;
   }
 }
+
+/* COMPACT FILTERS + ANIMATED CONTROLS */
+.filter-box {
+  border: 1px solid var(--border-soft);
+  border-radius: 22px;
+  padding: 10px;
+  overflow: hidden;
+  transition: max-height .35s ease, padding .25s ease, border-color .25s ease, background .25s ease, box-shadow .25s ease;
+  max-height: 520px;
+}
+
+.filter-box.collapsed {
+  max-height: 56px;
+  padding: 8px 10px;
+  box-shadow: 0 8px 22px rgba(0,0,0,.12);
+}
+
+.filter-header {
+  margin-bottom: 7px;
+}
+
+.filter-box.collapsed .filter-header {
+  margin-bottom: 0;
+}
+
+.filter-title {
+  font-size: 11px;
+  letter-spacing: .1em;
+}
+
+.filters {
+  max-height: 430px;
+  opacity: 1;
+  transform: translateY(0);
+  transition: max-height .35s ease, opacity .25s ease, transform .25s ease;
+}
+
+.filter-box.collapsed .filters {
+  max-height: 35px;
+  opacity: 1;
+  transform: translateY(0);
+  overflow: hidden;
+}
+
+.filter-btn {
+  padding: 6px 9px;
+  font-size: 12px;
+  border-radius: 999px;
+  transition: transform .18s ease, background .2s ease, border-color .2s ease, opacity .2s ease;
+}
+
+.filter-btn:hover {
+  transform: translateY(-1px);
+}
+
+.filter-box.collapsed .filter-btn.active {
+  display: inline-flex;
+  animation: filterChipIn .28s ease;
+}
+
+.filter-toggle {
+  min-width: 31px;
+  height: 27px;
+  padding: 0 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .22s ease, background .2s ease, border-color .2s ease;
+}
+
+.filter-toggle:hover {
+  transform: scale(1.05);
+}
+
+.filter-toggle.open {
+  transform: rotate(180deg);
+}
+
+@keyframes filterChipIn {
+  from { opacity: 0; transform: scale(.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.theme-control,
+.lang-control {
+  gap: 8px;
+}
+
+.theme-switch,
+.lang-switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+.theme-option,
+.lang-option {
+  position: relative;
+  z-index: 2;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted-2);
+  font-family: Inter, sans-serif;
+  font-size: 12px;
+  height: 28px;
+  padding: 0 10px;
+  cursor: pointer;
+  transition: color .2s ease, transform .18s ease;
+}
+
+.theme-option:hover,
+.lang-option:hover {
+  transform: translateY(-1px);
+  color: var(--text);
+}
+
+.theme-option.active,
+.lang-option.active {
+  color: var(--text);
+}
+
+.theme-indicator,
+.lang-indicator {
+  position: absolute;
+  top: 4px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  transition: left .28s cubic-bezier(.2,.8,.2,1), width .28s cubic-bezier(.2,.8,.2,1);
+  z-index: 1;
+}
+
+.theme-control label,
+.lang-control label {
+  white-space: nowrap;
+}
+
+@media (max-width: 850px) {
+  .header {
+    flex-wrap: wrap;
+    height: auto;
+  }
+
+  .theme-control {
+    margin-left: 0;
+  }
+
+  .theme-option,
+  .lang-option {
+    font-size: 11px;
+    padding: 0 8px;
+  }
+}
+
 </style>
 </head>
 
@@ -760,19 +923,21 @@ html[data-theme="light"] .search-icon {
   <img src="https://i.ibb.co/9m6hW6bn/kranoumpanoumpanoumpa-1.png">
   <strong>tioumpa.org</strong>
   <div class="theme-control" onclick="event.stopPropagation()">
-    <label for="themeSelect" data-i18n="colorTheme">Color Theme</label>
-    <select id="themeSelect" onchange="setTheme(this.value)">
-      <option value="system" data-i18n="auto">Auto</option>
-      <option value="dark" selected data-i18n="dark">Dark</option>
-      <option value="light" data-i18n="light">Light</option>
-    </select>
+    <label data-i18n="colorTheme">Color Theme</label>
+    <div class="theme-switch" id="themeSwitch">
+      <span class="theme-indicator" id="themeIndicator"></span>
+      <button class="theme-option" type="button" data-theme-value="system" onclick="setTheme('system')" data-i18n="auto">Auto</button>
+      <button class="theme-option" type="button" data-theme-value="dark" onclick="setTheme('dark')" data-i18n="dark">Dark</button>
+      <button class="theme-option" type="button" data-theme-value="light" onclick="setTheme('light')" data-i18n="light">Light</button>
+    </div>
   </div>
   <div class="lang-control" onclick="event.stopPropagation()">
-    <label for="langSelect" data-i18n="language">Γλώσσα</label>
-    <select id="langSelect" onchange="setLanguage(this.value)">
-      <option value="el">Ελληνικά</option>
-      <option value="en">English</option>
-    </select>
+    <label data-i18n="language">Γλώσσα</label>
+    <div class="lang-switch" id="langSwitch">
+      <span class="lang-indicator" id="langIndicator"></span>
+      <button class="lang-option" type="button" data-lang-value="el" onclick="setLanguage('el')">🇬🇷 Ελληνικά</button>
+      <button class="lang-option" type="button" data-lang-value="en" onclick="setLanguage('en')">🇬🇧 English</button>
+    </div>
   </div>
 </div>
 
@@ -781,7 +946,7 @@ html[data-theme="light"] .search-icon {
     <div class="filter-box" id="filterBox">
       <div class="filter-header">
         <div class="filter-title" data-i18n="filters">filters</div>
-        <button class="filter-toggle" id="filterToggle" onclick="toggleFilters(event)">−</button>
+        <button class="filter-toggle" id="filterToggle" onclick="toggleFilters(event)">⌄</button>
       </div>
       <div class="filters" id="filters"></div>
     </div>
@@ -819,7 +984,8 @@ const translations = {
 };
 
 let currentLanguage = localStorage.getItem("languageChoice") || "el";
-let filtersCollapsed = localStorage.getItem("filtersCollapsed") === "true";
+let filtersCollapsed = localStorage.getItem("filtersCollapsed");
+filtersCollapsed = filtersCollapsed === null ? true : filtersCollapsed === "true";
 
 function t(key) { return translations[currentLanguage][key] || translations.el[key] || key; }
 
@@ -841,12 +1007,40 @@ function applyLanguage() {
     const key = el.getAttribute("data-i18n");
     if (translations[currentLanguage][key]) el.textContent = translations[currentLanguage][key];
   });
-  const langSelect = document.getElementById("langSelect");
-  if (langSelect) langSelect.value = currentLanguage;
+  updateLanguageControl();
+  updateThemeControl();
 }
 
 function getDataFile() {
   return currentLanguage === "en" ? "engdata.txt" : "data.txt";
+}
+
+
+function moveIndicator(containerId, indicatorId, selector, valueAttr, value) {
+  const container = document.getElementById(containerId);
+  const indicator = document.getElementById(indicatorId);
+  if (!container || !indicator) return;
+
+  const buttons = [...container.querySelectorAll(selector)];
+  let active = buttons.find(btn => btn.getAttribute(valueAttr) === value) || buttons[0];
+
+  buttons.forEach(btn => {
+    btn.classList.toggle("active", btn === active);
+  });
+
+  requestAnimationFrame(() => {
+    indicator.style.left = active.offsetLeft + "px";
+    indicator.style.width = active.offsetWidth + "px";
+  });
+}
+
+function updateThemeControl() {
+  const value = localStorage.getItem("themeChoice") || "dark";
+  moveIndicator("themeSwitch", "themeIndicator", ".theme-option", "data-theme-value", value);
+}
+
+function updateLanguageControl() {
+  moveIndicator("langSwitch", "langIndicator", ".lang-option", "data-lang-value", currentLanguage);
 }
 
 const savedTheme = localStorage.getItem("themeChoice") || "dark";
@@ -857,7 +1051,12 @@ window.addEventListener("DOMContentLoaded", () => {
   const filterBox = document.getElementById("filterBox");
   if (filterBox) filterBox.classList.toggle("collapsed", filtersCollapsed);
   const filterToggle = document.getElementById("filterToggle");
-  if (filterToggle) filterToggle.textContent = filtersCollapsed ? "+" : "−";
+  if (filterToggle) {
+    filterToggle.textContent = filtersCollapsed ? "⌄" : "⌃";
+    filterToggle.classList.toggle("open", !filtersCollapsed);
+  }
+  updateThemeControl();
+  updateLanguageControl();
 });
 
 function applyTheme(value) {
@@ -866,6 +1065,7 @@ function applyTheme(value) {
   } else {
     document.documentElement.setAttribute("data-theme", value);
   }
+  updateThemeControl();
 }
 
 function setTheme(value) {
@@ -896,21 +1096,24 @@ function loadData() {
   .then(text => init(text))
   .catch(err => {
     document.getElementById("content").innerHTML = `
-      <h2>coming soon ${getDataFile()}</h2>
-      <p>  <b>${getDataFile()}</b>  .</p>
+      <h2>Δεν φορτώθηκε το ${getDataFile()}</h2>
+      <p>Βεβαιώσου ότι το αρχείο λέγεται ακριβώς <b>${getDataFile()}</b> και είναι στον ίδιο φάκελο με το index.html.</p>
     `;
     console.error(err);
   });
 }
 
 function init(text) {
-  const themeSelect = document.getElementById("themeSelect");
-  if (themeSelect) themeSelect.value = localStorage.getItem("themeChoice") || "system";
   applyLanguage();
+  updateThemeControl();
+  updateLanguageControl();
   const filterBox = document.getElementById("filterBox");
   if (filterBox) filterBox.classList.toggle("collapsed", filtersCollapsed);
   const filterToggle = document.getElementById("filterToggle");
-  if (filterToggle) filterToggle.textContent = filtersCollapsed ? "+" : "−";
+  if (filterToggle) {
+    filterToggle.textContent = filtersCollapsed ? "⌄" : "⌃";
+    filterToggle.classList.toggle("open", !filtersCollapsed);
+  }
 
   entries = text
     .split(/\r?\n(?=Ατάκα\s*\d+\s*:|Ατακα\s*\d+\s*:|Ατάκα\d+\s*:|Ατακα\d+\s*:|Ατάκα\s*\d+\s+|Ατακα\s*\d+\s+)/g)
@@ -974,7 +1177,10 @@ function toggleFilters(event) {
   const filterBox = document.getElementById("filterBox");
   if (filterBox) filterBox.classList.toggle("collapsed", filtersCollapsed);
   const filterToggle = document.getElementById("filterToggle");
-  if (filterToggle) filterToggle.textContent = filtersCollapsed ? "+" : "−";
+  if (filterToggle) {
+    filterToggle.textContent = filtersCollapsed ? "⌄" : "⌃";
+    filterToggle.classList.toggle("open", !filtersCollapsed);
+  }
 }
 
 function renderFilters() {
@@ -1003,7 +1209,10 @@ function renderFilters() {
   const filterBox = document.getElementById("filterBox");
   if (filterBox) filterBox.classList.toggle("collapsed", filtersCollapsed);
   const filterToggle = document.getElementById("filterToggle");
-  if (filterToggle) filterToggle.textContent = filtersCollapsed ? "+" : "−";
+  if (filterToggle) {
+    filterToggle.textContent = filtersCollapsed ? "⌄" : "⌃";
+    filterToggle.classList.toggle("open", !filtersCollapsed);
+  }
 }
 
 function currentFilteredEntries() {
