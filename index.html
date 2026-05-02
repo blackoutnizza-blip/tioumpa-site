@@ -652,6 +652,46 @@ body {
     overflow-x: auto;
   }
 }
+
+/* LIGHT MODE FIX - πρόσθετο χωρίς αλλαγή στον υπάρχοντα κώδικα */
+html[data-theme="light"] .search-main input,
+html[data-theme="light"] .search-wrapper select,
+html[data-theme="light"] .search-wrapper button,
+html[data-theme="light"] .home-toggle-section button,
+html[data-theme="light"] .back-btn,
+html[data-theme="light"] .social {
+  color: var(--text);
+}
+
+html[data-theme="light"] .search-main input::placeholder {
+  color: var(--muted);
+}
+
+html[data-theme="light"] .search-icon {
+  filter: none;
+  opacity: .6;
+}
+
+/* Όταν είναι στο Auto και το σύστημα είναι light mode */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .search-main input,
+  :root:not([data-theme="dark"]) .search-wrapper select,
+  :root:not([data-theme="dark"]) .search-wrapper button,
+  :root:not([data-theme="dark"]) .home-toggle-section button,
+  :root:not([data-theme="dark"]) .back-btn,
+  :root:not([data-theme="dark"]) .social {
+    color: var(--text);
+  }
+
+  :root:not([data-theme="dark"]) .search-main input::placeholder {
+    color: var(--muted);
+  }
+
+  :root:not([data-theme="dark"]) .search-icon {
+    filter: none;
+    opacity: .6;
+  }
+}
 </style>
 </head>
 
