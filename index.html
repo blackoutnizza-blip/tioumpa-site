@@ -985,6 +985,38 @@ html[data-theme="light"] .search-icon {
   }
 }
 
+
+/* MOBILE DICTIONARY TOGGLE UNDER SEARCH */
+.mobile-dictionary-toggle {
+  display: none;
+  width: min(760px, 94%);
+  margin-top: 12px;
+  height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: Inter, sans-serif;
+  cursor: pointer;
+  transition: transform .2s ease, background .2s ease, border-color .2s ease;
+}
+
+.mobile-dictionary-toggle:hover {
+  transform: translateY(-1px);
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+@media (max-width: 850px) {
+  .mobile-dictionary-toggle {
+    display: block;
+  }
+
+  .home-results.dictionary-open {
+    display: block;
+  }
+}
+
 </style>
 </head>
 
@@ -1016,7 +1048,7 @@ html[data-theme="light"] .search-icon {
   <aside class="sidebar" id="sidebar">
     <div class="filter-box" id="filterBox">
       <div class="filter-header">
-        <div class="filter-title" data-i18n="filters">filters:</div>
+        <div class="filter-title" data-i18n="filters">filters</div>
         <button class="filter-toggle" id="filterToggle" onclick="toggleFilters(event)">⌄</button>
       </div>
       <div class="filters" id="filters"></div>
@@ -1039,8 +1071,8 @@ const translations = {
     dataTitle: "Δεν φορτώθηκε το data.txt", dataText: "Βεβαιώσου ότι το αρχείο λέγεται ακριβώς <b>data.txt</b> και είναι στον ίδιο φάκελο με το index.html.",
     micUnsupported: "Το μικρόφωνο δεν υποστηρίζεται σε αυτόν τον browser.", back: "← Επιστροφή", declension: "Κλίση",
     case: "Πτώση", singular: "Ενικός αριθμός", plural: "Πληθυντικός αριθμός", nominative: "Ονομαστική", genitive: "Γενική", accusative: "Αιτιατική", vocative: "Κλητική",
-    derivatives: "Παράγωγα:", synonyms: "Συνώνυμα:", antonyms: "Αντώνυμα:", searchCopy: "Αναζήτηση {count} ορισμών από το λεξικό του Teosty.",
-    subtitle: " ", email: "Αν θέλετε να επικοινωνήσετε μαζί μας για οποιαδήποτε αλλαγή ή προσθήκη στείλτε στο: tioumpagr@gmail.com"
+    derivatives: "Παράγωγα:", synonyms: "Συνώνυμα:", antonyms: "Αντώνυμα:", searchCopy: "Αναζήτηση {count} λέξεων από το λεξικό του Teosty.",
+    subtitle: " ", email: "Αν θέλετε να επικοινωνήσετε μαζί μας για οποιαδήποτε αλλαγή ή προσθήκη στείλτε στο: tioumpagr@gmail.com", showDictionary: "Εμφάνιση λεξικού", hideDictionary: "Απόκρυψη λεξικού", noResults: "Δεν βρέθηκαν αποτελέσματα", results: "results"
   },
   en: {
     colorTheme: "Color Theme", language: "Language", auto: "Auto", dark: "Dark", light: "Light", filters: "filters",
@@ -1050,7 +1082,7 @@ const translations = {
     micUnsupported: "Microphone is not supported in this browser.", back: "← Back", declension: "Declension",
     case: "Case", singular: "Singular", plural: "Plural", nominative: "Nominative", genitive: "Genitive", accusative: "Accusative", vocative: "Vocative",
     derivatives: "Derivatives:", synonyms: "Synonyms:", antonyms: "Antonyms:", searchCopy: "Search {count} words from Teosty's dictionary.",
-    subtitle: "TEOSTY'S DICTIONARY", email: "To contact us about any change or addition, send an email to: tioumpagr@gmail.com"
+    subtitle: " ", email: "To contact us about any change or addition, send an email to: tioumpagr@gmail.com", showDictionary: "Show dictionary", hideDictionary: "Hide dictionary", noResults: "No results found", results: "results"
   }
 };
 
@@ -1061,14 +1093,14 @@ filtersCollapsed = filtersCollapsed === null ? true : filtersCollapsed === "true
 function t(key) { return translations[currentLanguage][key] || translations.el[key] || key; }
 
 function setLanguage(value) {
+  const currentHash = decodeURIComponent(location.hash.replace("#", ""));
+  const currentEntry = findEntryByAnyKey(currentHash);
+  currentEntryId = currentEntry && currentEntry.id ? currentEntry.id : currentEntryId;
+
   currentLanguage = value;
   localStorage.setItem("languageChoice", value);
   applyLanguage();
-  renderFilters();
-  if (entries.length) {
-    buildHomeCategorySelect();
-    route();
-  }
+  updateLogo();
   loadData();
 }
 
@@ -1080,6 +1112,7 @@ function applyLanguage() {
   });
   updateLanguageControl();
   updateThemeControl();
+  updateLogo();
 }
 
 function getDataFile() {
@@ -1155,6 +1188,66 @@ let favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
 let bubbleTimer = null;
 let activeFilter = "Όλα";
 let searchQuery = "";
+let dictionaryOpen = false;
+let currentEntryId = null;
+let titleIdMap = JSON.parse(localStorage.getItem("titleIdMap") || "{}");
+
+function getLogoFile() {
+  return currentLanguage === "en" ? "engtioumpa.org.svg" : "tioumpa.org.svg";
+}
+
+function updateLogo() {
+  const logo = getLogoFile();
+  const headerLogo = document.querySelector(".header img");
+  if (headerLogo) headerLogo.src = logo;
+  const homeLogo = document.querySelector(".home-logo");
+  if (homeLogo) homeLogo.src = logo;
+}
+
+function entryKey(entry) {
+  return entry && entry.id ? "id-" + entry.id : entry.title;
+}
+
+function entryHash(entry) {
+  return encodeURIComponent(entryKey(entry));
+}
+
+function saveTitleMap() {
+  entries.forEach(e => {
+    if (e.id) titleIdMap[currentLanguage + ":" + e.title] = e.id;
+  });
+  localStorage.setItem("titleIdMap", JSON.stringify(titleIdMap));
+}
+
+function findEntryByAnyKey(key) {
+  if (!key) return null;
+
+  if (key.startsWith("id-")) {
+    const id = key.replace(/^id-/, "");
+    return entries.find(e => String(e.id) === String(id)) || null;
+  }
+
+  let found = entries.find(e => e.title === key);
+  if (found) return found;
+
+  const mappedId = titleIdMap["el:" + key] || titleIdMap["en:" + key];
+  if (mappedId) {
+    return entries.find(e => String(e.id) === String(mappedId)) || null;
+  }
+
+  return null;
+}
+
+function displayWordFromKey(key) {
+  const found = findEntryByAnyKey(key);
+  return found ? found.title : key.replace(/^id-/, "");
+}
+
+function normalizeStoredKey(key) {
+  if (String(key).startsWith("id-")) return key;
+  const mappedId = titleIdMap["el:" + key] || titleIdMap["en:" + key];
+  return mappedId ? "id-" + mappedId : key;
+}
 
 loadData();
 
@@ -1190,14 +1283,26 @@ function init(text) {
     .split(/\r?\n(?=Ατάκα\s*\d+\s*:|Ατακα\s*\d+\s*:|Ατάκα\d+\s*:|Ατακα\d+\s*:|Ατάκα\s*\d+\s+|Ατακα\s*\d+\s+)/g)
     .map(block => {
       const firstLine = block.split(/\r?\n/)[0] || "";
+      const idMatch = firstLine.match(/(?:Ατάκα|Ατακα)\s*(\d+)/i);
+      const id = idMatch ? idMatch[1] : "";
       const title = firstLine
         .replace(/^Ατάκα\s*\d+\s*:?\s*/i, "")
         .replace(/^Ατακα\s*\d+\s*:?\s*/i, "")
         .replace(/(^|\s)\+[^+\n.,;:!?]+/g, " ")
         .trim();
-      return { title, full: block };
+      return { id, title, full: block };
     })
     .filter(e => e.title);
+
+  saveTitleMap();
+  updateLogo();
+
+  if (currentEntryId) {
+    const translatedEntry = entries.find(e => String(e.id) === String(currentEntryId));
+    if (translatedEntry) {
+      location.hash = entryHash(translatedEntry);
+    }
+  }
 
   setupResizer();
   renderFilters();
@@ -1294,8 +1399,7 @@ function currentFilteredEntries() {
     const matchesType = activeFilter === "Όλα" || getEntryTypes(e).includes(activeFilter);
     const matchesSearch =
       !q ||
-      e.title.toLocaleLowerCase("el-GR").includes(q) ||
-      getEntryCleanText(e).toLocaleLowerCase("el-GR").includes(q);
+      e.title.toLocaleLowerCase("el-GR").includes(q);
 
     return matchesType && matchesSearch;
   });
@@ -1326,34 +1430,37 @@ function renderList() {
     w.className = "word";
     w.textContent = item.title;
     w.onclick = () => {
-      location.hash = encodeURIComponent(item.title);
+      location.hash = entryHash(item);
     };
     list.appendChild(w);
   });
 }
 
 function route() {
-  const name = decodeURIComponent(location.hash.replace("#", ""));
+  const key = decodeURIComponent(location.hash.replace("#", ""));
 
-  if (!name) {
+  if (!key) {
+    currentEntryId = null;
     showHome();
     return;
   }
 
-  const entry = entries.find(e => e.title === name);
+  const entry = findEntryByAnyKey(key);
 
   if (!entry) {
     showHome();
     return;
   }
 
+  currentEntryId = entry.id || null;
   openEntry(entry);
 }
 
 function showHome() {
   document.getElementById("content").innerHTML = `
     <div class="home">
-      <img class="home-logo" src="tioumpa.org.svg">
+      <img class="home-logo" src="${getLogoFile()}">
+      <h1>tioumpa.org</h1>
       <div class="subtitle">${t("subtitle")}</div>
       <div class="email">${t("email")}</div>
       <div class="search-copy">${t("searchCopy").replace("{count}", entries.length)}</div>
@@ -1368,6 +1475,7 @@ function showHome() {
         <button onclick="clearSearch()">${t("clean")}</button>
       </div>
 
+      <button class="mobile-dictionary-toggle" id="mobileDictionaryToggle" onclick="toggleDictionaryResults()">${t("showDictionary")}</button>
       <div class="home-results" id="homeResults"></div>
 
       <div class="home-toggle-section">
@@ -1400,34 +1508,43 @@ function showHome() {
 }
 
 
+function toggleDictionaryResults() {
+  dictionaryOpen = !dictionaryOpen;
+  renderHomeResults();
+}
+
 function renderHomeResults() {
   const box = document.getElementById("homeResults");
+  const toggle = document.getElementById("mobileDictionaryToggle");
   if (!box) return;
 
   const q = searchQuery.toLocaleLowerCase("el-GR").trim();
-  const shouldShow = q || activeFilter !== "Όλα";
+  const shouldShow = q || activeFilter !== "Όλα" || dictionaryOpen;
+
+  if (toggle) toggle.textContent = dictionaryOpen ? t("hideDictionary") : t("showDictionary");
 
   if (!shouldShow) {
-    box.classList.remove("open");
+    box.classList.remove("open", "dictionary-open");
     box.innerHTML = "";
     return;
   }
 
   const results = currentFilteredEntries()
     .sort((a,b) => a.title.localeCompare(b.title, "el", { sensitivity: "base" }))
-    .slice(0, 40);
+    .slice(0, dictionaryOpen && !q ? entries.length : 40);
 
   box.classList.add("open");
+  box.classList.toggle("dictionary-open", dictionaryOpen);
 
   if (!results.length) {
-    box.innerHTML = `<div class="home-result-empty">Δεν βρέθηκαν αποτελέσματα</div>`;
+    box.innerHTML = `<div class="home-result-empty">${t("noResults")}</div>`;
     return;
   }
 
   box.innerHTML = `
-    <div class="home-results-title">results</div>
+    <div class="home-results-title">${t("results")}</div>
     ${results.map(item => `
-      <div class="home-result-item" onclick="location.hash='${encodeURIComponent(item.title)}'">
+      <div class="home-result-item" onclick="location.hash='${entryHash(item)}'">
         ${escapeHTML(item.title)}
       </div>
     `).join("")}
@@ -1464,6 +1581,7 @@ function syncHomeFilter() {
 function clearSearch() {
   searchQuery = "";
   activeFilter = "Όλα";
+  dictionaryOpen = false;
   renderFilters();
   renderList();
   showHome();
@@ -1471,9 +1589,13 @@ function clearSearch() {
 
 function getTrendingHTML() {
   const trending = Object.entries(clicks)
+    .map(([key, count]) => [normalizeStoredKey(key), count])
     .sort((a,b) => b[1] - a[1])
     .slice(0,5)
-    .map(([word]) => `<div class="home-list-item" onclick="location.hash='${encodeURIComponent(word)}'">${escapeHTML(word)}</div>`)
+    .map(([key]) => {
+      const word = displayWordFromKey(key);
+      return `<div class="home-list-item" onclick="location.hash='${encodeURIComponent(key)}'">${escapeHTML(word)}</div>`;
+    })
     .join("");
 
   return trending || `<div class="home-list-item">${t("noTrending")}</div>`;
@@ -1481,7 +1603,11 @@ function getTrendingHTML() {
 
 function getFavoritesHTML() {
   return favorites
-    .map(word => `<div class="home-list-item" onclick="location.hash='${encodeURIComponent(word)}'">${escapeHTML(word)}</div>`)
+    .map(normalizeStoredKey)
+    .map(key => {
+      const word = displayWordFromKey(key);
+      return `<div class="home-list-item" onclick="location.hash='${encodeURIComponent(key)}'">${escapeHTML(word)}</div>`;
+    })
     .join("") || `<div class="home-list-item">${t("noFavorites")}</div>`;
 }
 
@@ -1502,13 +1628,13 @@ function renderBubbles() {
     const shuffled = [...entries].sort(() => Math.random() - 0.5).slice(0, 7);
 
     shuffled.forEach(item => {
-      const isFav = favorites.includes(item.title);
+      const isFav = favorites.map(normalizeStoredKey).includes(entryKey(item));
 
       const b = document.createElement("div");
       b.className = "bubble";
       b.innerHTML = `${isFav ? "⭐ " : ""}${escapeHTML(item.title)}`;
       b.onclick = () => {
-        location.hash = encodeURIComponent(item.title);
+        location.hash = entryHash(item);
       };
 
       c.appendChild(b);
@@ -1639,10 +1765,11 @@ function linkReferences(text, currentTitle) {
 }
 
 function openEntry(entry) {
-  clicks[entry.title] = (clicks[entry.title] || 0) + 1;
+  const key = entryKey(entry);
+  clicks[key] = (clicks[key] || 0) + 1;
   localStorage.setItem("clicks", JSON.stringify(clicks));
 
-  const isFav = favorites.includes(entry.title);
+  const isFav = favorites.map(normalizeStoredKey).includes(key);
 
   let clean = getEntryCleanText(entry);
 
@@ -1668,7 +1795,7 @@ function openEntry(entry) {
     <article class="entry">
       <div class="entry-title">
         ${escapeHTML(entry.title)}
-        <span class="star" onclick="toggleFav(event, '${escapeQuotes(entry.title)}')">${isFav ? "⭐" : "☆"}</span>
+        <span class="star" onclick="toggleFav(event, '${escapeQuotes(entryKey(entry))}')">${isFav ? "⭐" : "☆"}</span>
       </div>
 
       <div class="entry-divider"></div>
@@ -1683,10 +1810,13 @@ function openEntry(entry) {
 function toggleFav(event, word) {
   event.stopPropagation();
 
-  if (favorites.includes(word)) {
-    favorites = favorites.filter(f => f !== word);
+  const key = normalizeStoredKey(word);
+  favorites = favorites.map(normalizeStoredKey);
+
+  if (favorites.includes(key)) {
+    favorites = favorites.filter(f => f !== key);
   } else {
-    favorites.push(word);
+    favorites.push(key);
   }
 
   localStorage.setItem("favorites", JSON.stringify(favorites));
@@ -1712,6 +1842,7 @@ function voiceSearch(event) {
     const input = document.getElementById("searchMain");
     if (input) input.value = text;
     renderList();
+    renderHomeResults();
   };
 
   r.start();
@@ -1720,6 +1851,8 @@ function voiceSearch(event) {
 function goHome() {
   activeFilter = "Όλα";
   searchQuery = "";
+  dictionaryOpen = false;
+  currentEntryId = null;
   history.pushState("", document.title, window.location.pathname + window.location.search);
   renderFilters();
   renderList();
