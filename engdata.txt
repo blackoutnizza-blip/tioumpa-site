@@ -357,3 +357,7 @@ When we enter a subject / situation / object. Sometimes also when the rodelα / 
 Ατάκα91: Pyrodotw +verb
 Περιγραφή:  I ignite
 I set something on fire. e.g. "Pyrodotw solinisko nikotinis."
+
+Ατάκα92: emvathino
+Περιγραφή: deepen
+I consider a topic in depth / I unfold in edible paths.
