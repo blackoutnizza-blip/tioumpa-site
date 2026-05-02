@@ -1070,8 +1070,10 @@ function detectAntonyms(title) {
 function buildMeta(title, text) {
   const rows = [];
 
-  const type = detectType(title, text);
-  if (type) rows.push(`<span class="meta-pill">${type}</span>`);
+  const types = detectTypes(title, text);
+  types.forEach(type => {
+    rows.push(`<span class="meta-pill">${escapeHTML(type)}</span>`);
+  });
 
   const derivatives = detectDerivatives(title);
   if (derivatives) rows.push(`<span class="meta-pill"><b>Παράγωγα:</b> ${escapeHTML(derivatives)}</span>`);
@@ -1196,7 +1198,7 @@ function openEntry(entry) {
 
       <div class="entry-divider"></div>
 
-      ${buildMeta(entry.title, clean)}
+      ${buildMeta(entry.title, entry.full)}
 
       <div class="entry-body">${linkReferences(clean, entry.title)}${imageHTML}${buildDeclensionTable(entry.title)}</div>
     </article>
