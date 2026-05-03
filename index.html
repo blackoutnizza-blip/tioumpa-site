@@ -15,7 +15,7 @@
 
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-  
+
 <style>
 * { box-sizing: border-box; }
 
@@ -498,7 +498,7 @@ body {
 
 .entry-title {
   font-size: 34px;
-  font-style: regular;
+  font-style: italic;
   font-weight: 400;
   margin-bottom: 12px;
 }
@@ -532,7 +532,7 @@ body {
 
 .entry-ref {
   color: var(--accent);
-  font-style: regular;
+  font-style: italic;
   cursor: pointer;
 }
 
@@ -1183,6 +1183,32 @@ html[data-theme="light"] .search-icon {
   }
 }
 
+
+/* CUSTOM DATA.TXT FORMATTING */
+.entry-small-notes {
+  margin-top: 26px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-soft);
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.entry-small-note {
+  margin-top: 5px;
+}
+
+.entry-custom-link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.entry-custom-link:hover {
+  opacity: .85;
+}
+
 </style>
 </head>
 
@@ -1190,7 +1216,7 @@ html[data-theme="light"] .search-icon {
 
 <div class="header" onclick="goHome()">
   <img src="tioumpa.org.svg">
-  <strong> </strong>
+  <strong>tioumpa.org</strong>
   <div class="theme-control" onclick="event.stopPropagation()">
     <label data-i18n="colorTheme">Color Theme</label>
     <div class="theme-concept" id="themeSwitch">
@@ -1241,8 +1267,8 @@ const translations = {
     dataTitle: "Δεν φορτώθηκε το data.txt", dataText: "Βεβαιώσου ότι το αρχείο λέγεται ακριβώς <b>data.txt</b> και είναι στον ίδιο φάκελο με το index.html.",
     micUnsupported: "Το μικρόφωνο δεν υποστηρίζεται σε αυτόν τον browser.", back: "← Επιστροφή", declension: "Κλίση",
     case: "Πτώση", singular: "Ενικός αριθμός", plural: "Πληθυντικός αριθμός", nominative: "Ονομαστική", genitive: "Γενική", accusative: "Αιτιατική", vocative: "Κλητική",
-    derivatives: "Παράγωγα:", synonyms: "Συνώνυμα:", antonyms: "Αντώνυμα:", searchCopy: "Αναζήτηση {count} ορών από το λεξικό του Teosty.",
-    subtitle: " ", email: "Αν θέλετε να επικοινωνήσετε μαζί μας για οποιαδήποτε αλλαγή ή προσθήκη στείλτε στο: tioumpagr@gmail.com", showDictionary: "Εμφάνιση λεξικού", hideDictionary: "Απόκρυψη λεξικού", noResults: "Δεν βρέθηκαν αποτελέσματα", results: "results"
+    derivatives: "Παράγωγα:", synonyms: "Συνώνυμα:", antonyms: "Αντώνυμα:", searchCopy: "Αναζήτηση {count} λέξεων από το λεξικό του Teosty.",
+    subtitle: "ΤΟ ΛΕΞΙΚΟ ΤΟΥ TEOSTY", email: "Αν θέλετε να επικοινωνήσετε μαζί μας για οποιαδήποτε αλλαγή ή προσθήκη στείλτε στο: tioumpagr@gmail.com", showDictionary: "Εμφάνιση λεξικού", hideDictionary: "Απόκρυψη λεξικού", noResults: "Δεν βρέθηκαν αποτελέσματα", results: "results"
   },
   en: {
     colorTheme: "Color Theme", language: "Language", auto: "Auto", dark: "Dark", light: "Light", filters: "filters",
@@ -1252,7 +1278,7 @@ const translations = {
     micUnsupported: "Microphone is not supported in this browser.", back: "← Back", declension: "Declension",
     case: "Case", singular: "Singular", plural: "Plural", nominative: "Nominative", genitive: "Genitive", accusative: "Accusative", vocative: "Vocative",
     derivatives: "Derivatives:", synonyms: "Synonyms:", antonyms: "Antonyms:", searchCopy: "Search {count} words from Teosty's dictionary.",
-    subtitle: " ", email: "To contact us about any change or addition, send an email to: tioumpagr@gmail.com", showDictionary: "Show dictionary", hideDictionary: "Hide dictionary", noResults: "No results found", results: "results"
+    subtitle: "TEOSTY'S DICTIONARY", email: "To contact us about any change or addition, send an email to: tioumpagr@gmail.com", showDictionary: "Show dictionary", hideDictionary: "Hide dictionary", noResults: "No results found", results: "results"
   }
 };
 
@@ -1650,7 +1676,7 @@ function showHome() {
   document.getElementById("content").innerHTML = `
     <div class="home">
       <img class="home-logo" src="${getLogoFile()}">
-      <h1></h1>
+      <h1>tioumpa.org</h1>
       <div class="subtitle">${t("subtitle")}</div>
       <div class="email">${t("email")}</div>
       <div class="search-copy">${t("searchCopy").replace("{count}", entries.length)}</div>
@@ -1920,14 +1946,83 @@ function buildDeclensionTable(title) {
   `;
 }
 
+
+function protectHTMLParts(text) {
+  const protectedParts = [];
+  const pattern = /<(iframe|a|b|strong|i|em|span)\b[\s\S]*?<\/\1>/gi;
+
+  const result = String(text).replace(pattern, match => {
+    protectedParts.push(match);
+    return `@@HTML_PART_${protectedParts.length - 1}@@`;
+  });
+
+  return { result, protectedParts };
+}
+
+function restoreHTMLParts(text, protectedParts) {
+  let result = text;
+  protectedParts.forEach((part, i) => {
+    result = result.replace(`@@HTML_PART_${i}@@`, part);
+  });
+  return result;
+}
+
+function makeExternalLink(url, label) {
+  const safeUrl = escapeAttr(url);
+  const safeLabel = escapeHTML(label);
+  return `<a class="entry-custom-link" href="${safeUrl}" target="_blank" rel="noopener noreferrer">${safeLabel}</a>`;
+}
+
+function applyCustomDataFormatting(text) {
+  let result = String(text);
+
+  result = result.replace(/\[\[([^\]|]+)\|((?:https?:\/\/|www\.)[^\]\s]+)\]\]/gi, (m, label, url) => {
+    if (url.startsWith("www.")) url = "https://" + url;
+    return makeExternalLink(url, label.trim());
+  });
+
+  result = result.replace(/((?:https?:\/\/|www\.)[^\s"'<>]+)\s*\[\[([^\]]+)\]\]/gi, (m, url, label) => {
+    if (url.startsWith("www.")) url = "https://" + url;
+    return makeExternalLink(url, label.trim());
+  });
+
+  result = result.replace(/\[\[([^\]]+)\]\]\s*((?:https?:\/\/|www\.)[^\s"'<>]+)/gi, (m, label, url) => {
+    if (url.startsWith("www.")) url = "https://" + url;
+    return makeExternalLink(url, label.trim());
+  });
+
+  result = result.replace(/([\p{L}\p{N}_Ά-ώϊϋΐΰA-Za-z0-9.-]+)\*bold\b/gu, "<b>$1</b>");
+  result = result.replace(/([\p{L}\p{N}_Ά-ώϊϋΐΰA-Za-z0-9.-]+)\*italic\b/gu, "<i>$1</i>");
+
+  return result;
+}
+
+function formatEntryContent(text, currentTitle) {
+  const smallNotes = [];
+  let mainText = String(text).replace(/\*\s*\(([^)]+)\)/g, (match, note) => {
+    smallNotes.push(note.trim());
+    return "";
+  }).trim();
+
+  mainText = applyCustomDataFormatting(mainText);
+  mainText = linkReferences(mainText, currentTitle);
+
+  const notesHTML = smallNotes.length
+    ? `<div class="entry-small-notes">${smallNotes.map(note => `<div class="entry-small-note">${escapeHTML(note)}</div>`).join("")}</div>`
+    : "";
+
+  return {
+    body: mainText,
+    notes: notesHTML
+  };
+}
+
 function linkReferences(text, currentTitle) {
   let result = text;
 
-  const protectedParts = [];
-  result = result.replace(/<iframe[\s\S]*?<\/iframe>/gi, match => {
-    protectedParts.push(match);
-    return `@@IFRAME_${protectedParts.length - 1}@@`;
-  });
+  const htmlProtected = protectHTMLParts(result);
+  result = htmlProtected.result;
+  const protectedParts = htmlProtected.protectedParts;
 
   const sortedEntries = [...entries]
     .filter(e => e.title !== currentTitle && e.title.length > 2)
@@ -1938,13 +2033,11 @@ function linkReferences(text, currentTitle) {
     const regex = new RegExp(escaped, "gi");
 
     result = result.replace(regex, match => {
-      return `<span class="entry-ref" onclick="location.hash='${encodeURIComponent(e.title)}'">${match}</span>`;
+      return `<span class="entry-ref" onclick="location.hash='${entryHash(e)}'">${match}</span>`;
     });
   });
 
-  protectedParts.forEach((part, i) => {
-    result = result.replace(`@@IFRAME_${i}@@`, part);
-  });
+  result = restoreHTMLParts(result, protectedParts);
 
   return result;
 }
@@ -1974,6 +2067,8 @@ function openEntry(entry) {
     `;
   }
 
+  const formatted = formatEntryContent(clean, entry.title);
+
   document.getElementById("content").innerHTML = `
     <button class="back-btn" onclick="goHome()">${t("back")}</button>
 
@@ -1987,7 +2082,7 @@ function openEntry(entry) {
 
       ${buildMeta(entry.title, entry.full)}
 
-      <div class="entry-body">${linkReferences(clean, entry.title)}${imageHTML}${buildDeclensionTable(entry.title)}</div>
+      <div class="entry-body">${formatted.body}${imageHTML}${buildDeclensionTable(entry.title)}${formatted.notes}</div>
     </article>
   `;
 }
