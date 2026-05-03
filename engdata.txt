@@ -380,3 +380,6 @@ Physical assault or hitting someone with the hand. e.g. "Min xirodikite!"
 
 Ατάκα98: Greece, land of fire +phrase
 Περιγραφή: A poetic/exaggerated way of saying that “Greece is a land of fire,” meaning a place of intensity, passion, heatwaves, wildfires, or unrest.
+
+Ατάκα99: flokia +noun
+Περιγραφή: Sperm (f.e. Dakrya charas)
