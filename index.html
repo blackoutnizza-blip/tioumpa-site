@@ -1675,8 +1675,8 @@ function route() {
 function showHome() {
   document.getElementById("content").innerHTML = `
     <div class="home">
-      <img class="home-logo" src="${ ()}">
-      <h1>tioumpa.org</h1>
+      <img class="home-logo" src="${getLogoFile()}">
+      <h1> </h1>
       <div class="subtitle">${t("subtitle")}</div>
       <div class="email">${t("email")}</div>
       <div class="search-copy">${t("searchCopy").replace("{count}", entries.length)}</div>
