@@ -1,6 +1,5 @@
 Ατάκα1: Tioumpa? +entry
-Περιγραφή:  What did I say?
-"What did I say?" when read quickly in Greek. Comes from the legends Red Dragon and Moschotelis. Mainly used when some Tataros has said something stupid / smart. When referring to someone in second person: "Tioumpe?"
+Περιγραφή: "What did I say?" when read quickly in Greek. Comes from the legends Red Dragon and Moschotelis. Mainly used when some Tataros has said something stupid / smart. When referring to someone in second person: "Tioumpe?"
 
 Ατάκα2: Vre Tatare, vre Chimpantzi, vre vatrachomouri! +phrase
 Περιγραφή:  Hey Tatar, hey Chimpanzee, hey Frog-face!
@@ -13,7 +12,7 @@ Vatrachomouris: Someone whose face reminds you of a frog, swollen, with big jowl
 
 Ατάκα4: Vouts Vouts Vouts +sound
 Περιγραφή:  Vroom-like sound
-Imitation sound of an motor bike / scooter.
+Imitation sound of a motor bike / scooter.
 
 Ατάκα5: Dakrya charas +phrase
 Περιγραφή:  Tears of joy
