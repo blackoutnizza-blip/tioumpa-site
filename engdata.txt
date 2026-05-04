@@ -14,18 +14,16 @@ Vatrachomouris: Someone whose face reminds you of a frog, swollen, with big jowl
 Περιγραφή:  Vroom-like sound
 Imitation sound of a motor bike / scooter.
 
-Ατάκα5: Dakrya charas +phrase
-Περιγραφή:  Tears of joy
-Semen / white moisturizing substance that comes out of a handbrake / male organ (tioumpa?).
+Ατάκα5: Tears of joy +phrase
+Περιγραφή:  Semen / white moisturizing substance that comes out of a handbrake / male organ (tioumpa?).
 Phrases: "That kolomagoulios muscle is worth many tears of joy"
 
 Ατάκα6: Kolomagoulios mys +entry
 Περιγραφή:  Butt-cheek muscle
 Anus / butt / backside / ass.
 
-Ατάκα7: Cheirofreno +noun
-Περιγραφή:  Handbrake
-Male organ / penis / pucha / balls.
+Ατάκα7: Handbrake +noun
+Περιγραφή: Male organ / penis / pucha / balls.
 
 Ατάκα8: Kreatoverga +noun
 Περιγραφή:  Meat-stick
@@ -34,17 +32,15 @@ Penis / handbrake in large dimensions. Syn: putsokontaro, palouki, kavli.
 Ατάκα9: Gkegke? Onokokoko gkegke? +phrase
 Περιγραφή: Do you understand me or not? Mainly used when some idle / unpaid worker with negative IQ writes something in chat against Teosty's opinion and Thodoris explains it to him.
 
-Ατάκα10: Matonei petsaki +phrase
-Περιγραφή: The little skin bleeds
-Sexual meaning, especially in a more vulgar tone. Also used when some machine or a function is underperforming.
+Ατάκα10: The little skin bleeds +phrase
+Περιγραφή: Sexual meaning, especially in a more vulgar tone. Also used when some machine or a function is underperforming.
 
-Ατάκα11: Amisthi ergazomenos +entry
+Ατάκα11: Amisthi worker +entry
 Περιγραφή:  Unpaid / Unemployment worker
 A young man who shows no respect, wears dark clothes, commonly a kagkouras. He also shouts several vulgar expressions.
 
-Ατάκα12: Den echo lefta gia dikigorous +phrase
-Περιγραφή:  I do not have money for lawyers
-I cannot express my objective opinion because I am afraid of getting sued.
+Ατάκα12: I do not have money for lawyers +phrase
+Περιγραφή: I cannot express my objective opinion because I am afraid of getting sued.
 
 Ατάκα13: Kranoumpa noumpa noumpa noumpa noumpatsero, einai enas katergaris champanero +song
 Περιγραφή:  Kranoumpa noumpa noumpa noumpa noumpatsero... he is a naughty habanero
@@ -62,9 +58,8 @@ The process where we enter the subject or action dynamically, usually in related
 Περιγραφή:  Thickening / escalation
 Synonym of "xediploma" - the process where we enter the subject or action dynamically.
 
-Ατάκα17: Primantona +noun
-Περιγραφή:  Prima donna
-A great opera singer, usually the soprano in the leading role. Mainly used when someone is acting like a snob / "doing Alekos".
+Ατάκα17: Prima donna +noun
+Περιγραφή:  A great opera singer, usually the soprano in the leading role. Mainly used when someone is acting like a snob / "doing Alekos".
 
 Ατάκα18: Kala myraei +phrase
 Περιγραφή:  It smells good
@@ -82,9 +77,8 @@ The more inner, deeper, or hidden points of a place, situation, or text. (opp. E
 Περιγραφή:  Details
 The specific details or incidents that make up a unit or an event.
 
-Ατάκα22: Ton vrecho +phrase
-Περιγραφή:  I wet it
-Masturbation, self-pleasure. "I wet" my underwear, "I play with it".
+Ατάκα22: I wet it +phrase
+Περιγραφή: Masturbation, self-pleasure. "I wet" my underwear, "I play with it".
 
 Ατάκα23: Tzoutzoumproutzou +entry
 Περιγραφή:  Tiny cute/funny thing
@@ -102,11 +96,10 @@ Butt hole, ass.
 Περιγραφή:  Grey matter
 It is a basic component of the Central Nervous System. Mainly used when someone has creative and free available time.
 
-Ατάκα27: Sto dexi kai sto aristero +phrase
-Περιγραφή:  On the right and on the left
-The right and the left testicle - the balls.
+Ατάκα27: On the right and on the left +phrase
+Περιγραφή: The right and the left testicle - the balls.
 
-Ατάκα28: Ton pino brousko +phrase
+Ατάκα28: I drink it brousko +phrase
 Περιγραφή:  I drink it rough wine
 I am screwed, we are done for. Some unfortunate event is about to happen soon. Brousko: (etymologically) rough, harsh; (in winemaking) refers to dry, tannic wines with intense flavor and high alcohol. https://sillogi-kalantzis.gr/media/k2/items/cache/0b1ad7a7b79268a1f4558db78e092446_L.jpg
 
@@ -122,21 +115,19 @@ I am, feel, or look classy, clean, fine.
 Περιγραφή:  Fart valve
 Synonym of kolotrypida. The rodela located at the back of every human, through which digestible mass / edible product is expelled and fresh protein mass is inserted, mainly for those who enjoy taking it from behind.
 
-Ατάκα32: Grammofono (dekatias 80') +noun
-Περιγραφή:  Gramophone (80s decade)
-A device for playing sound from records, mainly used in older times. https://www.houseart.gr/images/res/autokollita-toichou/13.diafora/autokollhto-toixou-vintage-grammofwno-diafora-400x400.png
+Ατάκα32: Gramophone (80s decade) +noun
+Περιγραφή: A device for playing sound from records, mainly used in older times. https://www.houseart.gr/images/res/autokollita-toichou/13.diafora/autokollhto-toixou-vintage-grammofwno-diafora-400x400.png
 
 Ατάκα33: Ouni garyfalo kapelo +phrase
-Περιγραφή:  Ouni carnation hat
+Περιγραφή:  Pussy carnation hat
 A bad condition of a person, thing, or situation.
 
 Ατάκα34: korasio +noun
 Περιγραφή:  Maiden, young girl
 Medieval/folk word meaning a beautiful girl, young woman.
 
-Ατάκα35: Trypa +noun
-Περιγραφή:  Hole
-The kolotrypida, the vagina, the woman (refers to a known content creator who unfolds into content creation in Greek and English).
+Ατάκα35: Hole +noun
+Περιγραφή: The kolotrypida, the vagina, the woman (refers to a known content creator who unfolds into content creation in Greek and English).
 
 Ατάκα36: Oouuouuouuouu +sound
 Περιγραφή:  Oouuouuouuouu
@@ -169,15 +160,13 @@ Reply to people with negative IQ, meaning "I do not care... I continue my work."
 Περιγραφή:  I was entering and not coming out. Smash. Are you being honest? -εισαι ειλικρινής; tioumpa?
 
 Ατάκα44: Ligdas +name
-Περιγραφή:  Mucky guy
-Nasty insult. This characterization was created from a Teosty video where he ate spicy noodles and released gases through the anal canal (fart), the mouth (burp), and the nasal cavity (snot). Mainly used by kagkouras young men or the so-called unpaid workers.
+Περιγραφή:  Mucky guy. This characterization was created from a Teosty video where he ate spicy noodles and released gases through the anal canal (fart), the mouth (burp), and the nasal cavity (snot). Mainly used by kagkouras young men or the so-called unpaid workers.
 
 Ατάκα45: Tourourourou i toutoutoutou +sound
 Περιγραφή: Attempt to cover copyrighted music so that when the live is uploaded to YouTube it can be monetized.
 
-Ατάκα46: Yatagani +noun
-Περιγραφή: Yatagan
-Long knife or short sword with a sharp blade. Metaphorically: the dick, the pucha. https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/%CE%93%CE%B9%CE%B1%CF%84%CE%B1%CE%B3%CE%AC%CE%BD%CE%B9.jpg/1280px-%CE%93%CE%B9%CE%B1%CF%84%CE%B1%CE%B3%CE%AC%CE%BD%CE%B9.jpg
+Ατάκα46: Yatagan +noun
+Περιγραφή: Long knife or short sword with a sharp blade. Metaphorically: the dick, the pucha. https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/%CE%93%CE%B9%CE%B1%CF%84%CE%B1%CE%B3%CE%AC%CE%BD%CE%B9.jpg/1280px-%CE%93%CE%B9%CE%B1%CF%84%CE%B1%CE%B3%CE%AC%CE%BD%CE%B9.jpg
 
 Ατάκα47: Entos ektos kai epi ta auta +phrase
 Περιγραφή:  Inside, outside and on the same side
@@ -198,9 +187,8 @@ Verb indicating the intake of a meal, protein drink, or other nutrient-rich good
 Περιγραφή:  Proper lighting
 The correct, suitable, proper lighting for xediploma into edible paths.
 
-Ατάκα52: Apo rally +phrase
-Περιγραφή:  From rally
-Mainly used when the klanovalvida does not unfold in that way and there is a serious problem around the anus, causing gas masses to leave. e.g. "Koumpwnw apo rally kai fevgei aeria maza."
+Ατάκα52: From rally +phrase
+Περιγραφή: Mainly used when the klanovalvida does not unfold in that way and there is a serious problem around the anus, causing gas masses to leave. e.g. "Koumpwnw apo rally kai fevgei aeria maza."
 
 Ατάκα53: Rip ton magka mou +phrase
 Περιγραφή:  Rip my guy
@@ -214,9 +202,8 @@ Something died / ended / broke. Synonym of "we had it".
 Περιγραφή:  The scooter, you rascal, grikgrikgrikgr!
 Comes from Jordan (Marmita's Universe), who had promised to raffle off a scooter. This never happened. Comes from viewers of "Athlitikoi Voriades" who angrily demanded that Iordanis explain the "stolen" scooter. https://i.ytimg.com/vi/pCsuLqneJlk/hq720.jpg
 
-Ατάκα56: Tilefono 2310 52 1010 +phrase
-Περιγραφή:  Phone number 2310 52 1010
-The phone number of Dimosthenis Liakopoulos publishing house (well-known author and conspiracy theorist). We have not managed to give an exact explanation of this expression. https://media.tenor.com/jgYnUpv3NGEAAAAe/liakopoulos-2310521010.png
+Ατάκα56: Tel. 2310 52 1010 +phrase
+Περιγραφή:  The phone number of Dimosthenis Liakopoulos publishing house (well-known author and conspiracy theorist). We have not managed to give an exact explanation of this expression. https://media.tenor.com/jgYnUpv3NGEAAAAe/liakopoulos-2310521010.png
 
 Ατάκα57: Symplektis +noun
 Περιγραφή:  Clutch
