@@ -321,3 +321,6 @@
 
 Ατάκα107: Τρενάκι +ουσιαστικό
 Περιγραφή: [υποκοριστικό του "Τρένο"] Βοηθήστε μας να εξηγήσουμε τον συγκεκριμένο ορισμό στο: tioumpagr@gmail.com
+
+Ατάκα108: Τρέχει, τρέχει, τρέχει το νερό +τραγούδι
+Περιγραφή: Χρησιμοποιείται κυρίως όταν κάποιος κατουράει, ουρεί, αποβάλει ούρα από το αντίστοιχο όργανο. Προέρχεται από το τραγούδι "Στου Καιρού τη Ζυγαριά": <iframe width="560" height="315" src="https://www.youtube.com/embed/-0Ay-OR12f4?si=irwmchp0Epycck49" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
